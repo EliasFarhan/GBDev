@@ -39,7 +39,9 @@ main(){
 	disable_interrupts();
 	DISPLAY_OFF;
 	
-	//load background 
+	/*load background
+	 *
+	 */
 	set_bkg_data(0,4,backgroundcharacters);
 	for(counter=0;counter<=16;counter+=2)
 		set_bkg_tiles( 0, counter, 20, 2, bgmap);
