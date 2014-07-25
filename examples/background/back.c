@@ -218,14 +218,14 @@ void main()
 
 
 	  /* Initialize the window */
-	    //set_win_data(0x80, 0x21, frame_data);
+	    set_win_data(0x80, 0x21, frame_data);
 	    /*
 	     * Draw the frame in the window
 	     *
 	     * Width  = 0x80 = 0x10 * 8
 	     * Height = 0x50 = 0x0A * 8
 	     */
-	    //set_win_tiles(0, 0, 16, 10, frame_tiles);
+	    set_win_tiles(0, 0, 16, 10, frame_tiles);
 	    /*
 	     * Draw the door in the window
 	     *
@@ -250,6 +250,10 @@ void main()
 		  for(i = 0; i < 4; i++)
 			  wait_vbl_done();
 		  i = joypad();
+		  SCX_REG += 1;
+		  SCY_REG += 1;
+		  WX_REG -= 1;
+		  WY_REG -= 1;
 	  }
 }
 
