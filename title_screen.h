@@ -1,1 +1,1 @@
-void title_screen() NONBANKED;
+void title_screen();
