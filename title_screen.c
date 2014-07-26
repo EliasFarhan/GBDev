@@ -2,16 +2,18 @@
 #include <gb/drawing.h>
 #pragma bank=4
 
+//title screen image
+extern unsigned char title_screen_tile[];
 
-
-
-void title_graphics(UBYTE pstart) {
+void title_graphics(UBYTE pstart) NONBANKED {
+	SWITCH_ROM_MBC1(4);
+	draw_image(title_screen_tile);
 	if (pstart) {
 		gotogxy(5, 15);
 		gprintf("Press Start");
 	}
 }
-void title_screen() {
+void title_screen() NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
 	wait_vbl_done();
 	disable_interrupts();
@@ -19,21 +21,17 @@ void title_screen() {
 	HIDE_SPRITES;
 	HIDE_WIN;
 	HIDE_BKG;
-	//ENABLE_RAM_MBC1;
+	ENABLE_RAM_MBC1;
 	DISPLAY_ON;
 	enable_interrupts();
 	while(1) {
 		wait_vbl_done();
 		keys = joypad();
-		//if (keys & (J_A|J_START)) {
-		//	break;
-		//}
-		counter++;
-		if (counter == 40) {
-			title_graphics(pstart);
-			pstart = !pstart;
-			counter = 0;
+		if (keys & (J_A|J_START)) {
+			break;
 		}
+		title_graphics(pstart);
+
 	}
-	//DISABLE_RAM_MBC1;
+	DISABLE_RAM_MBC1;
 }
