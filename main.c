@@ -9,6 +9,11 @@ void main()
 	kwakwa_screen();
 	DISPLAY_OFF;
 	disable_APA();
-	title_screen();
+	while(1)
+	{
 
+		title_screen();
+		DISPLAY_OFF;
+		disable_APA();
+	}
 }
