@@ -9,8 +9,9 @@
 #include <gb/drawing.h>
 #include "game_screen.h"
 
+#define MAP2D
 #define MAX_SPRITES 1
-#define SPRITE_SIZE 16
+#define SPRITE_SIZE 8
 
 struct POS {
 	UBYTE x;
@@ -20,14 +21,18 @@ struct POS {
 
 unsigned char test_sprite[] =
 {
-  0x01,0x01,0x1E,0x1F,0x20,0x3F,0x4F,0x70,
-  0x9F,0xE0,0xBF,0xC0,0xBF,0xC0,0xBF,0xC0,
-  0x80,0x80,0x60,0xE0,0x10,0xF0,0xC8,0x38,
-  0xE6,0x1E,0xF1,0x0F,0xFD,0x03,0xFD,0x03,
-  0xBF,0xC0,0xBF,0xC0,0xBF,0xC0,0x9F,0xE0,
-  0x4F,0x70,0x20,0x3F,0x1E,0x1F,0x01,0x01,
-  0xFD,0x03,0xFD,0x03,0xF1,0x0F,0xE6,0x1E,
-  0xC8,0x38,0x10,0xF0,0x60,0xE0,0x80,0x80
+	//up-left
+	0x01,0x01,0x1E,0x1F,0x20,0x3F,0x4F,0x70,
+	0x9F,0xE0,0xBF,0xC0,0xBF,0xC0,0xBF,0xC0,
+	//up-right
+	0x80,0x80,0x60,0xE0,0x10,0xF0,0xC8,0x38,
+	0xE6,0x1E,0xF1,0x0F,0xFD,0x03,0xFD,0x03,
+	//down-left
+	0xBF,0xC0,0xBF,0xC0,0xBF,0xC0,0x9F,0xE0,
+	0x4F,0x70,0x20,0x3F,0x1E,0x1F,0x01,0x01,
+	//down-right
+	0xFD,0x03,0xFD,0x03,0xF1,0x0F,0xE6,0x1E,
+	0xC8,0x38,0x10,0xF0,0x60,0xE0,0x80,0x80
 };
 
 UBYTE sprite_tile[] =
@@ -37,23 +42,31 @@ UBYTE sprite_tile[] =
 };
 
 UBYTE keys;
+UBYTE finish;
 struct POS player_pos;
 
 void manage_input() NONBANKED
 {
-	if (keys & J_DOWN) {
-		player_pos.y++;
-	}
-	if (keys & J_UP) {
-		player_pos.y--;
-	}
-	if (keys & J_LEFT) {
-		player_pos.x--;
-	}
-	if (keys & J_RIGHT) {
-		player_pos.x++;
-	}
+#ifdef MAP2D
+	if (keys & J_DOWN)
+		if(player_pos.y != 144)
+			player_pos.y++;
 
+	if (keys & J_UP)
+		if(player_pos.y != SPRITE_SIZE+SPRITE_SIZE)
+			player_pos.y--;
+
+#endif
+	if (keys & J_LEFT)
+		if(player_pos.x != SPRITE_SIZE)
+			player_pos.x--;
+
+	if (keys & J_RIGHT)
+		if(player_pos.x != 160-SPRITE_SIZE)
+			player_pos.x++;
+
+	if (keys & J_START)
+		finish = 1;
 }
 
 void set_sprite() NONBANKED
@@ -63,17 +76,19 @@ void set_sprite() NONBANKED
 	{
 		set_sprite_tile( i, sprite_tile[i] );
 	}
-	move_sprite( 0, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+16 );
-	move_sprite( 1, player_pos.x+SPRITE_SIZE+16,   player_pos.y+SPRITE_SIZE+16 );
-	move_sprite( 2, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+24 );
-	move_sprite( 3, player_pos.x+SPRITE_SIZE+16,   player_pos.y+SPRITE_SIZE+24 );
+	move_sprite( 0, player_pos.x,    player_pos.y );
+	move_sprite( 1, player_pos.x+8,   player_pos.y );
+	move_sprite( 2, player_pos.x,    player_pos.y+8 );
+	move_sprite( 3, player_pos.x+8,   player_pos.y+8 );
 
 }
 
 void game_screen() NONBANKED
 {
 	init_screen();
-	while(1)
+
+	finish = 0;
+	while(!finish)
 	{
 		wait_vbl_done();
 		keys = joypad();
@@ -91,14 +106,14 @@ void init_screen() NONBANKED
 	HIDE_WIN;
 	DISPLAY_OFF;
 	set_sprite_data( 0, 4, test_sprite );
-	SPRITES_8x8;
+	SPRITES_8x8;//TODO: why not 8x16?
 
 	//SHOW_BKG;
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
-	player_pos.x = 0;
-	player_pos.y = 0;
+	player_pos.x = SPRITE_SIZE;
+	player_pos.y = SPRITE_SIZE+SPRITE_SIZE;
 	set_sprite();
 
 }
