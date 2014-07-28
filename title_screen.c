@@ -16,11 +16,6 @@ void title_graphics(UBYTE pstart) NONBANKED {
 void title_screen() NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
 	wait_vbl_done();
-	disable_interrupts();
-	DISPLAY_OFF;
-	HIDE_SPRITES;
-	HIDE_WIN;
-	HIDE_BKG;
 	ENABLE_RAM_MBC1;
 	DISPLAY_ON;
 	enable_interrupts();
