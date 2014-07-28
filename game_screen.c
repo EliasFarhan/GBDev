@@ -9,6 +9,14 @@
 #include <gb/drawing.h>
 #include "game_screen.h"
 
+#define MAX_SPRITES 1
+#define SPRITE_SIZE 16
+
+struct POS {
+	UBYTE x;
+	UBYTE y;
+};
+
 unsigned char test_sprite[] =
 {
   0x01,0x01,0x1E,0x1F,0x20,0x3F,0x4F,0x70,
@@ -27,6 +35,26 @@ UBYTE sprite_tile[] =
 
 };
 
+UBYTE keys;
+struct POS player_pos;
+
+void manage_input() NONBANKED
+{
+	if (keys & J_DOWN) {
+		player_pos.y++;
+	}
+	if (keys & J_UP) {
+		player_pos.y--;
+	}
+	if (keys & J_LEFT) {
+		player_pos.x--;
+	}
+	if (keys & J_RIGHT) {
+		player_pos.x++;
+	}
+
+}
+
 void set_sprite() NONBANKED
 {
 	set_sprite_tile( 0, sprite_tile[0] );
@@ -34,18 +62,23 @@ void set_sprite() NONBANKED
 	set_sprite_tile( 2, sprite_tile[2] );
 	set_sprite_tile( 3, sprite_tile[3] );
 
-	move_sprite( 0, 8, 16 );
-	move_sprite( 1, 16,  16 );
-	move_sprite( 2, 8,  24 );
-	move_sprite( 3,  16, 24 );
+	move_sprite( 0, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+16 );
+	move_sprite( 1, player_pos.x+SPRITE_SIZE+16,   player_pos.y+SPRITE_SIZE+16 );
+	move_sprite( 2, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+24 );
+	move_sprite( 3, player_pos.x+SPRITE_SIZE+16,   player_pos.y+SPRITE_SIZE+24 );
+
 }
 
 void game_screen() NONBANKED
 {
 	init_screen();
-	wait_vbl_done();
-	waitpad(J_A | J_B | J_START | J_SELECT);
-	waitpadup();
+	while(1)
+	{
+		wait_vbl_done();
+		keys = joypad();
+		manage_input();
+		set_sprite();
+	}
 	game_over();
 }
 
@@ -63,6 +96,8 @@ void init_screen() NONBANKED
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
+	player_pos.x = 0;
+	player_pos.y = 0;
 	set_sprite();
 
 }
