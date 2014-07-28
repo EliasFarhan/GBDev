@@ -15,6 +15,7 @@
 struct POS {
 	UBYTE x;
 	UBYTE y;
+	UBYTE dir;//0 right, 1 left, 2 up, 3 down
 };
 
 unsigned char test_sprite[] =
@@ -57,11 +58,11 @@ void manage_input() NONBANKED
 
 void set_sprite() NONBANKED
 {
-	set_sprite_tile( 0, sprite_tile[0] );
-	set_sprite_tile( 1, sprite_tile[1] );
-	set_sprite_tile( 2, sprite_tile[2] );
-	set_sprite_tile( 3, sprite_tile[3] );
-
+	UBYTE i;
+	for (i = 0; i != 4; i++)
+	{
+		set_sprite_tile( i, sprite_tile[i] );
+	}
 	move_sprite( 0, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+16 );
 	move_sprite( 1, player_pos.x+SPRITE_SIZE+16,   player_pos.y+SPRITE_SIZE+16 );
 	move_sprite( 2, player_pos.x+SPRITE_SIZE+8,    player_pos.y+SPRITE_SIZE+24 );
