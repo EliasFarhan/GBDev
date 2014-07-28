@@ -43,7 +43,7 @@ void set_sprite() NONBANKED
 void game_screen() NONBANKED
 {
 	init_screen();
-
+	wait_vbl_done();
 	waitpad(J_A | J_B | J_START | J_SELECT);
 	waitpadup();
 	game_over();
@@ -69,6 +69,7 @@ void init_screen() NONBANKED
 
 void game_over() NONBANKED
 {
+	wait_vbl_done();
 	HIDE_SPRITES;
 	gotogxy(5, 5);
 	gprintf("GAME OVER");
