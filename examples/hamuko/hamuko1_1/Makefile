@@ -1,7 +1,6 @@
 CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
-BINS	= back.gb
-
+BINS	= txt1.gb	  
 
 all:	$(BINS)
 

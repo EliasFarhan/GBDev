@@ -1,7 +1,7 @@
-#include <gb.h>
+#include <gb/gb.h>
 #include <stdio.h>
 
-#include "hamumoji.c"    // �n���q�����̃^�C���f�[�^
+#include "hamumoji.c"    // ƒnƒ€Žq•¶Žš‚Ìƒ^ƒCƒ‹ƒf�[ƒ^
 
 
 void DISP_MOJI()
@@ -10,13 +10,13 @@ void DISP_MOJI()
 	printf( "Hello World!" );
 
 	gotoxy( 2, 4 );
-	printf( "�۰ ܰ��ޤ" ); // �n���q�����͔��p�J�^�J�i�ŏ���
-				// ����͎g�p�p�x�����Ȃ��̂Ł@�!��ƕ\�������悤�ɂ��Ă��܂�
+	printf( "ÊÛ° Ü°ÙÄÞ¤" ); // ƒnƒ€Žq•¶Žš‚Í”¼ŠpƒJƒ^ƒJƒi‚Å�‘‚­
+				// ¢¤£‚ÍŽg—p•p“x‚ª�­‚È‚¢‚Ì‚Å�@¢!£‚Æ•\Ž¦‚³‚ê‚é‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·
 }
 
-void INIT()  // ��ʂ̏�����
+void INIT()  // ‰æ–Ê‚Ì�‰Šú‰»
 {
-	printf( " " );     // ��ʂ̏������̑O�Ɂ@����1�s���Ȃ��Ɓ@�n���q�����������������܂�
+	printf( " " );     // ‰æ–Ê‚Ì�‰Šú‰»‚Ì‘O‚É�@‚±‚Ì1�s‚ª‚È‚¢‚Æ�@ƒnƒ€Žq•¶Žš‚à•¶Žš‰»‚¯‚µ‚Ü‚·
 
 	disable_interrupts();
 	HIDE_BKG;
@@ -24,7 +24,7 @@ void INIT()  // ��ʂ̏�����
 	HIDE_WIN;
 	DISPLAY_OFF;
 
-	set_bkg_data( 160, 65, hamumoji );    // �n���q�����Ɏg���^�C���f�[�^�@160�ԁ`�@65���@hamumoji�i�ō�����^�C���j���Z�b�g����
+	set_bkg_data( 160, 65, hamumoji );    // ƒnƒ€Žq•¶Žš‚ÉŽg‚¤ƒ^ƒCƒ‹ƒf�[ƒ^�@160”Ô�`�@65–‡�@hamumoji�i‚Å�ì‚Á‚½ƒ^ƒCƒ‹�j‚ðƒZƒbƒg‚·‚é
 
 	SHOW_BKG; 
 	DISPLAY_ON;

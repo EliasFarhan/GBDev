@@ -1,4 +1,4 @@
-#include <gb.h>
+#include <gb/gb.h>
 #include <stdio.h>
 
 
@@ -10,7 +10,7 @@ void main()
 
 	for( y = 19; y > 3; y-- ){    
 
-		cls();                   // ��񂲂Ƃɉ�ʂ��N���A
+		cls();                   // ˆê‰ñ‚²‚Æ‚É‰æ–Ê‚ðƒNƒŠƒA
 
 		gotoxy( 4, y );
 		printf( "Presented by" );
@@ -18,11 +18,11 @@ void main()
 		gotoxy( 7, y + 2 );
 		printf( "Hamuko" );
 
-		delay( 300 );              // ��������̂ő��x����
+		delay( 300 );              // ‘�‚·‚¬‚é‚Ì‚Å‘¬“x’²�ß
 
 	} 
 
-        // for���[�v���I�������ȉ���\������
+        // forƒ‹�[ƒv‚ª�I‚í‚Á‚½‚çˆÈ‰º‚ð•\Ž¦‚·‚é
 
 	gotoxy( 5, y + 6 );
 	printf( "Welcome to" );

@@ -1,20 +1,20 @@
-#include <gb.h>
+#include <gb/gb.h>
 #include <stdio.h>
 
-#include "hamumoji.c"   // �n���q�����̃^�C���f�[�^
+#include "hamumoji.c"   // ƒnƒ€Žq•¶Žš‚Ìƒ^ƒCƒ‹ƒf�[ƒ^
 
 #define MOJI_MAX 15
-// ���̈�ԍŌ��NULL������̂Ł@���ۂɎg����̂�14����
+// •¶‚Ìˆê”Ô�ÅŒã‚ÉNULL‚ª‚ ‚é‚Ì‚Å�@ŽÀ�Û‚ÉŽg‚¦‚é‚Ì‚Í14•¶Žš
 
 
 void DISP_MOJI()
 {
 	UBYTE x, y;
 
-	unsigned char first[MOJI_MAX] = "�ѺӼ�� ���̳�";  // �n���q�����͔��p�J�^�J�i�ŏ���
-	unsigned char second[MOJI_MAX] = "¶��Ķ� �޷Ͻ�"; // 14�����ȓ��ɂ���
-	unsigned char third[MOJI_MAX] = "�׶�Ŷ� ¶�ٯ�";
-	unsigned char fourth[MOJI_MAX] = "��� �ڼ���Ͻ�";
+	unsigned char first[MOJI_MAX] = "ÊÑºÓ¼ÞÊ ºÝÅÌ³Æ";  // ƒnƒ€Žq•¶Žš‚Í”¼ŠpƒJƒ^ƒJƒi‚Å�‘‚­
+	unsigned char second[MOJI_MAX] = "Â¶³ºÄ¶Þ ÃÞ·Ï½¡"; // 14•¶ŽšˆÈ“à‚É‚·‚é
+	unsigned char third[MOJI_MAX] = "Ë×¶ÞÅ¶Þ Â¶´Ù¯Ã";
+	unsigned char fourth[MOJI_MAX] = "¶ÅØ ³Ú¼¸ÅØÏ½¡";
 
 	x = y = 2;
 
@@ -25,9 +25,9 @@ void DISP_MOJI()
 
 }
 
-void INIT()  // ��ʂ̏�����
+void INIT()  // ‰æ–Ê‚Ì�‰Šú‰»
 {
-	printf( " " );     // ��ʂ̏������̑O�Ɂ@����1�s���Ȃ��Ɓ@�n���q�����������������܂�
+	printf( " " );     // ‰æ–Ê‚Ì�‰Šú‰»‚Ì‘O‚É�@‚±‚Ì1�s‚ª‚È‚¢‚Æ�@ƒnƒ€Žq•¶Žš‚à•¶Žš‰»‚¯‚µ‚Ü‚·
 
 	disable_interrupts();
 	HIDE_BKG;
@@ -35,7 +35,7 @@ void INIT()  // ��ʂ̏�����
 	HIDE_WIN;
 	DISPLAY_OFF;
 
-	set_bkg_data( 160, 65, hamumoji );    // �n���q�����Ɏg���^�C���f�[�^�@160�ԁ`�@65���@hamumoji�i�ō�����^�C���j���Z�b�g����
+	set_bkg_data( 160, 65, hamumoji );    // ƒnƒ€Žq•¶Žš‚ÉŽg‚¤ƒ^ƒCƒ‹ƒf�[ƒ^�@160”Ô�`�@65–‡�@hamumoji�i‚Å�ì‚Á‚½ƒ^ƒCƒ‹�j‚ðƒZƒbƒg‚·‚é
 
 	SHOW_BKG; 
 	DISPLAY_ON;
