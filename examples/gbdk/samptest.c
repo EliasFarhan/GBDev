@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #define SAMPLES 25768
-extern UBYTE sample[];
+extern UBYTE sound_sample[];
 
 void main()
 {
@@ -17,12 +17,12 @@ void main()
 	{
 		waitpad(J_START);
 		puts(".");
-		play_sample(sample, SAMPLES / 32);
+		play_sample(sound_sample, SAMPLES / 32);
 		waitpadup();
 	}
 }
 
-const UBYTE sample[] =
+const UBYTE sound_sample[] =
 {
 0x86,0x98,0x65,0x97,0x7b,0x79,0x66,0x77,
 0x87,0x76,0x88,0x89,0x88,0x68,0x88,0x99,

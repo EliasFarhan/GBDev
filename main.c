@@ -8,15 +8,15 @@
 void main()
 {
 
-	kwakwa_screen();
-	DISPLAY_OFF;
-	disable_APA();
+	//kwakwa_screen();
+	//DISPLAY_OFF;
+	//disable_APA();
 
 	while(1)
 	{
-		title_screen();
-		DISPLAY_OFF;
-		disable_APA();
+		//title_screen();
+		//DISPLAY_OFF;
+		//disable_APA();
 
 		game_screen();
 	}

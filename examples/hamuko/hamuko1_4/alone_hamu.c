@@ -1,12 +1,12 @@
-#include <gb.h>
+#include <gb/gb.h>
 #include <stdio.h>
-#include <rand.h>  // —”‚ðŽg‚¤ˆ×‚Ìƒwƒbƒ_[ƒtƒ@ƒCƒ‹
+#include <rand.h>  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½×‚Ìƒwï¿½bï¿½_ï¿½[ï¿½tï¿½@ï¿½Cï¿½ï¿½
 
 #include "bgtile1.c"
 #include "bgmap4.c"
 
-#include "hamuko.c"     // ƒnƒ€Žq‚Ìƒ^ƒCƒ‹ƒf[ƒ^
-#include "hamumoji.c"   // ƒnƒ€Žq•¶Žš‚Ìƒ^ƒCƒ‹ƒf[ƒ^
+#include "hamuko.c"     // ï¿½nï¿½ï¿½ï¿½qï¿½Ìƒ^ï¿½Cï¿½ï¿½ï¿½fï¿½[ï¿½^
+#include "hamumoji.c"   // ï¿½nï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½Ìƒ^ï¿½Cï¿½ï¿½ï¿½fï¿½[ï¿½^
 
 /*--------------------------------------------------------*/
 void  SET_MOVE_HAMUKO();
@@ -36,8 +36,8 @@ UBYTE hamuko_tile[4][2][4] =
 	28, 29, 30, 31
 };
 
-fixed seed;  // —”‚ÌŽí
-UBYTE r;     // —”
+fixed seed;  // ï¿½ï¿½ï¿½ï¿½ï¿½ÌŽï¿½
+UBYTE r;     // ï¿½ï¿½ï¿½ï¿½
 
 /*--------------------------------------------------------*/
 void SET_MOVE_HAMUKO()
@@ -61,22 +61,22 @@ void OPENING_MESSAGE()
 	x = y = 1;
 
 	gotoxy( x, y ) ;
-	printf("ÊÑºÉ Î³º³¦") ;
+	printf("ï¿½Ñºï¿½ Î³ï¿½ï¿½ï¿½") ;
 	gotoxy( x, y + 2 );
-	printf("×Ý½³ÆÖ¯Ã ·ÒÃÐÏ½");
+	printf("ï¿½Ý½ï¿½ï¿½Ö¯ï¿½ ï¿½ï¿½ï¿½ï¿½Ï½");
 	gotoxy( x + 2, y + 5 );
-	printf("[A]ÎÞÀÝ¦ µ¼ÃÈ");    // —”‚Ì‰Šú‰»‚Ìˆ×‚É@Aƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚Ä‚à‚ç‚¤ƒƒbƒZ[ƒW
+	printf("[A]ï¿½ï¿½ï¿½Ý¦ ï¿½ï¿½ï¿½ï¿½");    // ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìˆ×‚É@Aï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ç‚¤ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
 }
 
 /*--------------------------------------------------------*/
-void RANSUU_INIT() //—”‚Ì‰Šú‰»@‚±‚Ì‚â‚è•û‚ÍSDK‚ÌexampleƒtƒHƒ‹ƒ_‚Ì’†‚É‚ ‚è‚Ü‚·
+void RANSUU_INIT() //ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½SDKï¿½ï¿½exampleï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½Ì’ï¿½ï¿½É‚ï¿½ï¿½ï¿½Ü‚ï¿½
 {
 	waitpad(J_A);
 	seed.b.l = DIV_REG;
 	waitpadup();
 	seed.b.h = DIV_REG;
 
-	initarand(seed.w);   // —”‚Ì‰Šú‰»
+	initarand(seed.w);   // ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 
 }
 /*--------------------------------------------------------*/
@@ -93,7 +93,7 @@ void INIT()
 	DISPLAY_OFF;
 
 	set_bkg_data( 0, 5, bgtile1 );
-	set_bkg_data( 160, 65, hamumoji );    // ƒnƒ€Žq•¶Žš‚ÉŽg‚¤ƒ^ƒCƒ‹ƒf[ƒ^@160”Ô`@65–‡@hamumojii‚Åì‚Á‚½ƒ^ƒCƒ‹j‚ðƒZƒbƒg‚·‚é
+	set_bkg_data( 160, 65, hamumoji );    // ï¿½nï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½ÉŽgï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½@160ï¿½Ô`ï¿½@65ï¿½ï¿½ï¿½@hamumojiï¿½iï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½ï¿½jï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
 
 	set_sprite_data( 0, 32, hamuko );
 	SPRITES_8x8;
@@ -103,7 +103,7 @@ void INIT()
 	DISPLAY_ON;
 	enable_interrupts();
 
-	//------------------------------—”‚Ì‰Šú‰»‚Ìˆ×‚ÉƒI[ƒvƒjƒ“ƒO‚ÉƒƒbƒZ[ƒW‚ð’Ç‰Á
+	//------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìˆ×‚ÉƒIï¿½[ï¿½vï¿½jï¿½ï¿½ï¿½Oï¿½Éƒï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½Ç‰ï¿½
 	OPENING_MESSAGE();
 	RANSUU_INIT();
 	//------------------------------
@@ -123,13 +123,13 @@ void INIT()
 }
 
 /*--------------------------------------------------------*/
-void PATTERN_CHANGE()  // ƒpƒ^[ƒ“‚ð•ÏX‚·‚é
+void PATTERN_CHANGE()  // ï¿½pï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ÏXï¿½ï¿½ï¿½ï¿½
 {
-	hp = ( hp == 0 ) ? 1 : 0 ;  // ƒpƒ^[ƒ“‚ð•\‚·•Ï”hp‚ª@0‚¾‚Á‚½‚ç1‚É‚·‚éB‚»‚¤‚¶‚á‚È‚©‚Á‚½‚ç0
+	hp = ( hp == 0 ) ? 1 : 0 ;  // ï¿½pï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½Ïï¿½hpï¿½ï¿½ï¿½@0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½É‚ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0
 }
 
 /*--------------------------------------------------------*/
-void DIRECT_RANSUU()  // r‚ª0‚Ì’l‚ð‚Æ‚Á‚½Žž‚É@ƒnƒ€Žq‚Ì•ûŒü‚ª•Ï‚í‚é
+void DIRECT_RANSUU()  // rï¿½ï¿½0ï¿½Ì’lï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É@ï¿½nï¿½ï¿½ï¿½qï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½
 {
 	if( r == 0 ){
 		switch(hd){
@@ -150,7 +150,7 @@ void DIRECT_RANSUU()  // r‚ª0‚Ì’l‚ð‚Æ‚Á‚½Žž‚É@ƒnƒ€Žq‚Ì•ûŒü‚ª•Ï‚í‚é
 }
 
 /*--------------------------------------------------------*/
-UBYTE AHEAD_KABE()   // ‘O•û‚É•Ç‚ª‚ ‚é‚©‚Ç‚¤‚©@‚ ‚Á‚½‚ç1‚ð@‚È‚¯‚ê‚Î0‚ð•Ô‚·
+UBYTE AHEAD_KABE()   // ï¿½Oï¿½ï¿½ï¿½É•Ç‚ï¿½ï¿½ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½@ï¿½È‚ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ô‚ï¿½
 {
 	UWORD C1, C2;
 
@@ -181,7 +181,7 @@ UBYTE AHEAD_KABE()   // ‘O•û‚É•Ç‚ª‚ ‚é‚©‚Ç‚¤‚©@‚ ‚Á‚½‚ç1‚ð@‚È‚¯‚ê‚Î0‚ð•Ô‚·
 /*--------------------------------------------------------*/
 void MOVE_HAMUKO()
 {
-	if(AHEAD_KABE() == 0){  // ‘O•û‚É•Ç‚ª‚È‚¯‚ê‚Îi‚ß‚é
+	if(AHEAD_KABE() == 0){  // ï¿½Oï¿½ï¿½ï¿½É•Ç‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½Îiï¿½ß‚ï¿½
 		switch(hd){
 			case 0:
 				hy--;
@@ -197,7 +197,7 @@ void MOVE_HAMUKO()
 				break;
 		}
 	}else{
-		r = 0;          // ‘O•û‚É•Ç‚ª‚ ‚Á‚½Žž‚Í@r‚É0‚ð‚¢‚ê‚éiŒü‚«‚ð•Ï‚¦‚éj
+		r = 0;          // ï¿½Oï¿½ï¿½ï¿½É•Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í@rï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½ï¿½j
 	}
 
 	DIRECT_RANSUU();
@@ -214,7 +214,7 @@ void main()
 
 	for(;;){
 
-		r = rand() % 10;  // r‚Ì‚Æ‚é’l‚Í0‚©‚ç9‚Ü‚Å‚Ì10ŒÂ‚Ì”@r‚ª‚Ç‚Ì’l‚É‚È‚é‚©‚ÌŠm—§‚ª10%
+		r = rand() % 10;  // rï¿½Ì‚Æ‚ï¿½lï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½9ï¿½Ü‚Å‚ï¿½10ï¿½Â‚Ìï¿½ï¿½@rï¿½ï¿½ï¿½Ç‚Ì’lï¿½É‚È‚é‚©ï¿½ÌŠmï¿½ï¿½ï¿½ï¿½10%
 
 		MOVE_HAMUKO();
 

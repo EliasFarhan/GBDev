@@ -5,7 +5,7 @@
 *        ---            mod2gbt v2.1 (part of GBT Player)           ---
 *        ---                                                        ---
 *        ---                                                        ---
-*        ---              Copyright (C) 2009-2015 Antonio Niño Díaz ---
+*        ---              Copyright (C) 2009-2015 Antonio Niï¿½o Dï¿½az ---
 *        ---                      All rights reserved.              ---
 *        --------------------------------------------------------------
 *
@@ -814,7 +814,7 @@ int main(int argc, char * argv[])
     printf("     |     mod2gbt v2.0 (part of GBT Player)     |\n");
     printf("     |                                           |\n");
     printf("     |                                           |\n");
-    printf("     | Copyright (C) 2009-2014 Antonio Niño Díaz |\n");
+    printf("     | Copyright (C) 2009-2014 Antonio Nio Daz |\n");
     printf("     |                      All rights reserved. |\n");
     printf("     |                                           |\n");
 	printf("     |                   antonio_nd@outlook.com  |\n");

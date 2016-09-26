@@ -4,15 +4,15 @@
 
 
 //title screen image
-extern unsigned char kwakwa_tiledata[];
+extern unsigned char kwakwa_logo_tiledata[];
 
 void kwakwa_graphics() NONBANKED {
 	SWITCH_ROM_MBC1(3);
-	draw_image(kwakwa_tiledata);
+	draw_image(kwakwa_logo_tiledata);
 }
 
 void kwakwa_screen() NONBANKED {
-	UBYTE pstart = 1, keys = 0;
+	UBYTE pstart = 0, keys = 0;
 	wait_vbl_done();
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -25,11 +25,11 @@ void kwakwa_screen() NONBANKED {
 	while(1) {
 		wait_vbl_done();
 		keys = joypad();
-		if (keys & (J_A|J_START)) {
+		if (pstart == 20) {
 			break;
 		}
 		kwakwa_graphics();
-
+		pstart++;
 	}
 	DISABLE_RAM_MBC1;
 }
