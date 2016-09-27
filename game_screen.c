@@ -27,6 +27,7 @@ struct PLAYER {
 	UBYTE img_index;
 	BYTE dir;
 	UBYTE timer;
+	BYTE vely;//y-velocity for jump
 
 };
 
@@ -135,10 +136,12 @@ UBYTE SpriteTileMap[] =
 {
 		//Peanut idle
 	0,2,1,3,
+	//Peanut walk
 	4,6,5,7,
 	8,10,9,11,
 	12,14,13,15,
 	8,10,9,11,
+	//Peanut jump
 	16,18,17,19,
 
 
@@ -152,13 +155,23 @@ struct PLAYER player;
 void manage_input() NONBANKED
 {
 
-	if (keys & J_LEFT)
+	if(keys & J_A && player.state != JUMP)
+	{
+		player.state = JUMP;
+		player.timer = 0;
+		player.img_index = 0;
+		player.vely = -5;
+	}
+	else if (keys & J_LEFT)
 	{
 		if(player.x != SPRITE_SIZE)
 		{
 			player.x--;
 			player.dir = -1;
-			player.state = WALK;
+			if(player.state == IDLE)
+			{
+				player.state = WALK;
+			}
 		}
 	}
 	else if (keys & J_RIGHT)
@@ -167,14 +180,20 @@ void manage_input() NONBANKED
 		{
 			player.x++;
 			player.dir = 1;
-			player.state = WALK;
+			if(player.state == IDLE)
+			{
+				player.state = WALK;
+			}
 		}
 	}
 	else
 	{
-		player.state = IDLE;
-		player.timer = 0;
-		player.img_index = 0;
+		if(player.state != JUMP)
+		{
+			player.state = IDLE;
+			player.timer = 0;
+			player.img_index = 0;
+		}
 	}
 	if (keys & J_START)
 	{
@@ -188,11 +207,15 @@ void set_sprite() NONBANKED
 	UBYTE origin_index;
 	if(player.state == IDLE)
 	{
-		origin_index = 0;
+		origin_index = 0U;
 	}
 	else if(player.state == WALK)
 	{
-		origin_index = (player.img_index+1)*4;
+		origin_index = (player.img_index+1U)*4U;
+	}
+	else if(player.state == JUMP)
+	{
+		origin_index = 20U;
 	}
 
 	for (i = origin_index; i != origin_index+4; i++)
@@ -226,23 +249,6 @@ void set_sprite() NONBANKED
 
 
 }
-
-void game_screen() NONBANKED
-{
-	init_screen();
-
-	finish = 0;
-	while(!finish)
-	{
-		wait_vbl_done();
-		keys = joypad();
-		manage_input();
-		manage_animation();
-		set_sprite();
-	}
-	game_over();
-}
-
 void manage_animation() NONBANKED
 {
 	if(player.state == WALK)
@@ -264,6 +270,45 @@ void manage_animation() NONBANKED
 
 	}
 }
+void manage_physics() NONBANKED
+{
+	if(player.state == JUMP)
+	{
+		player.timer ++;
+		if(player.timer == 3)
+		{
+			player.vely += 1;
+
+			if(player.y > 144-SPRITE_SIZE)
+			{
+				player.y = 144-SPRITE_SIZE;
+				player.state = IDLE;
+			}
+			player.timer = 0;
+		}
+		player.y += player.vely;
+	}
+}
+void game_screen() NONBANKED
+{
+	init_screen();
+
+	finish = 0;
+	while(!finish)
+	{
+		wait_vbl_done();
+		keys = joypad();
+		manage_input();
+		manage_animation();
+		manage_physics();
+		set_sprite();
+	}
+	game_over();
+}
+
+
+
+
 
 void init_screen() NONBANKED
 {
@@ -294,8 +339,8 @@ void init_screen() NONBANKED
 	player.dir = 1;
 	player.img_index = 0;
 	player.state = IDLE;
-	player.timer = 0;//for animation purpose
-
+	player.timer = 0;//for animation purpose and physics
+	player.vely = 0;
 	set_sprite();
 
 }
