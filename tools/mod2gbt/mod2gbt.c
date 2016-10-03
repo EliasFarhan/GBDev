@@ -183,7 +183,7 @@ char label_name[64];
 
 void out_open(void)
 {
-    output_file = fopen(output_asm ? "output.asm" : "output.c","w");
+    output_file = fopen(output_asm ? "music_output.asm" : "music_output.c","w");
 }
 
 void out_write_str(const char * c_str, const char * asm_str)

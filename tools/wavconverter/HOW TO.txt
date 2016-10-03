@@ -1,0 +1,5 @@
+Use sox.exe to create a 4 bit 8192 wave file.
+Open this in audacity and export sound to 8192 hz, 8 bit unsigned no header (raw).
+Convert the raw to gbw with sn2gbw(WinXP). the resulting gbw is playable for game boy. 
+convert it to a c array with bin2h and that's it.
+You may have to accelerate the original wav to sound at the correct speed.

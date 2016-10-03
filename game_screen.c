@@ -7,11 +7,15 @@
 
 #include <gb/gb.h>
 #include <gb/drawing.h>
+#include <gb/sample.h>
 #include "game_screen.h"
+#include "gbt_player.h"
+#include "sound.h"
+#include "physics.h"
 
 
-#define MAX_SPRITES 1
-#define SPRITE_SIZE 8
+#define PLAYER_SIZE 16U
+#define GROUND_HEIGHT 8U
 
 enum AnimationState
 {
@@ -21,16 +25,16 @@ enum AnimationState
 };
 
 struct PLAYER {
-	UBYTE x;
-	UBYTE y;
+	Box box;
 	enum AnimationState state;//0 right, 1 left, 2 up, 3 down
-	UBYTE img_index;
-	BYTE dir;
-	UBYTE timer;
+	UBYTE img_index; //for animations with more than one frame
+	BYTE dir; //for walk and jump
+	UBYTE timer; //for animations
 	BYTE vely;//y-velocity for jump
+	UBYTE hasJump;
 
 };
-
+extern const unsigned char * song_Data[];
 unsigned char TileSprites[] =
 {
 	//PEANUT
@@ -110,7 +114,7 @@ unsigned char TileBackground[] =
 
 };
 
-unsigned char BackgroundTileMap[] =
+unsigned char Background1TileMap[] =
 {
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -119,17 +123,26 @@ unsigned char BackgroundTileMap[] =
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+};
+
+#define BOX1LENGTH 4
+Box box1[BOX1LENGTH] =
+{
+	{16U,16U,32U,8U },
+	{72U,64U,32U,16U},
+	{8U,88U,32U,8U},
+	{56U,112U, 32U,8U}
 };
 
 UBYTE SpriteTileMap[] =
@@ -155,18 +168,32 @@ struct PLAYER player;
 void manage_input() NONBANKED
 {
 
-	if(keys & J_A && player.state != JUMP)
+	if(keys & J_A)
 	{
-		player.state = JUMP;
-		player.timer = 0;
-		player.img_index = 0;
-		player.vely = -5;
-	}
-	else if (keys & J_LEFT)
-	{
-		if(player.x != SPRITE_SIZE)
+		if(!player.hasJump && player.state != JUMP)
 		{
-			player.x--;
+			player.state = JUMP;
+			player.timer = 0;
+			player.img_index = 0;
+			player.vely = -4;
+			play_sound( SOUND_SHOOTING );
+			player.hasJump = 1U;
+		}
+	}else{
+		player.hasJump = 0U;
+	}
+
+	if( keys & J_B)
+	{
+		//gbt_play(song_Data, 2, 7);
+		//gbt_loop(0);
+	}
+
+	if (keys & J_LEFT)
+	{
+		if(player.box.x != 0U)
+		{
+			player.box.x--;
 			player.dir = -1;
 			if(player.state == IDLE)
 			{
@@ -176,9 +203,9 @@ void manage_input() NONBANKED
 	}
 	else if (keys & J_RIGHT)
 	{
-		if(player.x != 160-SPRITE_SIZE)
+		if(player.box.x != 160U)
 		{
-			player.x++;
+			player.box.x++;
 			player.dir = 1;
 			if(player.state == IDLE)
 			{
@@ -229,10 +256,10 @@ void set_sprite() NONBANKED
 		{
 			set_sprite_prop(i,0x00U);
 		}
-		move_sprite( 0, player.x,    player.y );
-		move_sprite( 1, player.x+8,   player.y );
-		move_sprite( 2, player.x,    player.y+8 );
-		move_sprite( 3, player.x+8,   player.y+8 );
+		move_sprite( 0, player.box.x+8U,    player.box.y );
+		move_sprite( 1, player.box.x+16U,   player.box.y );
+		move_sprite( 2, player.box.x+8U,    player.box.y+8 );
+		move_sprite( 3, player.box.x+16U,   player.box.y+8 );
 	}
 	else if(player.dir == -1)
 	{
@@ -240,10 +267,10 @@ void set_sprite() NONBANKED
 		{
 			set_sprite_prop(i,S_FLIPX);
 		}
-		move_sprite( 1, player.x,    player.y );
-		move_sprite( 0, player.x+8,   player.y );
-		move_sprite( 3, player.x,    player.y+8 );
-		move_sprite( 2, player.x+8,   player.y+8 );
+		move_sprite( 1, player.box.x+8U,    player.box.y );
+		move_sprite( 0, player.box.x+16U,   player.box.y );
+		move_sprite( 3, player.box.x+8U,    player.box.y+8 );
+		move_sprite( 2, player.box.x+16U,   player.box.y+8 );
 
 	}
 
@@ -259,7 +286,7 @@ void manage_animation() NONBANKED
 		else if(player.timer == 10)
 			player.img_index++;
 		else if(player.timer == 15)
-					player.img_index++;
+			player.img_index++;
 		else if(player.timer == 20)
 		{
 			player.timer =0;
@@ -272,22 +299,75 @@ void manage_animation() NONBANKED
 }
 void manage_physics() NONBANKED
 {
+	UBYTE i;
+
 	if(player.state == JUMP)
 	{
 		player.timer ++;
-		if(player.timer == 3)
+		if(player.timer == 5U)
 		{
-			player.vely += 1;
+			player.vely += 1U;
 
-			if(player.y > 144U-SPRITE_SIZE-1U)
-			{
-				player.y = 144-SPRITE_SIZE;
-				player.state = IDLE;
-				return;
-			}
+
 			player.timer = 0;
 		}
-		player.y += player.vely;
+		player.box.y += player.vely;
+
+
+
+		for(i = 0; i<BOX1LENGTH;i++)
+		{
+			if(checkCollision(&(player.box), &(box1[i])))
+			{
+
+				if(player.box.y<box1[i].y)
+				{
+					player.box.y = box1[i].y-box1[i].h;
+					player.state = IDLE;
+					return;
+				}
+				else
+				{
+					player.box.y = box1[i].y+PLAYER_SIZE;
+					if(player.vely < 0U)
+						player.vely = 1;
+				}
+			}
+
+
+		}
+
+
+		if(player.box.y > 144U-GROUND_HEIGHT-1U)
+		{
+			player.box.y = 144U-GROUND_HEIGHT;
+			player.state = IDLE;
+			return;
+		}
+	}
+	else if(player.state == IDLE || player.state == WALK)
+	{
+		UBYTE foot;
+		Box tmp_box;
+		tmp_box.x = player.box.x;
+		tmp_box.y = player.box.y+1;
+		tmp_box.w = player.box.w;
+		tmp_box.h = player.box.h;
+		foot = 0;
+		for(i = 0; i<BOX1LENGTH;i++)
+		{
+			if(checkCollision(&(tmp_box),  &(box1[i])) || player.box.y == 144U-GROUND_HEIGHT)
+			{
+				foot++;
+			}
+
+		}
+		if(foot == 0)
+		{
+			player.state = JUMP;
+			if(player.vely < 0U)
+				player.vely = 1;
+		}
 	}
 }
 void game_screen() NONBANKED
@@ -303,6 +383,10 @@ void game_screen() NONBANKED
 		manage_animation();
 		manage_physics();
 		set_sprite();
+
+		gbt_update();
+		tick_sound();
+
 	}
 	game_over();
 }
@@ -319,6 +403,8 @@ void init_screen() NONBANKED
 	HIDE_SPRITES;
 	HIDE_WIN;
 	DISPLAY_OFF;
+	init_sounds();
+
 	set_sprite_data( 0, 20, TileSprites);
 
 
@@ -328,20 +414,23 @@ void init_screen() NONBANKED
 	//Background
 	for(i = 0; i != 18; i++)
 		for(j = 0; j!= 20; j++)
-			set_bkg_tiles(j,i,1,1, &BackgroundTileMap[i*20+j]);
+			set_bkg_tiles(j,i,1,1, &Background1TileMap[i*20+j]);
 	SPRITES_8x8;//TODO: why not 8x16?
 
 	SHOW_BKG;
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
-	player.x = 80+SPRITE_SIZE;
-	player.y = 144-SPRITE_SIZE;
+	player.box.x = 8U;
+	player.box.y = 144U-GROUND_HEIGHT;
+	player.box.w = PLAYER_SIZE;
+	player.box.h = PLAYER_SIZE;
 	player.dir = 1;
 	player.img_index = 0;
 	player.state = IDLE;
 	player.timer = 0;//for animation purpose and physics
 	player.vely = 0;
+	player.hasJump = 0U;
 	set_sprite();
 
 }

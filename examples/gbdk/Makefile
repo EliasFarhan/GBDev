@@ -11,8 +11,8 @@ BINS	= galaxy.gb \
 	ram_fn.gb \
 	fonts.gb \
 	samptest.gb \
-	banks.gb
-
+	banks.gb \
+	sound.gb
 # sound.gb: Cant do bitfields
 OTHER = sound.gb \
 

@@ -1,0 +1,1 @@
+sox in.wav -b 4 -c 1 --rate 8192 out.raw
