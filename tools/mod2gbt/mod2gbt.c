@@ -35,6 +35,20 @@ typedef signed   short int s16;
 //--                                                                            --
 //--------------------------------------------------------------------------------
 
+void convert_channel1(u8 pattern_number, u8 step_number, u8 note_index, u8 samplenum,
+                      u16 sampleperiod, u8 effectnum, u8 effectparams);
+void convert_channel2(u8 pattern_number, u8 step_number, u8 note_index, u8 samplenum,
+                      u16 sampleperiod, u8 effectnum, u8 effectparams);
+void convert_channel3(u8 pattern_number, u8 step_number, u8 note_index, u8 samplenum,
+                      u16 sampleperiod, u8 effectnum, u8 effectparams);
+void convert_channel4(u8 pattern_number, u8 step_number, u8 note_index, u8 samplenum,
+                      u16 sampleperiod, u8 effectnum, u8 effectparams);
+int EFFECT_MOD_TO_GB(u8 pattern_number, u8 step_number, u8 channel,
+                     u8 effectnum, u8 effectparams, u8 * converted_num, u8 * converted_params);
+int SPEED_MOD_TO_GB(int s);
+int VOLUME_MOD_TO_GB(int v);
+int VOLUME_MOD_TO_GB_CH3(int v);
+
 typedef struct __attribute__((packed)) {
     char name[22];
     u16  lenght;

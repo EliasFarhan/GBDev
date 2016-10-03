@@ -1,4 +1,4 @@
-wine ../../tools/mod2gbt/mod2gbt.exe template.mod song -c 2
+../../tools/mod2gbt/mod2gbt template.mod song -c 2
 
 
 /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j -c -o main.o main.c
