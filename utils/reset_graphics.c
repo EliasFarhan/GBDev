@@ -1,5 +1,5 @@
 /* an empty line for the background, to reset graphics */
-extern unsigned char cEMPTY[]; 
+extern unsigned char TileWhite[];
 
 void empty_screen (void)
 {
@@ -18,15 +18,15 @@ void empty_screen (void)
 		set_sprite_prop (temp1,0);
 	}
 
-	SWITCH_ROM_MBC1(4);
+	SWITCH_ROM_MBC1(0);
 	for (temp1=0; temp1<20; temp1++)
 	{
-		set_bkg_tiles (0,temp1,20,1,(unsigned char *) &cEMPTY[0]);   
-		set_win_tiles (0,temp1,20,1,(unsigned char *) &cEMPTY[0]);   
+		set_bkg_tiles (0,temp1,20,1,(unsigned char *) TileWhite[0]);
+		set_win_tiles (0,temp1,20,1,(unsigned char *) TileWhite[0]);
 		
 		VBK_REG = 1;
-		set_bkg_tiles (0,temp1,20,1,(unsigned char *) &cEMPTY[0]);   
-		set_win_tiles (0,temp1,20,1,(unsigned char *) &cEMPTY[0]);   
+		set_bkg_tiles (0,temp1,20,1,(unsigned char *) TileWhite[0]);
+		set_win_tiles (0,temp1,20,1,(unsigned char *) TileWhite[0]);
 		VBK_REG = 0;
 	}
 	SWITCH_ROM_MBC1(0);

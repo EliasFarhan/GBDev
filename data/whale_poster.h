@@ -1,6 +1,6 @@
 /*
 
- ENVIRONMENT.H
+ WHALE_POSTER.H
 
  Include File.
 
@@ -9,8 +9,8 @@
   Format               : Gameboy 4 color.
   Compression          : None.
   Counter              : None.
-  Tile size            : 8 x 8
-  Tiles                : 0 to 9
+  Tile size            : 32 x 32
+  Tiles                : 0 to 0
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,10 +24,10 @@
 
 #include <gb/gb.h>
 /* Bank of tiles. */
-#define TileEnvironmentBank 1
+#define TileWhalePosterBank 1
 /* Start of tile array. */
-extern unsigned char TileEnvironment[];
+extern unsigned char TileWhalePoster[];
 
-extern UBYTE TileEnvironmentLength;
+extern UBYTE TileWhalePosterLength;
 
-/* End of ENVIRONMENT.H */
+/* End of WHALE_POSTER.H */

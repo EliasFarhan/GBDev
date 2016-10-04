@@ -22,10 +22,12 @@
 
 */
 
-
+#include <gb/gb.h>
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define TileBackgroundBank 1
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char TileBackground[];
+extern unsigned char TileWhite[];
+extern UBYTE TileBackgroundLength;
 
 /* End of BACKGROUND.H */

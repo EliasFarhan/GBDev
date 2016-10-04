@@ -27,5 +27,5 @@
 #define TilePeanutBank 1
 /* Start of tile array. */
 extern unsigned char TilePeanut[];
-
+extern UBYTE PeanutTileMap[];
 /* End of PEANUT.H */
