@@ -11,7 +11,10 @@
 #include "game_screen.h"
 #include "gbt_player.h"
 #include "sound.h"
-#include "physics.h"
+#include "data/peanut.h"
+
+//include all the levels
+#include "levels/level1.h"
 
 
 #define PLAYER_SIZE 16U
@@ -21,10 +24,26 @@ enum AnimationState
 {
 	IDLE,
 	WALK,
-	JUMP
+	JUMP,
+	CROUCH,
+	CROUCHWALK
 };
 
-struct PLAYER {
+typedef struct
+{
+	void* init_level;//function
+	void* manage_physics;//function
+} Level;
+
+typedef struct
+{
+	UBYTE x;
+	UBYTE y;
+	UBYTE w;
+	UBYTE h;
+} Box;
+
+typedef struct{
 	Box box;
 	enum AnimationState state;//0 right, 1 left, 2 up, 3 down
 	UBYTE img_index; //for animations with more than one frame
@@ -33,75 +52,9 @@ struct PLAYER {
 	BYTE vely;//y-velocity for jump
 	UBYTE hasJump;
 
-};
+} PLAYER;
 extern const unsigned char * song_Data[];
-unsigned char TileSprites[] =
-{
-	//PEANUT
-	//IDLE
-	  0x00,0x00,0x00,0x00,0x07,0x07,0x0F,0x0F,
-	  0x0F,0x0F,0x3F,0x3F,0xFF,0xFF,0x7E,0x7F,
-
-	  0x18,0x1F,0x7E,0x63,0xFF,0x81,0xEF,0xF9,
-	  0x9F,0xF1,0x7F,0x71,0x1F,0x1F,0x3C,0x3C,
-
-	  0x78,0x78,0xFC,0xFC,0xFC,0xFC,0xFC,0xFC,
-	  0xFC,0xFC,0xF8,0xF8,0xE0,0xF0,0xC8,0x78,
-
-	  0x00,0xF8,0x1E,0xF6,0x77,0xE9,0x37,0xEF,
-	  0x39,0xEF,0x3E,0xE6,0xF8,0xF8,0x3C,0x3C,
-	//WALK1
-	  0x00,0x00,0x00,0x00,0x03,0x03,0x07,0x07,
-	  0x07,0x07,0x1F,0x1F,0x7F,0x7F,0x3F,0x3F,
-
-	  0x0E,0x0F,0x3F,0x38,0x5F,0x70,0x7F,0x70,
-	  0x9F,0xF0,0xBF,0xFC,0x73,0x73,0x60,0x60,
-
-	  0x3C,0x3C,0x7E,0x7E,0xFE,0xFE,0xFE,0xFE,
-	  0xFE,0xFE,0xFC,0xFC,0xF0,0xF8,0x64,0xBC,
-
-	  0x00,0xFC,0xFC,0x7C,0xFA,0x0E,0xFA,0x0E,
-	  0xFC,0x7C,0x92,0x72,0xFE,0xFE,0x0C,0x0C,
-	//WALK2
-	  0x00,0x00,0x00,0x00,0x01,0x01,0x03,0x03,
-	  0x03,0x03,0x0F,0x0F,0x3F,0x3F,0x1F,0x1F,
-
-	  0x03,0x03,0x07,0x04,0x07,0x05,0x3F,0x39,
-	  0x4F,0x79,0x4F,0x79,0x3F,0x3F,0x01,0x01,
-
-	  0x1E,0x1E,0x3F,0x3F,0xFF,0xFF,0xFF,0xFF,
-	  0xFF,0xFF,0xFE,0xFE,0xF8,0xFC,0xB2,0xDE,
-
-	  0x80,0xFE,0xF0,0x7C,0xFC,0x0C,0xF4,0x1C,
-	  0xF4,0xEC,0x38,0xE8,0xF8,0xF8,0xE0,0xE0,
-	//WALK3
-	  0x00,0x00,0x00,0x00,0x03,0x03,0x07,0x07,
-	  0x07,0x07,0x1F,0x1F,0x7F,0x7F,0x3F,0x3F,
-
-	  0x0F,0x0F,0x3F,0x30,0x5F,0x70,0x5F,0x70,
-	  0xBF,0xFC,0x9F,0xF0,0x7F,0x7F,0x60,0x60,
-
-	  0x3C,0x3C,0x7E,0x7E,0xFE,0xFE,0xFE,0xFE,
-	  0xFE,0xFE,0xFC,0xFC,0xF0,0xF8,0x64,0xBC,
-
-	  0x00,0xFC,0xC4,0xFC,0xFA,0x3E,0xEA,0x3E,
-	  0xEC,0x3C,0xD2,0x72,0xFE,0xFE,0x0C,0x0C,
-	//JUMP
-	  0x00,0x00,0x00,0x00,0x07,0x07,0x0F,0x0F,
-	  0x0F,0x0F,0x3F,0x3F,0xFF,0xFF,0x7E,0x7F,
-
-	  0x18,0x1F,0x7E,0x63,0xFF,0x80,0xEF,0xF8,
-	  0x9F,0xF0,0x7F,0x71,0x3F,0x3F,0x20,0x20,
-
-	  0x78,0x78,0xFC,0xFC,0xFE,0xFE,0xFD,0xFF,
-	  0xFD,0xFF,0xFB,0xFF,0xEF,0xF1,0xCF,0x79,
-
-	  0xC6,0x7A,0x1C,0xF4,0xF8,0xE8,0xB8,0xE8,
-	  0xBA,0xEA,0x7E,0xFE,0x8C,0x8C,0x00,0x00
-
-
-
-};
+extern unsigned char TilePeanut[];
 unsigned char TileBackground[] =
 {
 		//Background
@@ -145,25 +98,34 @@ Box box1[BOX1LENGTH] =
 	{56U,112U, 32U,8U}
 };
 
-UBYTE SpriteTileMap[] =
+UBYTE PeanutTileMap[] =
 {
 		//Peanut idle
-	0,2,1,3,
+	0U, 2U, 1U, 3U,
 	//Peanut walk
-	4,6,5,7,
-	8,10,9,11,
-	12,14,13,15,
-	8,10,9,11,
+	4U, 6U, 5U, 7U,
+	8U, 10U,9U, 11U,
+	12U,14U,13U,15U,
+	8U, 10U,9U, 11U,
 	//Peanut jump
-	16,18,17,19,
+	16U,18U,17U,19U,
+	//Peanut crouch
+	20U,22U,21U,23U,
+	24U,26U,25U,27U,
+	28U,30U,29U,31U,
+	24U,26U,25U,27U,
+
 
 
 };
 
 UBYTE keys;
 UBYTE finish;
-struct PLAYER player;
+PLAYER player;
 
+Level levels[] = {
+		{(void*)init_lvl1, (void*)manage_physics_lvl1}
+};
 
 void manage_input() NONBANKED
 {
@@ -183,11 +145,21 @@ void manage_input() NONBANKED
 		player.hasJump = 0U;
 	}
 
-	if( keys & J_B)
+	if(player.state != JUMP)
 	{
-		//gbt_play(song_Data, 2, 7);
-		//gbt_loop(0);
+		if (keys & J_B)
+		{
+			player.state = CROUCH;
+
+
+		}
+		else
+		{
+			player.state = IDLE;
+		}
 	}
+
+
 
 	if (keys & J_LEFT)
 	{
@@ -199,11 +171,15 @@ void manage_input() NONBANKED
 			{
 				player.state = WALK;
 			}
+			if(player.state == CROUCH)
+			{
+				player.state = CROUCHWALK;
+			}
 		}
 	}
 	else if (keys & J_RIGHT)
 	{
-		if(player.box.x != 160U)
+		if(player.box.x != 160U-PLAYER_SIZE)
 		{
 			player.box.x++;
 			player.dir = 1;
@@ -211,13 +187,27 @@ void manage_input() NONBANKED
 			{
 				player.state = WALK;
 			}
+			if(player.state == CROUCH)
+			{
+				player.state = CROUCHWALK;
+			}
 		}
 	}
 	else
 	{
-		if(player.state != JUMP)
+		if(player.state == JUMP)
+		{
+			player.img_index = 0;
+		}
+		if(player.state == WALK)
 		{
 			player.state = IDLE;
+			player.timer = 0;
+			player.img_index = 0;
+		}
+		if(player.state == CROUCHWALK)
+		{
+			player.state = CROUCH;
 			player.timer = 0;
 			player.img_index = 0;
 		}
@@ -227,8 +217,14 @@ void manage_input() NONBANKED
 		finish = 1;
 	}
 }
-
-void set_sprite() NONBANKED
+char checkCollision(Box* a, Box* b) NONBANKED
+{
+	return !(b->x > a->x+a->w ||
+			b->x+b->w < a->x ||
+			b->y < a->y-a->h ||
+			b->y-b->h > a->y);
+}
+void set_sprites() NONBANKED
 {
 	UBYTE i;
 	UBYTE origin_index;
@@ -244,10 +240,17 @@ void set_sprite() NONBANKED
 	{
 		origin_index = 20U;
 	}
-
+	else if(player.state == CROUCH)
+	{
+		origin_index = 24U;
+	}
+	else if(player.state == CROUCHWALK)
+	{
+		origin_index = (player.img_index+6U)*4U;
+	}
 	for (i = origin_index; i != origin_index+4; i++)
 	{
-		set_sprite_tile( i-origin_index, SpriteTileMap[i] );
+		set_sprite_tile( i-origin_index, PeanutTileMap[i] );
 	}
 
 	if(player.dir == 1)
@@ -278,7 +281,7 @@ void set_sprite() NONBANKED
 }
 void manage_animation() NONBANKED
 {
-	if(player.state == WALK)
+	if(player.state == WALK || player.state == CROUCHWALK)
 	{
 		player.timer++;
 		if(player.timer == 5)
@@ -324,6 +327,8 @@ void manage_physics() NONBANKED
 				{
 					player.box.y = box1[i].y-box1[i].h;
 					player.state = IDLE;
+					player.timer = 0U;
+					player.img_index = 0U;
 					return;
 				}
 				else
@@ -342,10 +347,12 @@ void manage_physics() NONBANKED
 		{
 			player.box.y = 144U-GROUND_HEIGHT;
 			player.state = IDLE;
+			player.timer = 0U;
+			player.img_index = 0U;
 			return;
 		}
 	}
-	else if(player.state == IDLE || player.state == WALK)
+	else if(player.state == IDLE || player.state == WALK || player.state == CROUCH || player.state == CROUCHWALK)
 	{
 		UBYTE foot;
 		Box tmp_box;
@@ -382,7 +389,7 @@ void game_screen() NONBANKED
 		manage_input();
 		manage_animation();
 		manage_physics();
-		set_sprite();
+		set_sprites();
 
 		gbt_update();
 		tick_sound();
@@ -405,7 +412,7 @@ void init_screen() NONBANKED
 	DISPLAY_OFF;
 	init_sounds();
 
-	set_sprite_data( 0, 20, TileSprites);
+	set_sprite_data( 0U, 36U, TilePeanut);
 
 
 	set_bkg_data(0, 2, TileBackground);
@@ -431,7 +438,12 @@ void init_screen() NONBANKED
 	player.timer = 0;//for animation purpose and physics
 	player.vely = 0;
 	player.hasJump = 0U;
-	set_sprite();
+	set_sprites();
+
+}
+
+void init_level()
+{
 
 }
 
