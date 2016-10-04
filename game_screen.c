@@ -81,22 +81,25 @@ void manage_input() NONBANKED
 		}
 		if (keys & J_B)
 		{
-			if(player.state != JUMP)
+			if(player.state != JUMPCLIMB && player.state != CLIMB && player.state != CLIMBWALK)
 			{
+				if(player.state != JUMP)
+				{
 
-				if(player.state != WALK)
-					player.state = CROUCH;
+					if(player.state != WALK)
+						player.state = CROUCH;
+					else
+					{
+						player.timer = 0U;
+						player.img_index = 0U;
+						player.state = CROUCHWALK;
+					}
+				}
 				else
 				{
-					player.timer = 0U;
+					player.state = JUMPCLIMB;
 					player.img_index = 0U;
-					player.state = CROUCHWALK;
 				}
-			}
-			else
-			{
-				player.state = JUMPCLIMB;
-				player.img_index = 0U;
 			}
 		}
 		else
@@ -104,6 +107,12 @@ void manage_input() NONBANKED
 			if(player.state == JUMPCLIMB || player.state == CLIMB)
 			{
 				player.state = JUMP;
+				player.vely = 1U;
+
+			}
+			else if(player.state == CROUCH)
+			{
+				player.state = IDLE;
 			}
 		}
 
@@ -111,7 +120,9 @@ void manage_input() NONBANKED
 
 		if (keys & J_LEFT)
 		{
-			if(player.box.x != 0U)
+			if(player.state != CLIMB && player.state != CLIMBWALK)
+			{
+			if(player.box.x != 8U)
 			{
 
 
@@ -127,12 +138,14 @@ void manage_input() NONBANKED
 				{
 					player.box.x--;
 				}
-				player.dir = -1;
-			}
+				player.dirX = -1;
+			}}
 		}
 		else if (keys & J_RIGHT)
 		{
-			if(player.box.x != 160U-PLAYER_SIZE)
+			if(player.state != CLIMB && player.state != CLIMBWALK)
+						{
+			if(player.box.x != 160U-PLAYER_SIZE-8U)
 			{
 
 				if(player.state == IDLE)
@@ -147,8 +160,8 @@ void manage_input() NONBANKED
 				{
 					player.box.x++;
 				}
-				player.dir = 1;
-			}
+				player.dirX = 1;
+			}}
 		}
 		else
 		{
@@ -174,6 +187,30 @@ void manage_input() NONBANKED
 				player.img_index = 0;
 			}
 		}
+		if (keys & J_DOWN)
+		{
+			if(player.state == CLIMB)
+			{
+				player.dirY = 1;
+				player.state = CLIMBWALK;
+			}
+		}
+		else if(keys & J_UP)
+		{
+			if(player.state == CLIMB)
+			{
+				player.dirY = -1;
+				player.state = CLIMBWALK;
+			}
+		}
+		else
+		{
+			if(player.state == CLIMBWALK)
+			{
+				player.state = CLIMB;
+			}
+		}
+
 		if (keys & J_START)
 		{
 			//finish = 1;
@@ -191,7 +228,7 @@ void set_sprites() NONBANKED
 	}
 	else if(player.state == WALK)
 	{
-		origin_index = (player.img_index+1U)*4U;
+		origin_index = (player.img_index+1U)<<2U;
 	}
 	else if(player.state == JUMP)
 	{
@@ -203,19 +240,19 @@ void set_sprites() NONBANKED
 	}
 	else if(player.state == CROUCHWALK)
 	{
-		origin_index = (player.img_index+6U)*4U;
+		origin_index = (player.img_index+6U)<<2U;
 	}
 	else if(player.state == CROUCHTRANSITIONIN)
 	{
-		origin_index = (player.img_index+8U)*4U;
+		origin_index = (player.img_index+8U)<<2U;
 	}
 	else if(player.state == CROUCHTRANSITIONOUT)
 	{
-		origin_index = (player.img_index+12U)*4U;
+		origin_index = (player.img_index+12U)<<2U;
 	}
 	else if(player.state == CLIMB || player.state == CLIMBWALK)
 	{
-		origin_index = (player.img_index+16U)*4;
+		origin_index = (player.img_index+16U)<<2U;
 	}
 	else if(player.state == JUMPCLIMB)
 	{
@@ -225,28 +262,79 @@ void set_sprites() NONBANKED
 	{
 		set_sprite_tile( i-origin_index, PeanutTileMap[i] );
 	}
-	if(player.dir == 1)
+	if(player.state != CLIMB && player.state != CLIMBWALK)
 	{
-		for(i = 0;i!=4;i++)
+		if(player.dirX == 1)
 		{
-			set_sprite_prop(i,0x00U);
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,0x00U);
+			}
+			move_sprite( 0, player.box.x+8U,    player.box.y );
+			move_sprite( 1, player.box.x+16U,   player.box.y );
+			move_sprite( 2, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 3, player.box.x+16U,   player.box.y+8 );
 		}
-		move_sprite( 0, player.box.x+8U,    player.box.y );
-		move_sprite( 1, player.box.x+16U,   player.box.y );
-		move_sprite( 2, player.box.x+8U,    player.box.y+8 );
-		move_sprite( 3, player.box.x+16U,   player.box.y+8 );
-	}
-	else if(player.dir == -1)
-	{
-		for(i = 0;i!=4;i++)
+		else if(player.dirX == -1)
 		{
-			set_sprite_prop(i,S_FLIPX);
-		}
-		move_sprite( 1, player.box.x+8U,    player.box.y );
-		move_sprite( 0, player.box.x+16U,   player.box.y );
-		move_sprite( 3, player.box.x+8U,    player.box.y+8 );
-		move_sprite( 2, player.box.x+16U,   player.box.y+8 );
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPX);
+			}
+			move_sprite( 1, player.box.x+8U,    player.box.y );
+			move_sprite( 0, player.box.x+16U,   player.box.y );
+			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
 
+		}
+	}
+	else
+	{
+		if(player.dirY == 1 && player.dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPY);
+			}
+			move_sprite( 2, player.box.x+8U,    player.box.y );
+			move_sprite( 3, player.box.x+16U,   player.box.y );
+			move_sprite( 0, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 1, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == -1&& player.dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,0x00U);
+			}
+			move_sprite( 0, player.box.x+8U,    player.box.y );
+			move_sprite( 1, player.box.x+16U,   player.box.y );
+			move_sprite( 2, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 3, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == -1&& player.dirX == -1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPX);
+			}
+			move_sprite( 1, player.box.x+8U,    player.box.y );
+			move_sprite( 0, player.box.x+16U,   player.box.y );
+			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == 1 && player.dirX == -1)
+		{
+			move_sprite( 3, player.box.x+8U,    player.box.y );
+			move_sprite( 2, player.box.x+16U,   player.box.y );
+			move_sprite( 1, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 0, player.box.x+16U,   player.box.y+8 );
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i, S_FLIPX|S_FLIPY);
+			}
+
+		}
 	}
 
 
@@ -258,7 +346,7 @@ void manage_animation() NONBANKED
 		player.timer++;
 		if(player.booleanState & TRANSITIONNING && player.timer % 2U == 1)
 		{
-			player.box.x += player.dir;
+			player.box.x += player.dirX;
 		}
 
 		if(player.timer == 5U)
@@ -288,7 +376,7 @@ void manage_animation() NONBANKED
 
 
 	}
-	else if(player.state == CROUCHWALK)
+	else if(player.state == CROUCHWALK || player.state == CLIMBWALK)
 	{
 		player.timer++;
 		if(player.timer == 5U)
@@ -303,7 +391,7 @@ void manage_animation() NONBANKED
 void manage_physics() NONBANKED
 {
 	UBYTE i;
-	Box tmp_box;
+
 	if(player.state == JUMP || player.state == JUMPCLIMB)
 	{
 		player.timer ++;
@@ -341,7 +429,12 @@ void manage_physics() NONBANKED
 
 
 		}
-
+		if(player.box.y < 8U+PLAYER_SIZE)
+		{
+			player.box.y = 8U+PLAYER_SIZE;
+			if(player.vely < 0U)
+				player.vely = 1;
+		}
 
 		if(player.box.y > 144U-GROUND_HEIGHT-1U)
 		{
@@ -351,11 +444,35 @@ void manage_physics() NONBANKED
 			player.img_index = 0U;
 			return;
 		}
+
+		if(player.state == JUMPCLIMB)
+			{
+
+				if(player.dirX == 1)
+				{
+					if(player.box.x+player.box.w >= 160U-8U)
+					{
+						player.state = CLIMB;
+						player.timer = 0;
+						player.img_index = 0;
+					}
+
+				}
+				else if(player.dirX == -1)
+				{
+					if(player.box.x <= 8U)
+					{
+						player.state = CLIMB;
+						player.timer = 0;
+						player.img_index = 0;
+					}
+				}
+			}
 	}
 	else if(player.state == IDLE || player.state == WALK || player.state == CROUCH || player.state == CROUCHWALK)
 	{
 		UBYTE foot;
-
+		Box tmp_box;
 		tmp_box.x = player.box.x;
 		tmp_box.y = player.box.y+1;
 		tmp_box.w = player.box.w;
@@ -375,28 +492,31 @@ void manage_physics() NONBANKED
 			if(player.vely < 0U)
 				player.vely = 1;
 		}
-	} else if(player.state == JUMPCLIMB)
+	}
+	else if(player.state == CLIMBWALK)
 	{
-		tmp_box.x = (BYTE)player.box.x+player.dir;
-		tmp_box.y = player.box.y;
+		UBYTE contact;
+		Box tmp_box;
+		tmp_box.x = player.box.x;
+		tmp_box.y = player.box.y+player.dirY;
 		tmp_box.w = player.box.w;
 		tmp_box.h = player.box.h;
-		if(player.dir == 1)
+		contact = 0;
+		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
 		{
-			if(tmp_box.x+tmp_box.w > 160U-8U)
+			if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) || player.box.y == 144U-GROUND_HEIGHT)
 			{
-				player.state = CLIMB;
+				contact++;
 			}
 
 		}
-		else if(player.dir == -1)
+		if(contact == 0)
 		{
-			if(tmp_box.x < 8U)
-			{
-				player.state = CLIMB;
-			}
+			player.box.y += player.dirY;
 		}
+
 	}
+
 	if(currentLvl ==LEVEL1)
 	{
 		manage_physics_lvl1(&player);
@@ -470,7 +590,7 @@ void init_screen() NONBANKED
 	HIDE_WIN;
 	DISPLAY_OFF;
 	init_sounds();
-	set_sprite_data( 0U, 0x40U, TilePeanut);
+	set_sprite_data( 0U, 0x4cU, TilePeanut);
 
 
 	set_bkg_data(0, 1, TileWhite);
@@ -498,7 +618,7 @@ void init_screen() NONBANKED
 	player.box.y = 144U-GROUND_HEIGHT;
 	player.box.w = PLAYER_SIZE;
 	player.box.h = PLAYER_SIZE;
-	player.dir = 1;
+	player.dirX = 1;
 	player.img_index = 0;
 	player.state = IDLE;
 	player.timer = 0;//for animation purpose and physics

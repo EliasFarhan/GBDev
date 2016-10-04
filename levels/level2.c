@@ -48,7 +48,7 @@ void init_lvl2()
 }
 void manage_physics_lvl2(PLAYER* player)
 {
-	if(player->box.x > 136U && player->state == CROUCHWALK)
+	if(player->box.x >= 136U && player->state == CROUCHWALK)
 		{
 
 			player->newX = 0U;

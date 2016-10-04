@@ -34,7 +34,8 @@ typedef struct{
 	Box box;
 	enum AnimationState state;//0 right, 1 left, 2 up, 3 down
 	UBYTE img_index; //for animations with more than one frame
-	BYTE dir; //for walk and jump
+	BYTE dirX; //for walk and jump
+	BYTE dirY;
 	UBYTE timer; //for animations
 	UBYTE booleanState;//JUMP TRANSITIONNING
 	BYTE vely;//y-velocity for jump
