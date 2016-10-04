@@ -26,6 +26,9 @@ enum AnimationState
 	CROUCHWALK,
 	CROUCHTRANSITIONIN,
 	CROUCHTRANSITIONOUT,
+	CLIMB,
+	CLIMBWALK,
+	JUMPCLIMB
 };
 typedef struct{
 	Box box;

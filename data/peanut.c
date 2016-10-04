@@ -256,7 +256,13 @@ UBYTE PeanutTileMap[] =
 	56U, 58U, 57U, 59U,
 	52U, 54U, 53U, 55U,
 	48U, 50U, 49U, 51U,
-	60U, 61U, 62U, 63U,
+	60U, 62U, 61U, 63U,
+	//Peanut climb
+	32U, 34U, 33U, 35U,
+	36U, 38U, 37U, 39U,
+	//Peanut Jump climb
+	64U, 66U, 65U, 67U,
+
 
 };
 /* End of PEANUT.C */

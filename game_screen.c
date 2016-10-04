@@ -79,11 +79,11 @@ void manage_input() NONBANKED
 		}else{
 			player.booleanState = player.booleanState & ~HASJUMP;
 		}
-
-		if(player.state != JUMP)
+		if (keys & J_B)
 		{
-			if (keys & J_B)
+			if(player.state != JUMP)
 			{
+
 				if(player.state != WALK)
 					player.state = CROUCH;
 				else
@@ -92,12 +92,18 @@ void manage_input() NONBANKED
 					player.img_index = 0U;
 					player.state = CROUCHWALK;
 				}
-
-
 			}
 			else
 			{
-				player.state = IDLE;
+				player.state = JUMPCLIMB;
+				player.img_index = 0U;
+			}
+		}
+		else
+		{
+			if(player.state == JUMPCLIMB || player.state == CLIMB)
+			{
+				player.state = JUMP;
 			}
 		}
 
@@ -207,6 +213,14 @@ void set_sprites() NONBANKED
 	{
 		origin_index = (player.img_index+12U)*4U;
 	}
+	else if(player.state == CLIMB || player.state == CLIMBWALK)
+	{
+		origin_index = (player.img_index+16U)*4;
+	}
+	else if(player.state == JUMPCLIMB)
+	{
+		origin_index = 72U;
+	}
 	for (i = origin_index; i != origin_index+4; i++)
 	{
 		set_sprite_tile( i-origin_index, PeanutTileMap[i] );
@@ -289,7 +303,8 @@ void manage_animation() NONBANKED
 void manage_physics() NONBANKED
 {
 	UBYTE i;
-	if(player.state == JUMP)
+	Box tmp_box;
+	if(player.state == JUMP || player.state == JUMPCLIMB)
 	{
 		player.timer ++;
 		if(player.timer == 5U)
@@ -340,7 +355,7 @@ void manage_physics() NONBANKED
 	else if(player.state == IDLE || player.state == WALK || player.state == CROUCH || player.state == CROUCHWALK)
 	{
 		UBYTE foot;
-		Box tmp_box;
+
 		tmp_box.x = player.box.x;
 		tmp_box.y = player.box.y+1;
 		tmp_box.w = player.box.w;
@@ -359,6 +374,27 @@ void manage_physics() NONBANKED
 			player.state = JUMP;
 			if(player.vely < 0U)
 				player.vely = 1;
+		}
+	} else if(player.state == JUMPCLIMB)
+	{
+		tmp_box.x = (BYTE)player.box.x+player.dir;
+		tmp_box.y = player.box.y;
+		tmp_box.w = player.box.w;
+		tmp_box.h = player.box.h;
+		if(player.dir == 1)
+		{
+			if(tmp_box.x+tmp_box.w > 160U-8U)
+			{
+				player.state = CLIMB;
+			}
+
+		}
+		else if(player.dir == -1)
+		{
+			if(tmp_box.x < 8U)
+			{
+				player.state = CLIMB;
+			}
 		}
 	}
 	if(currentLvl ==LEVEL1)
