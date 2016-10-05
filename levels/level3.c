@@ -46,14 +46,17 @@ void init_lvl3()
 }
 void manage_physics_lvl3(PLAYER* player)
 {
-	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y >= 144U-8U-8U && ((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP) )
+	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y >= 144U-8U-8U )
+
 	{
-
-		player->box.x = 8U;
-		player->box.y = 8U+PLAYER_SIZE;
-
-		switch_to_level(LEVEL2);
-
+		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
+		{
+			player->box.x = 8U;
+			player->box.y = 8U+PLAYER_SIZE;
+			if(player->state == IDLE)
+				player->state = JUMP;
+			switch_to_level(LEVEL2);
+		}
 	}
 }
 

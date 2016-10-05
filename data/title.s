@@ -1,4 +1,4 @@
-.area _CODE_4
+.area _CODE_3
 
 .globl _cEMPTY
 .dw _cEMPTY

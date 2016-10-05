@@ -7,16 +7,14 @@
 
 void main()
 {
-	ENABLE_RAM_MBC1;
-	//kwakwa_screen();
-	//DISPLAY_OFF;
-	//disable_APA();
+	kwakwa_screen();
+	disable_APA();
 
 	while(1)
 	{
-		//title_screen();
-		//DISPLAY_OFF;
-		//disable_APA();
+		title_screen();
+
+		disable_APA();
 
 		game_screen();
 	}

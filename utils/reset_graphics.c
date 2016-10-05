@@ -5,7 +5,7 @@ void empty_screen (void)
 {
 	UBYTE temp1;
 
-	//DISPLAY_OFF;
+	DISPLAY_OFF;
 	HIDE_BKG;
 	HIDE_SPRITES;
 	

@@ -18,7 +18,40 @@
 //include all the levels
 
 
+UBYTE PeanutTileMap[] =
+{
+		//Peanut idle 0
+	0U, 2U, 1U, 3U,
+	//Peanut walk 1|4
+	4U, 6U, 5U, 7U,
+	8U, 10U,9U, 11U,
+	12U,14U,13U,15U,
+	8U, 10U,9U, 11U,
+	//Peanut jump 5|20
+	16U,18U,17U,19U,
+	//Peanut crouch 6|24
+	20U,22U,21U,23U,
+	24U,26U,25U,27U,
+	//28U,30U,29U,31U,
+	//24U,26U,25U,27U,
+	//Peanut transtition crouch in 8|32
+	44U, 46U, 45U, 47U,
+	48U, 50U, 49U, 51U,
+	52U, 54U, 53U, 55U,
+	56U, 58U, 57U, 59U,
+	//Peanut transition crouch out 12|48
+	56U, 58U, 57U, 59U,
+	52U, 54U, 53U, 55U,
+	48U, 50U, 49U, 51U,
+	60U, 62U, 61U, 63U,
+	//Peanut climb
+	32U, 34U, 33U, 35U,
+	36U, 38U, 37U, 39U,
+	//Peanut Jump climb
+	64U, 66U, 65U, 67U,
 
+
+};
 
 #define GROUND_HEIGHT 8U
 
@@ -48,7 +81,7 @@ Level* levels[6] = {
 
 LEVELID currentLvl;
 
-extern unsigned char TilePeanut[];
+extern unsigned char tile_peanut[];
 extern unsigned char TileWhiteFur[];
 extern unsigned char TileSeagull[];
 extern unsigned char TileEnvironment[];
@@ -399,12 +432,88 @@ void manage_animation() NONBANKED
 		}
 	}
 }
+void manage_level_physics() NONBANKED
+{
+	if(currentLvl == LEVEL1)
+	{
+		manage_physics_lvl1(&player);
+
+	} else if(currentLvl == LEVEL2)
+	{
+		manage_physics_lvl2(&player);
+
+	}else if(currentLvl == LEVEL3)
+	{
+		manage_physics_lvl3(&player);
+
+	}
+}
+
+Box tmp_box;
+
+void manage_static_physics() NONBANKED
+{
+	UBYTE contact;
+	UBYTE i;
+	tmp_box.x = player.box.x;
+			tmp_box.y = player.box.y+1;
+			tmp_box.w = player.box.w;
+			tmp_box.h = player.box.h;
+			contact = 0;
+			for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+			{
+				if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) || player.box.y == 144U-GROUND_HEIGHT)
+				{
+					contact++;
+				}
+
+			}
+			if(contact == 0)
+			{
+				player.state = JUMP;
+				if(player.vely < 0U)
+					player.vely = 1;
+			}
+			//Check if there is a box in front of us
+			tmp_box.x = player.box.x+player.dirX;
+			tmp_box.y = player.box.y;
+			contact = 0;
+			for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+			{
+				if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])))
+				{
+					contact++;
+				}
+
+			}
+			if(contact != 0)
+			{
+				if(player.state == WALK)
+				{
+					player.state = IDLE;
+				}
+				else if(player.state == CROUCHWALK)
+				{
+					player.state = CROUCH;
+				}
+			}
+			else
+			{
+				if(player.state == WALK || player.state == CROUCHWALK)
+				{
+					if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
+					{
+						player.box.x+=player.dirX;
+					}
+				}
+			}
+}
 
 void manage_physics() NONBANKED
 {
 	UBYTE i;
 	UBYTE contact;
-	Box tmp_box;
+
 	if(player.state == JUMP || player.state == JUMPCLIMB)
 	{
 		player.timer ++;
@@ -433,12 +542,12 @@ void manage_physics() NONBANKED
 				}
 				else
 				{
-					if(player.box.x+PLAYER_SIZE == levels[currentLvl]->boxes[i].x)
+					if(player.box.x+PLAYER_SIZE == levels[currentLvl]->boxes[i].x+1U)
 					{
-						player.box.x = levels[currentLvl]->boxes[i].x-PLAYER_SIZE-1U;
-					}else if( player.box.x == levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w)
+						player.box.x = levels[currentLvl]->boxes[i].x-PLAYER_SIZE;
+					}else if( player.box.x == levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-1U)
 					{
-						player.box.x = levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w+1U;
+						player.box.x = levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w;
 					}
 					else
 					{
@@ -495,64 +604,12 @@ void manage_physics() NONBANKED
 	}
 	else if(player.state == IDLE || player.state == WALK || player.state == CROUCH || player.state == CROUCHWALK)
 	{
+		manage_static_physics();
 
-		tmp_box.x = player.box.x;
-		tmp_box.y = player.box.y+1;
-		tmp_box.w = player.box.w;
-		tmp_box.h = player.box.h;
-		contact = 0;
-		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
-		{
-			if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) || player.box.y == 144U-GROUND_HEIGHT)
-			{
-				contact++;
-			}
-
-		}
-		if(contact == 0)
-		{
-			player.state = JUMP;
-			if(player.vely < 0U)
-				player.vely = 1;
-		}
-		//Check if there is a box in front of us
-		tmp_box.x = player.box.x+player.dirX;
-		tmp_box.y = player.box.y;
-		contact = 0;
-		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
-		{
-			if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])))
-			{
-				contact++;
-			}
-
-		}
-		if(contact != 0)
-		{
-			if(player.state == WALK)
-			{
-				player.state = IDLE;
-			}
-			else if(player.state == CROUCHWALK)
-			{
-				player.state = CROUCH;
-			}
-		}
-		else
-		{
-			if(player.state == WALK || player.state == CROUCHWALK)
-			{
-				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
-				{
-					player.box.x+=player.dirX;
-				}
-			}
-		}
 	}
 	else if(player.state == CLIMBWALK)
 	{
-		UBYTE contact;
-		Box tmp_box;
+
 		tmp_box.x = player.box.x;
 		tmp_box.y = player.box.y+player.dirY;
 		tmp_box.w = player.box.w;
@@ -570,24 +627,10 @@ void manage_physics() NONBANKED
 		{
 			player.box.y += player.dirY;
 		}
-
 	}
-
-	if(currentLvl == LEVEL1)
-	{
-		manage_physics_lvl1(&player);
-
-	} else if(currentLvl == LEVEL2)
-	{
-		manage_physics_lvl2(&player);
-
-	}else if(currentLvl == LEVEL3)
-	{
-		manage_physics_lvl3(&player);
-
-	}
-
+	manage_level_physics();
 }
+
 void switch_to_level(LEVELID levelID) NONBANKED
 {
 	UBYTE i,j;
@@ -599,6 +642,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	HIDE_SPRITES;
 	HIDE_WIN;
 	DISPLAY_OFF;
+	ENABLE_RAM_MBC1;
 
 	for(i = 0; i != 18; i++)
 	{
@@ -652,7 +696,9 @@ void init_screen() NONBANKED
 	init_sounds();
 	gbt_play(song_Data, 0x02U, 0x01U);
 	gbt_loop(0x00U);
-	set_sprite_data( 0U, 0x4cU, TilePeanut);
+	ENABLE_RAM_MBC1;
+	SWITCH_ROM_MBC1(1);
+	set_sprite_data( 0U, 0x4cU, tile_peanut);
 	set_sprite_data( 0x4cU, 0x8U, TileWhiteFur);
 	set_sprite_data(0x4cU+0x8U, 0x10U, TileSeagull);
 
