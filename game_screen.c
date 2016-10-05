@@ -19,7 +19,7 @@
 
 
 
-#define PLAYER_SIZE 16U
+
 #define GROUND_HEIGHT 8U
 
 
@@ -66,7 +66,7 @@ void manage_input() NONBANKED
 	{
 		if(keys & J_A)
 		{
-			if((!player.booleanState & HASJUMP) && player.state != JUMP)
+			if((!player.booleanState & HASJUMP) && player.state != JUMP && player.state != CLIMB && player.state != CLIMBWALK)
 			{
 				player.state = JUMP;
 				player.timer = 0;
@@ -104,7 +104,7 @@ void manage_input() NONBANKED
 		}
 		else
 		{
-			if(player.state == JUMPCLIMB || player.state == CLIMB)
+			if(player.state == JUMPCLIMB || player.state == CLIMB || player.state == CLIMBWALK)
 			{
 				player.state = JUMP;
 				player.vely = 1U;
@@ -258,6 +258,8 @@ void set_sprites() NONBANKED
 	{
 		origin_index = 72U;
 	}
+
+
 	for (i = origin_index; i != origin_index+4; i++)
 	{
 		set_sprite_tile( i-origin_index, PeanutTileMap[i] );
@@ -362,6 +364,8 @@ void manage_animation() NONBANKED
 				player.state = CROUCHTRANSITIONOUT;
 				player.box.x = player.newX;
 				player.box.y = player.newY;
+				player.timer = 0;
+				player.img_index = 0;
 				switch_to_level(player.nextLevel);
 			}
 			else if(player.state == CROUCHTRANSITIONOUT)
@@ -453,6 +457,7 @@ void manage_physics() NONBANKED
 					if(player.box.x+player.box.w >= 160U-8U)
 					{
 						player.state = CLIMB;
+						player.dirY = -1;
 						player.timer = 0;
 						player.img_index = 0;
 					}
@@ -463,6 +468,7 @@ void manage_physics() NONBANKED
 					if(player.box.x <= 8U)
 					{
 						player.state = CLIMB;
+						player.dirY = -1;
 						player.timer = 0;
 						player.img_index = 0;
 					}

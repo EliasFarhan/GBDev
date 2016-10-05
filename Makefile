@@ -3,8 +3,8 @@ CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 BINS	= main.gb
 BONUS = kwakwa.o title_screen.o kwakwa_screen.o title.o
 SOURCE =  main.o  box_collision.o sound.o game_screen.o #music_output.o gbt_player.o gbt_player_bank1.o
-ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o
-LVLS = levels/level1.o levels/level2.o
+ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o
+LVLS = levels/level1.o levels/level2.o levels/level3.o
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BINS) 
 

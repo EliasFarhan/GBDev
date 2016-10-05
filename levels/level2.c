@@ -9,20 +9,17 @@
 #include <stdlib.h>
 #include "../game_screen.h"
 
-#define BOX2LENGTH 4
+#define BOX2LENGTH 1
 
 size_t boxes_lvl2_length = BOX2LENGTH;
 
 const Box box_lvl2[BOX2LENGTH] =
 {
-	{16U,16U, 32U,8U },
-	{72U,64U, 32U,16U},
-	{8U, 88U, 32U,8U },
-	{56U,112U,32U,8U }
+		{56U,80U, 32U, 32U}
 };
 const unsigned char Lvl2TileMap[] =
 {
-6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
@@ -48,10 +45,10 @@ void init_lvl2()
 }
 void manage_physics_lvl2(PLAYER* player)
 {
-	if(player->box.x >= 136U && player->state == CROUCHWALK)
+	if(player->box.x >= 136U && player->box.y == 144U-8U && player->state == CROUCHWALK)
 		{
 
-			player->newX = 0U;
+			player->newX = 0x00U;
 			player->booleanState = player->booleanState | TRANSITIONNING;
 			player->state = CROUCHTRANSITIONIN;
 			player->timer = 0;

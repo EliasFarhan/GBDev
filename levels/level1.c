@@ -51,10 +51,10 @@ void init_lvl1()
 
 void manage_physics_lvl1(PLAYER* player)
 {
-	if(player->box.x <= 8U && player->state == CROUCHWALK)
+	if(player->box.x <= 8U && player->box.y == 144U-8U && player->state == CROUCHWALK)
 	{
 
-		player->newX = 152U-8U;
+		player->newX = 160U-PLAYER_SIZE;
 		player->booleanState = player->booleanState | TRANSITIONNING;
 		player->state = CROUCHTRANSITIONIN;
 		player->timer = 0;
