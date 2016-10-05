@@ -7,9 +7,15 @@
 #define HASJUMP 0x01
 #define TRANSITIONNING 0x04
 #define PLAYER_SIZE 16U
+
 typedef enum {
 	LEVEL1 = 0U,
-	LEVEL2 = 1U
+	LEVEL2 = 1U,
+	LEVEL3 = 2U,
+	LEVEL4 = 3U,
+	LEVEL5 = 4U,
+	LEVEL6 = 5U,
+	NOLEVEL,
 } LEVELID;
 typedef struct
 {
@@ -29,7 +35,8 @@ enum AnimationState
 	CROUCHTRANSITIONOUT,
 	CLIMB,
 	CLIMBWALK,
-	JUMPCLIMB
+	JUMPCLIMB,
+	DEAD
 };
 typedef struct{
 	Box box;
@@ -45,6 +52,15 @@ typedef struct{
 	UBYTE newY;
 
 } PLAYER;
+typedef struct
+{
+	Box box;
+	BYTE dirX;
+	UBYTE img_index;
+	UBYTE timer;
+	UBYTE maxX;
+	UBYTE minX;
+} SEAGULL;
 typedef struct
 {
 	Box* boxes;

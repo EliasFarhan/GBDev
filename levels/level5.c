@@ -9,18 +9,17 @@
 #include <stdlib.h>
 #include "../game_screen.h"
 
-#define BOX2LENGTH 1
+#define BOX5LENGTH 1
 
-size_t boxes_lvl2_length = BOX2LENGTH;
+size_t boxes_lvl5_length = BOX5LENGTH;
 
-const Box box_lvl2[BOX2LENGTH] =
+const Box box_lvl5[BOX5LENGTH] =
 {
 		{56U,80U, 32U, 32U}
-
 };
-const unsigned char Lvl2TileMap[] =
+const unsigned char Lvl5TileMap[] =
 {
-6,12,14,12,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
@@ -37,41 +36,30 @@ const unsigned char Lvl2TileMap[] =
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
-6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+6,11,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 };
 
-void init_lvl2()
+void init_lvl5()
 {
 
 }
-void manage_physics_lvl2(PLAYER* player)
+void manage_physics_lvl5(PLAYER* player)
 {
+	if(player->box.x == 8U && player->box.y == 136U && player->state == CROUCHWALK)
+		{
 
-	if(player->box.x == 136U && player->box.y == 136U && player->state == CROUCHWALK)
-	{
+			player->newX = 8U;
+			player->newY = 8U+PLAYER_SIZE;
 
-		player->newX = 0U;
-		player->newY = 136U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+			switch_to_level(LEVEL2);
 
-		player->nextLevel = LEVEL1;
-
-	}
-	else if(player->box.x == 8U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
-	{
-		player->box.x = 8U;
-		player->box.y = 135U;
-		switch_to_level(LEVEL3);
-	}
+		}
 }
 
-Level lvl2 = {
-		box_lvl2,
-		boxes_lvl2_length,
-		Lvl2TileMap,
+Level lvl5 = {
+		box_lvl5,
+		boxes_lvl5_length,
+		Lvl5TileMap,
 
 };
 

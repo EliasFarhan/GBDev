@@ -1,16 +1,16 @@
 /*
 
- WHITE_FUR.C
+ SEAGULL.H
 
- Tile Source File.
+ Include File.
 
  Info:
   Form                 : All tiles as one unit.
   Format               : Gameboy 4 color.
   Compression          : None.
   Counter              : None.
-  Tile size            : 8 x 16
-  Tiles                : 0 to 0
+  Tile size            : 16 x 16
+  Tiles                : 0 to 3
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -22,14 +22,10 @@
 
 */
 
+
+/* Bank of tiles. */
+#define TileSeagullBank 0
 /* Start of tile array. */
-unsigned char TileWhiteFur[] =
-{
-  0x36,0x36,0x3F,0x39,0x3E,0x23,0x3F,0x25,
-  0x3F,0x2B,0x7F,0x49,0xFE,0xB6,0xFE,0xC2,
+extern unsigned char TileSeagull[];
 
-  0xEE,0xB2,0x74,0x5C,0x7C,0x7C,0x7C,0x7C,
-  0x6C,0x6C,0x6E,0x6E,0x66,0x66,0xC3,0xC3
-};
-
-/* End of WHITE_FUR.C */
+/* End of SEAGULL.H */

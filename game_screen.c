@@ -9,7 +9,7 @@
 #include <gb/drawing.h>
 //#include <gb/sample.h>
 #include "game_screen.h"
-//#include "gbt_player.h"
+#include "gbt_player.h"
 #include "sound.h"
 
 #include "box_collision.h"
@@ -22,14 +22,7 @@
 
 #define GROUND_HEIGHT 8U
 
-
-
 extern unsigned char * song_Data[];
-
-
-
-
-
 extern UBYTE PeanutTileMap[];
 
 
@@ -39,15 +32,25 @@ PLAYER player;
 
 extern Level lvl1;
 extern Level lvl2;
+extern Level lvl3;
+extern Level lvl4;
+extern Level lvl5;
+extern Level lvl6;
 
-Level* levels[2] = {
+Level* levels[6] = {
 		&lvl1,
-		&lvl2
+		&lvl2,
+		&lvl3,
+		&lvl4,
+		&lvl5,
+		&lvl6
 };
 
 LEVELID currentLvl;
 
-extern unsigned char TilePeanut[] NONBANKED;
+extern unsigned char TilePeanut[];
+extern unsigned char TileWhiteFur[];
+extern unsigned char TileSeagull[];
 extern unsigned char TileEnvironment[];
 
 extern UBYTE TileEnvironmentLength;
@@ -59,6 +62,10 @@ extern UBYTE TileWhalePosterLength;
 
 void manage_physics_lvl1(PLAYER* player) NONBANKED;
 void manage_physics_lvl2(PLAYER* player) NONBANKED;
+void manage_physics_lvl3(PLAYER* player) NONBANKED;
+void manage_physics_lvl4(PLAYER* player) NONBANKED;
+void manage_physics_lvl5(PLAYER* player) NONBANKED;
+void manage_physics_lvl6(PLAYER* player) NONBANKED;
 
 void manage_input() NONBANKED
 {
@@ -122,24 +129,25 @@ void manage_input() NONBANKED
 		{
 			if(player.state != CLIMB && player.state != CLIMBWALK)
 			{
-			if(player.box.x != 8U)
-			{
+				if(player.box.x != 8U)
+				{
 
 
-				if(player.state == IDLE)
-				{
-					player.state = WALK;
+					if(player.state == IDLE)
+					{
+						player.state = WALK;
+					}
+					if(player.state == CROUCH)
+					{
+						player.state = CROUCHWALK;
+					}
+					if(player.state != WALK && player.state != CROUCHWALK)
+					{
+						player.box.x--;
+					}
+					player.dirX = -1;
 				}
-				if(player.state == CROUCH)
-				{
-					player.state = CROUCHWALK;
-				}
-				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
-				{
-					player.box.x--;
-				}
-				player.dirX = -1;
-			}}
+			}
 		}
 		else if (keys & J_RIGHT)
 		{
@@ -156,7 +164,7 @@ void manage_input() NONBANKED
 				{
 					player.state = CROUCHWALK;
 				}
-				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
+				if(player.state != WALK && player.state != CROUCHWALK)
 				{
 					player.box.x++;
 				}
@@ -364,16 +372,15 @@ void manage_animation() NONBANKED
 				player.state = CROUCHTRANSITIONOUT;
 				player.box.x = player.newX;
 				player.box.y = player.newY;
-				player.timer = 0;
-				player.img_index = 0;
 				switch_to_level(player.nextLevel);
+
 			}
 			else if(player.state == CROUCHTRANSITIONOUT)
 			{
 				player.state = IDLE;
 				player.booleanState = player.booleanState & ~TRANSITIONNING;
 			}
-			player.timer =0U;
+			player.timer = 0U;
 			player.img_index = 0U;
 		}
 
@@ -392,31 +399,32 @@ void manage_animation() NONBANKED
 		}
 	}
 }
+
 void manage_physics() NONBANKED
 {
 	UBYTE i;
-
+	UBYTE contact;
+	Box tmp_box;
 	if(player.state == JUMP || player.state == JUMPCLIMB)
 	{
 		player.timer ++;
 		if(player.timer == 5U)
 		{
 			player.vely += 1U;
-
+			if(player.vely == 4U)
+				player.vely = 3U;
 
 			player.timer = 0;
 		}
 		player.box.y += player.vely;
-
-
-
 		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
 		{
 			if(checkCollision(&(player.box), &(levels[currentLvl]->boxes[i])))
 			{
 
-				if(player.box.y<levels[currentLvl]->boxes[i].y)
+				if(player.vely > 0 && player.box.y<levels[currentLvl]->boxes[i].y+levels[currentLvl]->boxes[i].h-player.vely && (player.box.x>levels[currentLvl]->boxes[i].x+1U || player.box.x+player.box.w>levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-1U))
 				{
+
 					player.box.y = levels[currentLvl]->boxes[i].y-levels[currentLvl]->boxes[i].h;
 					player.state = IDLE;
 					player.timer = 0U;
@@ -425,9 +433,19 @@ void manage_physics() NONBANKED
 				}
 				else
 				{
-					player.box.y = levels[currentLvl]->boxes[i].y+PLAYER_SIZE;
-					if(player.vely < 0U)
-						player.vely = 1;
+					if(player.box.x+PLAYER_SIZE == levels[currentLvl]->boxes[i].x)
+					{
+						player.box.x = levels[currentLvl]->boxes[i].x-PLAYER_SIZE-1U;
+					}else if( player.box.x == levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w)
+					{
+						player.box.x = levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w+1U;
+					}
+					else
+					{
+						player.box.y = levels[currentLvl]->boxes[i].y+PLAYER_SIZE;
+						if(player.vely < 0U)
+							player.vely = 1;
+					}
 				}
 			}
 
@@ -477,26 +495,58 @@ void manage_physics() NONBANKED
 	}
 	else if(player.state == IDLE || player.state == WALK || player.state == CROUCH || player.state == CROUCHWALK)
 	{
-		UBYTE foot;
-		Box tmp_box;
+
 		tmp_box.x = player.box.x;
 		tmp_box.y = player.box.y+1;
 		tmp_box.w = player.box.w;
 		tmp_box.h = player.box.h;
-		foot = 0;
+		contact = 0;
 		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
 		{
 			if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) || player.box.y == 144U-GROUND_HEIGHT)
 			{
-				foot++;
+				contact++;
 			}
 
 		}
-		if(foot == 0)
+		if(contact == 0)
 		{
 			player.state = JUMP;
 			if(player.vely < 0U)
 				player.vely = 1;
+		}
+		//Check if there is a box in front of us
+		tmp_box.x = player.box.x+player.dirX;
+		tmp_box.y = player.box.y;
+		contact = 0;
+		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+		{
+			if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])))
+			{
+				contact++;
+			}
+
+		}
+		if(contact != 0)
+		{
+			if(player.state == WALK)
+			{
+				player.state = IDLE;
+			}
+			else if(player.state == CROUCHWALK)
+			{
+				player.state = CROUCH;
+			}
+		}
+		else
+		{
+			if(player.state == WALK || player.state == CROUCHWALK)
+			{
+				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
+				{
+					player.box.x+=player.dirX;
+				}
+			}
 		}
 	}
 	else if(player.state == CLIMBWALK)
@@ -523,13 +573,17 @@ void manage_physics() NONBANKED
 
 	}
 
-	if(currentLvl ==LEVEL1)
+	if(currentLvl == LEVEL1)
 	{
 		manage_physics_lvl1(&player);
 
-	} else if(currentLvl ==LEVEL2)
+	} else if(currentLvl == LEVEL2)
 	{
 		manage_physics_lvl2(&player);
+
+	}else if(currentLvl == LEVEL3)
+	{
+		manage_physics_lvl3(&player);
 
 	}
 
@@ -574,7 +628,7 @@ void game_screen() NONBANKED
 		manage_physics();
 		set_sprites();
 
-		//gbt_update();
+		gbt_update();
 
 		tick_sound();
 
@@ -596,7 +650,11 @@ void init_screen() NONBANKED
 	HIDE_WIN;
 	DISPLAY_OFF;
 	init_sounds();
+	gbt_play(song_Data, 0x02U, 0x01U);
+	gbt_loop(0x00U);
 	set_sprite_data( 0U, 0x4cU, TilePeanut);
+	set_sprite_data( 0x4cU, 0x8U, TileWhiteFur);
+	set_sprite_data(0x4cU+0x8U, 0x10U, TileSeagull);
 
 
 	set_bkg_data(0, 1, TileWhite);

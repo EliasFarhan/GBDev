@@ -271,7 +271,7 @@ const unsigned char song3[] = {
   0x00, 0x00, 0x00, 0x48,0x00
 };
 
-const unsigned char * song_Data[] = {
+unsigned char * song_Data[] = {
     song0,
     song1,
     song2,
