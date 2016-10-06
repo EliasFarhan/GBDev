@@ -4,6 +4,7 @@
 #include <gb/gb.h>
 #include <stdlib.h>
 
+#define GROUND_HEIGHT 8U
 #define HASJUMP 0x01
 #define TRANSITIONNING 0x04
 #define PLAYER_SIZE 16U

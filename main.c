@@ -7,14 +7,18 @@
 
 void main()
 {
-	kwakwa_screen();
-	disable_APA();
+	/*ENABLE_RAM_MBC1;
+	SWITCH_ROM_MBC1(7);
+    kwakwa_screen();
+	disable_APA();*/
 
 	while(1)
 	{
-		title_screen();
+		/*ENABLE_RAM_MBC1;
+		SWITCH_ROM_MBC1(7);
+		title_screen();*/
 
-		disable_APA();
+		//disable_APA();
 
 		game_screen();
 	}
