@@ -34,7 +34,18 @@ void manage_level_physics(PLAYER* player)
 	}else if(currentLvl == LEVEL3)
 	{
 		manage_physics_lvl3(player);
-
+	}
+	else if(currentLvl == LEVEL4)
+	{
+		manage_physics_lvl4(player);
+	}
+	else if(currentLvl == LEVEL5)
+	{
+		manage_physics_lvl5(player);
+	}
+	else if(currentLvl == LEVEL6)
+	{
+		manage_physics_lvl6(player);
 	}
 }
 

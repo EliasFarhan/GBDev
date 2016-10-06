@@ -9,8 +9,8 @@
 ;   Format               : Gameboy 4 color.
 ;   Compression          : None.
 ;   Counter              : None.
-;   Tile size            : 32 x 32
-;   Tiles                : 0 to 0
+;   Tile size            : 16 x 16
+;   Tiles                : 18 to 22
 ;
 ;   Palette colors       : None.
 ;   SGB Palette          : None.
@@ -22,9 +22,9 @@
 
 
 ; Bank of tiles.
-tile_whale_posterBank EQU 0
+TileLabelBank EQU 0
 
 ; Start of tile array.
- GLOBAL tile_whale_poster
+ GLOBAL TileLabel
 
 ; End of EXPORT.INC

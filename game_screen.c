@@ -263,6 +263,9 @@ void set_sprites() NONBANKED
 {
 	UBYTE i;
 	UBYTE origin_index;
+	UBYTE sprite_index;
+
+	sprite_index = 0;
 	if(player.state == IDLE)
 	{
 		origin_index = 0U;
@@ -304,6 +307,28 @@ void set_sprites() NONBANKED
 	for (i = origin_index; i != origin_index+4; i++)
 	{
 		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
+		sprite_index = i-origin_index;
+	}
+	if(levels[currentLvl]->lock != NULL)
+	{
+		UBYTE height;
+
+		height = 2U;
+		sprite_index++;
+		if(levels[currentLvl]->lock->box->h == 48U)
+		{
+			height = 4U;
+
+		}
+		SWITCH_ROM_MBC1(6);
+		for(i = 0; i != height; i++)
+		{
+			set_sprite_tile( i+sprite_index, 108U );
+			move_sprite(i+sprite_index,levels[currentLvl]->lock->box->x,levels[currentLvl]->lock->box->y-i<<3);
+		}
+		sprite_index += height;
+
+
 	}
 	if(player.state != CLIMB && player.state != CLIMBWALK)
 	{
@@ -405,6 +430,7 @@ void manage_animation() NONBANKED
 				player.state = CROUCHTRANSITIONOUT;
 				player.box.x = player.newX;
 				player.box.y = player.newY;
+
 				switch_to_level(player.nextLevel);
 
 			}
@@ -438,6 +464,8 @@ void switch_to_level(LEVELID levelID) NONBANKED
 {
 	UBYTE i,j;
 
+	if(levelID == NOLEVEL)
+		return;
 	play_sound( SOUND_EXPLOSION );
 	currentLvl = levelID;
 	disable_interrupts();
@@ -446,7 +474,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	HIDE_WIN;
 	DISPLAY_OFF;
 	ENABLE_RAM_MBC1;
-
+	SWITCH_ROM_MBC1(6);
 	for(i = 0; i != 18; i++)
 	{
 		for(j = 0; j!= 20; j++)
@@ -503,9 +531,10 @@ void init_screen() NONBANKED
 	gbt_loop(0x00U);
 	ENABLE_RAM_MBC1;
 	SWITCH_ROM_MBC1(5);
-	set_sprite_data( 0U, 0x4cU, tile_peanut);
-	set_sprite_data( 0x4cU, 0x8U, tile_whitefur);
+	set_sprite_data(0U, 0x4cU, tile_peanut);
+	set_sprite_data(0x4cU, 0x8U, tile_whitefur);
 	set_sprite_data(0x4cU+0x8U, 0x10U, tile_seagull);
+	set_sprite_data(0x4cU+0x8U+0x10U, 0x9U, tile_environment[0xaU]); //key+lock
 
 
 	set_bkg_data(0, 1, tile_white);
@@ -529,7 +558,7 @@ void init_screen() NONBANKED
 	DISPLAY_ON;
 	enable_interrupts();
 	player.booleanState = 0x00;
-	player.box.x = 8U;
+	player.box.x = 16U;
 	player.box.y = 144U-GROUND_HEIGHT;
 	player.box.w = PLAYER_SIZE;
 	player.box.h = PLAYER_SIZE;

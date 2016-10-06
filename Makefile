@@ -8,11 +8,14 @@ LVLS = levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/le
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
 
+levels/%.o:	levels/%.c
+	$(CC) -Wa-l -Wf-bo6 -c -o $@ $<
 %.o:	%.c
 	$(CC) -c -o $@ $<
 
+
 SRJailbreak.gb:
-	$(CC) -Wl-yt2 -Wl-yo8 -Wl-ya4 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
+	$(CC) -Wl-yt2 -Wl-yo16 -Wl-ya4 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
 
 kwakwa_screen.o: kwakwa_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
