@@ -12,7 +12,8 @@ void kwakwa_graphics() NONBANKED {
 }
 
 void kwakwa_screen() NONBANKED {
-	UBYTE pstart = 0, keys = 0;
+	UBYTE pstart = 0;
+	UBYTE keys = 0;
 	wait_vbl_done();
 	disable_interrupts();
 	HIDE_SPRITES;

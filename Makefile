@@ -1,7 +1,7 @@
 CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
 BINS	= SRJailbreak.gb
-BONUS = title_screen.o  title.o data/press_start.o kwakwa.o kwakwa_screen.o 
+BONUS =  kwakwa.o kwakwa_screen.o title.o data/press_start.o title_screen.o 
 SOURCE =  main.o  box_collision.o sound.o game_screen.o gbt_player.o gbt_player_bank1.o
 ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o music_output.o
 LVLS = levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o
@@ -21,7 +21,8 @@ title.o:
 	$(CC) -Wa-l -Wf-bo3 -c -o title.o data/titlescreen.s
 
 data/press_start.o: data/press_start.s
-	$(CC) -Wa-l -Wf-bo3 -c -o $@ $<
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
+
 gbt_player.o: gbt_player.s
 	$(CC) -Wa-l -c -o gbt_player.o gbt_player.s
 
@@ -42,18 +43,24 @@ sound.o: sound.c
 
 data/peanut.o: data/peanut.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
+
+data/white_fur.o: data/white_fur.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
+
+data/seagull.o: data/seagull.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 	
 data/guard.o: data/guard.c
 	$(CC) -Wa-l -c -o $@ $<
 	
-data/background.o: data/background.c
-	$(CC) -Wa-l -c -o $@ $<
+data/background.o: data/background.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
-data/environment.o: data/environment.c
-	$(CC) -Wa-l -c -o $@ $<
+data/environment.o: data/environment.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 	
-data/whale_poster.o: data/whale_poster.c
-	$(CC) -Wa-l -c -o $@ $<
+data/whale_poster.o: data/whale_poster.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
 	
 music_output.c:

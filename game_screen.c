@@ -17,7 +17,7 @@
 
 //include all the levels
 
-
+/*
 UBYTE PeanutTileMap[] =
 {
 		//Peanut idle 0
@@ -52,11 +52,11 @@ UBYTE PeanutTileMap[] =
 
 
 };
-
+*/
 #define GROUND_HEIGHT 8U
 
 extern unsigned char * song_Data[];
-extern UBYTE PeanutTileMap[];
+extern UBYTE tilemap_peanut[];
 
 
 UBYTE keys;
@@ -82,16 +82,16 @@ Level* levels[6] = {
 LEVELID currentLvl;
 
 extern unsigned char tile_peanut[];
-extern unsigned char TileWhiteFur[];
-extern unsigned char TileSeagull[];
-extern unsigned char TileEnvironment[];
+extern unsigned char tile_whitefur[];
+extern unsigned char tile_seagull[];
+extern unsigned char tile_environment[];
 
-extern UBYTE TileEnvironmentLength;
-extern unsigned char TileBackground[];
-extern unsigned char TileWhite[];
-extern UBYTE TileBackgroundLength;
-extern unsigned char TileWhalePoster[];
-extern UBYTE TileWhalePosterLength;
+UBYTE TileEnvironmentLength = 10U;
+extern unsigned char tile_background[];
+extern unsigned char tile_white[];
+UBYTE TileBackgroundLength = 8U;
+extern unsigned char tile_whale_poster[];
+UBYTE TileWhalePosterLength = 16U;
 
 void manage_physics_lvl1(PLAYER* player) NONBANKED;
 void manage_physics_lvl2(PLAYER* player) NONBANKED;
@@ -300,10 +300,10 @@ void set_sprites() NONBANKED
 		origin_index = 72U;
 	}
 
-
+	SWITCH_ROM_MBC1(5);
 	for (i = origin_index; i != origin_index+4; i++)
 	{
-		set_sprite_tile( i-origin_index, PeanutTileMap[i] );
+		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
 	}
 	if(player.state != CLIMB && player.state != CLIMBWALK)
 	{
@@ -697,16 +697,16 @@ void init_screen() NONBANKED
 	gbt_play(song_Data, 0x02U, 0x01U);
 	gbt_loop(0x00U);
 	ENABLE_RAM_MBC1;
-	SWITCH_ROM_MBC1(1);
+	SWITCH_ROM_MBC1(5);
 	set_sprite_data( 0U, 0x4cU, tile_peanut);
-	set_sprite_data( 0x4cU, 0x8U, TileWhiteFur);
-	set_sprite_data(0x4cU+0x8U, 0x10U, TileSeagull);
+	set_sprite_data( 0x4cU, 0x8U, tile_whitefur);
+	set_sprite_data(0x4cU+0x8U, 0x10U, tile_seagull);
 
 
-	set_bkg_data(0, 1, TileWhite);
-	set_bkg_data(1U, TileEnvironmentLength, TileEnvironment);
-	set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, TileBackground);
-	set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, TileWhalePoster);
+	set_bkg_data(0, 1, tile_white);
+	set_bkg_data(1U, TileEnvironmentLength, tile_environment);
+	set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
+	set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, tile_whale_poster);
 
 	//Background
 	for(i = 0; i != 18; i++)

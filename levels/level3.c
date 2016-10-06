@@ -46,8 +46,7 @@ void init_lvl3()
 }
 void manage_physics_lvl3(PLAYER* player)
 {
-	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y >= 144U-8U-8U )
-
+	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-16U )
 	{
 		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
 		{
@@ -64,7 +63,6 @@ Level lvl3 = {
 		box_lvl3,
 		boxes_lvl3_length,
 		Lvl3TileMap,
-
 };
 
 
