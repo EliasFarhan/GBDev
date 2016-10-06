@@ -59,6 +59,7 @@ typedef struct
 	UBYTE originX;
 	UBYTE originY;
 	LEVELID originLevel;
+	UBYTE used;
 } KEY;
 typedef struct
 {

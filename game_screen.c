@@ -116,7 +116,13 @@ void manage_input() NONBANKED
 		}
 		if (keys & J_B)
 		{
-			if(player.state != JUMPCLIMB && player.state != CLIMB && player.state != CLIMBWALK)
+			if(player.key != NULL)
+			{
+				player.key->box.x = player.key->originX;
+				player.key->box.y = player.key->originY;
+				player.key = NULL;
+			}
+			else if(player.state != JUMPCLIMB && player.state != CLIMB && player.state != CLIMBWALK)
 			{
 				if(player.state != JUMP)
 				{
@@ -269,15 +275,28 @@ void set_sprites() NONBANKED
 	sprite_index = 0;
 	if(player.state == IDLE)
 	{
-		origin_index = 0U;
+		if(player.key != NULL)
+		{
+			origin_index = 80U;
+		}else{
+		origin_index = 0U;}
 	}
 	else if(player.state == WALK)
 	{
-		origin_index = (player.img_index+1U)<<2U;
+		if(player.key != NULL)
+		{
+			origin_index = (player.img_index+21U)<<2U;
+		}else{
+			origin_index = (player.img_index+1U)<<2U;
+		}
 	}
 	else if(player.state == JUMP)
 	{
-		origin_index = 20U;
+
+		if(player.key != NULL)
+			origin_index = 100U;
+		else
+			origin_index = 20U;
 	}
 	else if(player.state == CROUCH)
 	{
@@ -310,7 +329,7 @@ void set_sprites() NONBANKED
 		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
 		sprite_index++;
 	}
-	if(levels[currentLvl]->lock != NULL)
+	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
 		UBYTE height;
 		SWITCH_ROM_MBC1(6);
@@ -349,7 +368,7 @@ void set_sprites() NONBANKED
 	{
 		key = player.key;
 	}
-	else if(levels[currentLvl]->key != NULL)
+	else if(levels[currentLvl]->key != NULL && !levels[currentLvl]->key->used)
 	{
 		key = levels[currentLvl]->key;
 	}

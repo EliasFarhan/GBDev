@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include "../game_screen.h"
+#include "../box_collision.h"
 
 #define BOX4LENGTH 3
 
@@ -18,6 +19,9 @@ const Box box_lvl4[BOX4LENGTH] =
 		{8U,96U, 16U, 40U},
 		{24U,104U, 112U, 8U},
 		{128U, 112U, 8U,112U}
+};
+KEY key_lvl4[1]= {
+		{{32U, 136U, 18U, 16U}, 120U, 80U, LEVEL4, 0U},
 };
 const unsigned char Lvl4TileMap[] =
 {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6,
@@ -86,12 +90,18 @@ void manage_physics_lvl4(PLAYER* player)
 		player->box.y = 135U;
 		switch_to_level(LEVEL6);
 	}
+	else if(player->key == NULL && !key_lvl4[0].used &&checkCollision(&(player->box), &(key_lvl4[0].box)))
+		{
+			player->key = key_lvl4;
+		}
 }
 
 Level lvl4 = {
 		box_lvl4,
 		boxes_lvl4_length,
 		Lvl4TileMap,
+		NULL,
+		key_lvl4
 
 };
 

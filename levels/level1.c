@@ -114,6 +114,19 @@ void manage_physics_lvl1(PLAYER* player)
 			//switch_to_level(LEVEL2);
 
 		}
+	if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
+		{
+			player->key->box.x = player->key->originX;
+			player->key->box.y = player->key->originY;
+			player->key->used = 1U;
+			player->key = NULL;
+			locks_lvl1[0].box->x = 0U;
+			locks_lvl1[0].box->y = 0U;
+			locks_lvl1[0].box->w = 0U;
+			locks_lvl1[0].box->h = 0U;
+			locks_lvl1[0].locked = 0U;
+
+		}
 
 }
 

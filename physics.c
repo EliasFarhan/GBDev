@@ -23,7 +23,7 @@ void manage_key_physics(PLAYER* player)
 {
 	if(player->key != NULL)
 	{
-		player->key->box.x = player->box.x;
+		player->key->box.x = player->box.x-1U;
 		player->key->box.y = player->box.y-PLAYER_SIZE;
 
 	}

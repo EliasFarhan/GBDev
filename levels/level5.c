@@ -8,12 +8,13 @@
 
 #include <stdlib.h>
 #include "../game_screen.h"
+#include "../box_collision.h"
 
 #define BOX5LENGTH 4
 
 size_t boxes_lvl5_length = BOX5LENGTH;
 
-const Box box_lvl5[BOX5LENGTH] =
+Box box_lvl5[BOX5LENGTH] =
 {
 		{64U,96U, 40U, 40U},
 		{104U,96U, 56U, 8U},
@@ -78,6 +79,18 @@ void manage_physics_lvl5(PLAYER* player)
 		player->box.x = 9U;
 
 		switch_to_level(LEVEL6);
+
+	}else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl5[0].box))
+	{
+		player->key->box.x = player->key->originX;
+		player->key->box.y = player->key->originY;
+		player->key->used = 1U;
+		player->key = NULL;
+		locks_lvl5[0].box->x = 0U;
+		locks_lvl5[0].box->y = 0U;
+		locks_lvl5[0].box->w = 0U;
+		locks_lvl5[0].box->h = 0U;
+		locks_lvl5[0].locked = 0U;
 
 	}
 }
