@@ -258,7 +258,7 @@ void manage_input() NONBANKED
 		}
 	}
 }
-
+UBYTE previous_sprite_index;
 void set_sprites() NONBANKED
 {
 	UBYTE i;
@@ -368,12 +368,16 @@ void set_sprites() NONBANKED
 
 		sprite_index+=4;
 	}
-
-	for (i=sprite_index; i<40; i++)
+	if(previous_sprite_index != sprite_index)
 	{
-		move_sprite(i,0,200);
-		set_sprite_prop (i,0);
+	for (i=sprite_index; i<40; i++)
+		{
+			move_sprite(i,0,200);
+			set_sprite_prop (i,0);
+		}
+		previous_sprite_index = sprite_index;
 	}
+
 	if(player.state != CLIMB && player.state != CLIMBWALK)
 	{
 		if(player.dirX == 1)
@@ -519,6 +523,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	DISPLAY_OFF;
 	ENABLE_RAM_MBC1;
 	SWITCH_ROM_MBC1(6);
+
 	for(i = 0; i != 18; i++)
 	{
 		for(j = 0; j!= 20; j++)
@@ -611,7 +616,7 @@ void init_screen() NONBANKED
 	player.state = IDLE;
 	player.timer = 0;//for animation purpose and physics
 	player.vely = 0;
-
+	previous_sprite_index = 0;
 
 	set_sprites();
 
