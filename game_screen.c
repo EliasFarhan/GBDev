@@ -264,6 +264,7 @@ void set_sprites() NONBANKED
 	UBYTE i;
 	UBYTE origin_index;
 	UBYTE sprite_index;
+	KEY* key;
 
 	sprite_index = 0;
 	if(player.state == IDLE)
@@ -307,28 +308,71 @@ void set_sprites() NONBANKED
 	for (i = origin_index; i != origin_index+4; i++)
 	{
 		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
-		sprite_index = i-origin_index;
+		sprite_index++;
 	}
 	if(levels[currentLvl]->lock != NULL)
 	{
 		UBYTE height;
-
+		SWITCH_ROM_MBC1(6);
 		height = 2U;
-		sprite_index++;
-		if(levels[currentLvl]->lock->box->h == 48U)
+		if(levels[currentLvl]->lock->box->h >= 48U)
 		{
 			height = 4U;
-
 		}
-		SWITCH_ROM_MBC1(6);
+
 		for(i = 0; i != height; i++)
 		{
-			set_sprite_tile( i+sprite_index, 108U );
-			move_sprite(i+sprite_index,levels[currentLvl]->lock->box->x,levels[currentLvl]->lock->box->y-i<<3);
+			set_sprite_tile( i+sprite_index, ENV_INDEX+8U );
+			if(i<height>>1)
+			{
+			move_sprite(i+sprite_index,levels[currentLvl]->lock->box->x+8U,levels[currentLvl]->lock->box->y-(i<<3)+8U);
+			}
+			else
+			{
+				move_sprite(i+sprite_index,levels[currentLvl]->lock->box->x+8U,levels[currentLvl]->lock->box->y-(i<<3)+8U-16U);
+			}
 		}
 		sprite_index += height;
+		for(i = 0; i != 4; i++)
+		{
+			set_sprite_tile( i+sprite_index, ENV_INDEX+4U+i );
+		}
+		move_sprite( sprite_index+0, levels[currentLvl]->lock->box->x+4U, levels[currentLvl]->lock->box->y-(8U<<(height>>2) ));
+		move_sprite( sprite_index+2, levels[currentLvl]->lock->box->x+12U, levels[currentLvl]->lock->box->y -(8U<<(height>>2)));
+		move_sprite( sprite_index+1, levels[currentLvl]->lock->box->x+4U,  levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
+		move_sprite( sprite_index+3, levels[currentLvl]->lock->box->x+12U, levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
+		sprite_index+=4;
+	}
+	//SHOW KEYS
 
+	if(player.key != NULL)
+	{
+		key = player.key;
+	}
+	else if(levels[currentLvl]->key != NULL)
+	{
+		key = levels[currentLvl]->key;
+	}
+	if(key != NULL)
+	{
+		for(i = 0; i != 4; i++)
+		{
+			set_sprite_tile( i+sprite_index, ENV_INDEX+i );
 
+		}
+		//MOVE SPRITES
+		move_sprite( sprite_index+0, key->box.x+8U, key->box.y);
+		move_sprite( sprite_index+2, key->box.x+16U, key->box.y);
+		move_sprite( sprite_index+1, key->box.x+8U,  key->box.y+8U);
+		move_sprite( sprite_index+3, key->box.x+16U, key->box.y+8U);
+
+		sprite_index+=4;
+	}
+
+	for (i=sprite_index; i<40; i++)
+	{
+		move_sprite(i,0,200);
+		set_sprite_prop (i,0);
 	}
 	if(player.state != CLIMB && player.state != CLIMBWALK)
 	{
@@ -531,10 +575,10 @@ void init_screen() NONBANKED
 	gbt_loop(0x00U);
 	ENABLE_RAM_MBC1;
 	SWITCH_ROM_MBC1(5);
-	set_sprite_data(0U, 0x4cU, tile_peanut);
-	set_sprite_data(0x4cU, 0x8U, tile_whitefur);
-	set_sprite_data(0x4cU+0x8U, 0x10U, tile_seagull);
-	set_sprite_data(0x4cU+0x8U+0x10U, 0x9U, tile_environment[0xaU]); //key+lock
+	set_sprite_data(BW_INDEX, BW_SPR_LEN, tile_peanut);
+	set_sprite_data(WF_INDEX, WF_SPR_LEN, tile_whitefur);
+	set_sprite_data(SEA_INDEX, SEA_SPR_LEN, tile_seagull);
+	set_sprite_data(ENV_INDEX, ENV_SPR_LEN, &(tile_environment[0xa<<4])); //key+lock
 
 
 	set_bkg_data(0, 1, tile_white);

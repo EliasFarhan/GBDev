@@ -19,7 +19,15 @@ void manage_physics_lvl4(PLAYER* player) NONBANKED;
 void manage_physics_lvl5(PLAYER* player) NONBANKED;
 void manage_physics_lvl6(PLAYER* player) NONBANKED;
 
+void manage_key_physics(PLAYER* player)
+{
+	if(player->key != NULL)
+	{
+		player->key->box.x = player->box.x;
+		player->key->box.y = player->box.y-PLAYER_SIZE;
 
+	}
+}
 
 void manage_level_physics(PLAYER* player)
 {
@@ -300,6 +308,7 @@ void manage_physics(PLAYER* player)
 		manage_climbwalk(player);
 	}
 	manage_level_physics(player);
+	manage_key_physics(player);
 
 
 }

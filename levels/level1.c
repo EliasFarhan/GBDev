@@ -15,7 +15,6 @@ size_t boxes_lvl1_length = BOX1LENGTH;
 
 Box box_lvl1[BOX1LENGTH] =
 {
-
 	{72U, 136U, 8U, 48U},
 	{48U, 136U, 24U, 48U},
 	{8U, 88U, 96U, 8U },

@@ -9,14 +9,20 @@
 #include <stdlib.h>
 #include "../game_screen.h"
 
-#define BOX5LENGTH 2
+#define BOX5LENGTH 4
 
 size_t boxes_lvl5_length = BOX5LENGTH;
 
 const Box box_lvl5[BOX5LENGTH] =
 {
 		{64U,96U, 40U, 40U},
-		{104U,96U, 56U, 8U}
+		{104U,96U, 56U, 8U},
+		{72U, 128U, 8U, 32U},
+		{32U, 144U, 128U, 16U}
+};
+LOCK locks_lvl5[1] =
+{
+	{&(box_lvl5[2]), 1U}
 };
 const unsigned char Lvl5TileMap[] =
 {
@@ -36,7 +42,7 @@ const unsigned char Lvl5TileMap[] =
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
-5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
+5,12,14,12,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 6,11,13,11,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 };
 
@@ -80,7 +86,7 @@ Level lvl5 = {
 		box_lvl5,
 		boxes_lvl5_length,
 		Lvl5TileMap,
-
+		locks_lvl5
 };
 
 

@@ -11,6 +11,17 @@
 #define PLAYER_SIZE 16U
 
 
+//SPRITES INDEX
+#define BW_SPR_LEN 92U
+#define WF_SPR_LEN 2U
+#define SEA_SPR_LEN 16U
+#define ENV_SPR_LEN 9U
+
+#define BW_INDEX 0U
+#define WF_INDEX BW_SPR_LEN
+#define SEA_INDEX BW_SPR_LEN+WF_SPR_LEN
+#define ENV_INDEX BW_SPR_LEN+WF_SPR_LEN+SEA_SPR_LEN
+
 
 typedef enum {
 	LEVEL1 = 0U,
@@ -47,6 +58,7 @@ typedef struct
 	Box box;
 	UBYTE originX;
 	UBYTE originY;
+	LEVELID originLevel;
 } KEY;
 typedef struct
 {
@@ -83,7 +95,7 @@ typedef struct
 	size_t boxes_length;
 	unsigned char* LvlTileMap;
 	LOCK* lock;
-
+	KEY* key;
 } Level;
 
 
