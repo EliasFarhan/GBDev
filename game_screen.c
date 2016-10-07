@@ -330,6 +330,38 @@ void set_sprites() NONBANKED
 		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
 		sprite_index++;
 	}
+	if(levels[currentLvl]->enemy != NULL)
+	{
+		SWITCH_ROM_MBC1(6);
+		origin_index = levels[currentLvl]->enemy->img_index<<2;
+		for(i = 0U; i != 4U; i++)
+		{
+			set_sprite_tile( i+sprite_index, SEA_INDEX+i+origin_index );
+		}
+		if(levels[currentLvl]->enemy->dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(sprite_index+i,0x01U);
+			}
+			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y+8U);
+		}
+		else
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(sprite_index+i,S_FLIPX);
+			}
+			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y+8U);
+		}
+		sprite_index+=4;
+	}
 	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
 		UBYTE height;
@@ -391,38 +423,7 @@ void set_sprites() NONBANKED
 	}
 	//SHOW ENEMIES
 
-	if(levels[currentLvl]->enemy != NULL)
-	{
-		SWITCH_ROM_MBC1(6);
-		origin_index = levels[currentLvl]->enemy->img_index<<2;
-		for(i = origin_index; i != origin_index+4U; i++)
-		{
-			set_sprite_tile( i-origin_index+sprite_index, SEA_INDEX+tilemap_seagull[i+origin_index] );
-		}
-		if(levels[currentLvl]->enemy->dirX == 1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(sprite_index+i,0x00U);
-			}
-			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y+8U);
-		}
-		else
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(sprite_index+i,S_FLIPX);
-			}
-			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x+16U, levels[currentLvl]->enemy->box.y+8U);
-		}
-		sprite_index+=4;
-	}
+
 	//FLUSH SPRITE MEMORY
 	if(previous_sprite_index != sprite_index)
 	{
@@ -567,11 +568,17 @@ void manage_animation() NONBANKED
 	{
 
 		levels[currentLvl]->enemy->timer++;
-		if(levels[currentLvl]->enemy->timer == 5U ||
-				levels[currentLvl]->enemy->timer == 10U ||
-				levels[currentLvl]->enemy->timer == 15U)
+		if(levels[currentLvl]->enemy->timer == 5U)
 		{
-			levels[currentLvl]->enemy->img_index++;
+			levels[currentLvl]->enemy->img_index =1U;
+		}
+		else if(levels[currentLvl]->enemy->timer == 10U)
+		{
+			levels[currentLvl]->enemy->img_index =2U;
+		}
+		else if(levels[currentLvl]->enemy->timer == 15U)
+		{
+			levels[currentLvl]->enemy->img_index =1U;
 		}
 		else if(levels[currentLvl]->enemy->timer == 20U)
 		{
@@ -623,6 +630,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	DISPLAY_ON;
 	enable_interrupts();
 }
+
 void game_screen() NONBANKED
 {
 
@@ -645,7 +653,7 @@ void game_screen() NONBANKED
 		tick_sound();
 
 	}
-	game_over();
+
 }
 
 
@@ -656,7 +664,7 @@ void init_screen() NONBANKED
 {
 	UBYTE j;
 	disable_interrupts();
-
+	finish = 0U;
 	HIDE_BKG;
 	HIDE_SPRITES;
 	HIDE_WIN;
@@ -710,6 +718,7 @@ void init_screen() NONBANKED
 
 void game_over() NONBANKED
 {
+	finish = 1U;
 	wait_vbl_done();
 	HIDE_SPRITES;
 	gotogxy(5, 5);

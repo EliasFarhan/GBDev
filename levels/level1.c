@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "../game_screen.h"
 #include "../box_collision.h"
+#include "../physics.h"
 
 #define BOX1LENGTH 4U
 
@@ -87,7 +88,6 @@ void manage_physics_lvl1(PLAYER* player)
 		player->img_index = 0U;
 
 		player->nextLevel = LEVEL2;
-		//switch_to_level(LEVEL2);
 
 	}else if(player->box.x == 72U-PLAYER_SIZE && player->box.y == 80U &&
 			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
@@ -106,32 +106,36 @@ void manage_physics_lvl1(PLAYER* player)
 	}
 	else if(player->box.x == 80U && player->box.y == 80U &&
 			(player->state == CROUCHWALK || player->state == CROUCH)&& player->dirX == -1 )
-		{
+	{
 
-			player->newX = 72U-PLAYER_SIZE+8U;
-			player->newY = 80U;
-			player->booleanState = player->booleanState | TRANSITIONNING;
-			player->state = CROUCHTRANSITIONIN;
-			player->timer = 0U;
-			player->img_index = 0U;
+		player->newX = 72U-PLAYER_SIZE+8U;
+		player->newY = 80U;
+		player->booleanState = player->booleanState | TRANSITIONNING;
+		player->state = CROUCHTRANSITIONIN;
+		player->timer = 0U;
+		player->img_index = 0U;
 
-			player->nextLevel = NOLEVEL;
-			//switch_to_level(LEVEL2);
+		player->nextLevel = NOLEVEL;
+		//switch_to_level(LEVEL2);
 
-		}
+	}
 	if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
-		{
-			player->key->box.x = player->key->originX;
-			player->key->box.y = player->key->originY;
-			player->key->used = 1U;
-			player->key = NULL;
-			locks_lvl1[0].box->x = 0U;
-			locks_lvl1[0].box->y = 0U;
-			locks_lvl1[0].box->w = 0U;
-			locks_lvl1[0].box->h = 0U;
-			locks_lvl1[0].locked = 0U;
+	{
+		player->key->box.x = player->key->originX;
+		player->key->box.y = player->key->originY;
+		player->key->used = 1U;
+		player->key = NULL;
+		locks_lvl1[0].box->x = 0U;
+		locks_lvl1[0].box->y = 0U;
+		locks_lvl1[0].box->w = 0U;
+		locks_lvl1[0].box->h = 0U;
+		locks_lvl1[0].locked = 0U;
 
-		}
+	}
+	if(checkCollision(&(enemy_lvl1[0].box), &(player->box)))
+	{
+		manage_enemy_collision(player, (ENEMY*) enemy_lvl1);
+	}
 
 }
 

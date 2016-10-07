@@ -19,6 +19,24 @@ void manage_physics_lvl4(PLAYER* player) NONBANKED;
 void manage_physics_lvl5(PLAYER* player) NONBANKED;
 void manage_physics_lvl6(PLAYER* player) NONBANKED;
 
+void manage_enemy_collision(PLAYER* player, ENEMY* enemy)
+{
+	if(player->vely >= 0U && player->box.y <= enemy->box.y-enemy->box.h+player->vely
+				&& (player->box.x+player->box.w > enemy->box.x+1U
+				&& player->box.x < enemy->box.x+enemy->box.w-1U) && enemy->box.w < 20U)
+	{
+		//enemy dead
+		player->state = JUMP;
+		player->vely = -4;
+
+	}
+	else
+	{
+		//dead
+		game_over();
+	}
+}
+
 void manage_key_physics(PLAYER* player)
 {
 	if(player->key != NULL)

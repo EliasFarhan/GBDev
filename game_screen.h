@@ -90,6 +90,7 @@ typedef struct
 	UBYTE timer;
 	UBYTE maxX;
 	UBYTE minX;
+	UBYTE dead;
 } ENEMY;
 typedef struct
 {

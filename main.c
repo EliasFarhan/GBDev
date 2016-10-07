@@ -21,5 +21,7 @@ void main()
 		//disable_APA();
 
 		game_screen();
+		disable_APA();
+
 	}
 }
