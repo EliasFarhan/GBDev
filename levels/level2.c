@@ -20,6 +20,10 @@ const Box box_lvl2[BOX2LENGTH] =
 		{120U,104U, 32U, 24U}
 
 };
+ENEMY enemies_lvl2 = {
+		{{72U, 96U, 16U, 16U}, 1,0U,0U, 120U, 40U}
+};
+UBYTE enemies_nb_lvl2 = 1U;
 const unsigned char Lvl2TileMap[] =
 {
 6,12,14,12, 6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,

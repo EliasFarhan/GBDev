@@ -56,8 +56,8 @@ data/white_fur.o: data/white_fur.s
 data/seagull.o: data/seagull.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 	
-data/guard.o: data/guard.c
-	$(CC) -Wa-l -c -o $@ $<
+data/guard.o: data/guard.s
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 	
 data/background.o: data/background.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<

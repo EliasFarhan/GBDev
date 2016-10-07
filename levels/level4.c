@@ -76,6 +76,19 @@ void manage_physics_lvl4(PLAYER* player)
 			}
 			switch_to_level(LEVEL1);
 		}
+	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y == 56U &&
+			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1 )
+	{
+
+		player->newX = 160U;
+		player->newY = 56U;
+		player->booleanState = player->booleanState | TRANSITIONNING;
+		player->state = CROUCHTRANSITIONIN;
+		player->timer = 0U;
+		player->img_index = 0U;
+
+		player->nextLevel = LEVEL4;
+
 	}else if(player->box.x == 8U && player->box.y >= 104U &&player->box.y <= 136U && player->dirX == -1 )
 	{
 

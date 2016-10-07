@@ -24,6 +24,11 @@ LOCK locks_lvl1[1] =
 {
 	{&(box_lvl1[0]), 1U}
 };
+#define ENEMY1LENGTH 1U
+ENEMY enemy_lvl1 [ENEMY1LENGTH] = {
+		{{24U, 80U, 16U, 16U}, 1,0U, 0U, 72U, 8U}
+};
+UBYTE enemies_nb_lvl1 = ENEMY1LENGTH;
 unsigned char Lvl1TileMap[] = {
 	6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,12,14,12,14,12,14,3,
 	5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,11,13,11,13,11,13,3,
@@ -134,7 +139,9 @@ Level lvl1 = {
 		box_lvl1,
 		boxes_lvl1_length,
 		Lvl1TileMap,
-		locks_lvl1
+		locks_lvl1,
+		NULL,
+		enemy_lvl1,
 
 
 };
