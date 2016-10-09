@@ -1,14 +1,14 @@
 #include <gb/gb.h>
 #include <gb/drawing.h>
 
-extern unsigned char kwakwa_logo_tiledata[];
+extern unsigned char staffroll_tiledata[];
 
-void kwakwa_graphics() NONBANKED {
-	SWITCH_ROM_MBC1(3);
-	draw_image(kwakwa_logo_tiledata);
+void credits_graphics() NONBANKED {
+	SWITCH_ROM_MBC1(8);
+	draw_image(staffroll_tiledata);
 }
 
-void kwakwa_screen() NONBANKED {
+void credits_screen() NONBANKED {
 	UBYTE pstart = 0;
 	UBYTE keys = 0;
 	wait_vbl_done();
@@ -27,7 +27,7 @@ void kwakwa_screen() NONBANKED {
 		if (pstart == 20) {
 			break;
 		}
-		kwakwa_graphics();
+		credits_graphics();
 		pstart++;
 	}
 }

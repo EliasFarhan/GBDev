@@ -7,10 +7,10 @@
 // Being explicit since these are used as indices and this is probably some old ass compiler with quirks
 typedef enum
 {
-	SOUND_SHOOTING = 0,
-	SOUND_ENEMY_SHOOTING = 1,
-	SOUND_EXPLOSION = 2,
-	SOUND_LOSE = 3,
+	SOUND_JUMP = 0,
+	SOUND_UNLOCK = 1,
+	SOUND_KILL = 2,
+	SOUND_DEAD = 3,
 	SOUND_END = 4
 } SoundID;
 

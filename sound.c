@@ -11,49 +11,49 @@ void init_sounds()
 
 	// Explosion
 	
-	gSounds[SOUND_SHOOTING].playTime		= 7;
-	gSounds[SOUND_SHOOTING].soundLevelLeft	= 7;
-	gSounds[SOUND_SHOOTING].soundLevelRight	= 7;
-	gSounds[SOUND_SHOOTING].channel			= CHANNEL_1;
+	gSounds[SOUND_JUMP].playTime		= 7;
+	gSounds[SOUND_JUMP].soundLevelLeft	= 7;
+	gSounds[SOUND_JUMP].soundLevelRight	= 7;
+	gSounds[SOUND_JUMP].channel			= CHANNEL_1;
 
-	gSounds[SOUND_SHOOTING].data.chan1.nr10 = 0x3B;
-	gSounds[SOUND_SHOOTING].data.chan1.nr11 = 0xF0;
-	gSounds[SOUND_SHOOTING].data.chan1.nr12 = 0xF1;
-	gSounds[SOUND_SHOOTING].data.chan1.nr13 = 0x87;
-	gSounds[SOUND_SHOOTING].data.chan1.nr14 = 0x87;
+	gSounds[SOUND_JUMP].data.chan1.nr10 = 0x3B;
+	gSounds[SOUND_JUMP].data.chan1.nr11 = 0xF0;
+	gSounds[SOUND_JUMP].data.chan1.nr12 = 0xF1;
+	gSounds[SOUND_JUMP].data.chan1.nr13 = 0x87;
+	gSounds[SOUND_JUMP].data.chan1.nr14 = 0x87;
 
 	// Pew pew laser sounds
-	gSounds[SOUND_ENEMY_SHOOTING].playTime			= 5;
-	gSounds[SOUND_ENEMY_SHOOTING].soundLevelLeft	= 3;
-	gSounds[SOUND_ENEMY_SHOOTING].soundLevelRight	= 3;
-	gSounds[SOUND_ENEMY_SHOOTING].channel			= CHANNEL_2;
+	gSounds[SOUND_UNLOCK].playTime			= 5;
+	gSounds[SOUND_UNLOCK].soundLevelLeft	= 7;
+	gSounds[SOUND_UNLOCK].soundLevelRight	= 7;
+	gSounds[SOUND_UNLOCK].channel			= CHANNEL_1;
 
-	gSounds[SOUND_ENEMY_SHOOTING].data.chan2.nr21 = 0xCE;
-	gSounds[SOUND_ENEMY_SHOOTING].data.chan2.nr22 = 0x82;
-	gSounds[SOUND_ENEMY_SHOOTING].data.chan2.nr23 = 0xF0;
-	gSounds[SOUND_ENEMY_SHOOTING].data.chan2.nr24 = 0xC1;
-
+	gSounds[SOUND_UNLOCK].data.chan1.nr10 = 0xCE;
+	gSounds[SOUND_UNLOCK].data.chan1.nr11 = 0x82;
+	gSounds[SOUND_UNLOCK].data.chan1.nr12 = 0xF0;
+	gSounds[SOUND_UNLOCK].data.chan1.nr13 = 0xC1;
+	gSounds[SOUND_UNLOCK].data.chan1.nr14 = 0x87;
 
 	// Ship death
-	gSounds[SOUND_EXPLOSION].playTime			= 20;
-	gSounds[SOUND_EXPLOSION].soundLevelLeft		= 2;
-	gSounds[SOUND_EXPLOSION].soundLevelRight	= 2;
-	gSounds[SOUND_EXPLOSION].channel			= CHANNEL_4;
+	gSounds[SOUND_KILL].playTime			= 5;
+	gSounds[SOUND_KILL].soundLevelLeft		= 7;
+	gSounds[SOUND_KILL].soundLevelRight	= 7;
+	gSounds[SOUND_KILL].channel			= CHANNEL_4;
 
-	gSounds[SOUND_EXPLOSION].data.chan4.nr42 = 0xF3;
-	gSounds[SOUND_EXPLOSION].data.chan4.nr43 = 0x89;
+	gSounds[SOUND_KILL].data.chan4.nr42 = 0xF3;
+	gSounds[SOUND_KILL].data.chan4.nr43 = 0x89;
 
-	gSounds[SOUND_EXPLOSION].data.chan4.nr44 = 0x80; 
+	gSounds[SOUND_KILL].data.chan4.nr44 = 0x80;
 
 	// Fail, player ship explosion
-	gSounds[SOUND_LOSE].playTime		= 30;
-	gSounds[SOUND_LOSE].soundLevelLeft	= 7;
-	gSounds[SOUND_LOSE].soundLevelRight	= 7;
-	gSounds[SOUND_LOSE].channel			= CHANNEL_4;
+	gSounds[SOUND_DEAD].playTime		= 5;
+	gSounds[SOUND_DEAD].soundLevelLeft	= 7;
+	gSounds[SOUND_DEAD].soundLevelRight	= 7;
+	gSounds[SOUND_DEAD].channel			= CHANNEL_4;
 
-	gSounds[SOUND_LOSE].data.chan4.nr42 = 0xF7;
-	gSounds[SOUND_LOSE].data.chan4.nr43 = 0x99;
-	gSounds[SOUND_LOSE].data.chan4.nr44 = 0x80; //can't tweak this anymore
+	gSounds[SOUND_DEAD].data.chan4.nr42 = 0xF7;
+	gSounds[SOUND_DEAD].data.chan4.nr43 = 0x99;
+	gSounds[SOUND_DEAD].data.chan4.nr44 = 0x80; //can't tweak this anymore
 }
 
 void tick_sound()

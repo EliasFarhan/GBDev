@@ -6,29 +6,36 @@
  */
 #include "game_screen.h"
 #include "box_collision.h"
+#include "sound.h"
 
 
 extern LEVELID currentLvl;
 extern Level* levels[];
 
 
-void manage_physics_lvl1(PLAYER* player) NONBANKED;
-void manage_physics_lvl2(PLAYER* player) NONBANKED;
-void manage_physics_lvl3(PLAYER* player) NONBANKED;
-void manage_physics_lvl4(PLAYER* player) NONBANKED;
-void manage_physics_lvl5(PLAYER* player) NONBANKED;
-void manage_physics_lvl6(PLAYER* player) NONBANKED;
+void manage_physics_lvl1(PLAYER* player);
+void manage_physics_lvl2(PLAYER* player);
+void manage_physics_lvl3(PLAYER* player);
+void manage_physics_lvl4(PLAYER* player);
+void manage_physics_lvl5(PLAYER* player);
+void manage_physics_lvl6(PLAYER* player);
 
 void manage_enemy_collision(PLAYER* player, ENEMY* enemy)
 {
+	if(enemy->dead)
+	{
+		return;
+	}
 	if(player->vely >= 0U && player->box.y <= enemy->box.y-enemy->box.h+player->vely
 				&& (player->box.x+player->box.w > enemy->box.x+1U
 				&& player->box.x < enemy->box.x+enemy->box.w-1U) && enemy->box.w < 20U)
 	{
 		//enemy dead
 		player->state = JUMP;
-		player->vely = -4;
-
+		player->vely = -2;
+		enemy->dead = 1U;
+		enemy->timer = 0U;
+		play_sound(SOUND_KILL);
 	}
 	else
 	{
@@ -162,7 +169,7 @@ void manage_climbwalk(PLAYER* player)
 	{
 		if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) ||
 				(player->dirY == 1 && player->box.y >= 144U-GROUND_HEIGHT) ||
-				(player->dirY == 1 && player->box.y <= GROUND_HEIGHT+PLAYER_SIZE))
+				(player->dirY == -1 && player->box.y <= GROUND_HEIGHT+PLAYER_SIZE))
 		{
 			contact++;
 		}
@@ -197,7 +204,7 @@ void manage_climbwalk(PLAYER* player)
 	{
 
 		player->box.x += player->dirX*2;
-		player->vely = 0U;
+		player->vely = 1U;
 		player->state = JUMP;
 
 	}

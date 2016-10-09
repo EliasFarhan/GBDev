@@ -8,21 +8,31 @@
 #define HASJUMP 0x01
 #define TRANSITIONNING 0x04
 #define HASKEY 0x08
+#define HASGAMEOVER 0x10
+#define HASVICTORY 0x20
 #define PLAYER_SIZE 16U
+#define DEAD_SEAGULL_TIME 15U
 
 
 //SPRITES INDEX
-#define BW_SPR_LEN 92U
-#define WF_SPR_LEN 2U
+#define BW_SPR_LEN 96U
+#define WF_SPR_LEN 20U
 #define SEA_SPR_LEN 16U
 #define ENV_SPR_LEN 9U
 #define DOG_SPR_LEN 12U
+#define STR_SPR_LEN 13U
 
 #define BW_INDEX 0U
 #define WF_INDEX BW_SPR_LEN
 #define SEA_INDEX WF_INDEX+WF_SPR_LEN
 #define ENV_INDEX SEA_INDEX+SEA_SPR_LEN
-#define DOG_INDEX ENV_INDEX+ENV_SPR_LEN
+#define STR_INDEX ENV_INDEX+ENV_SPR_LEN
+#define DOG_INDEX STR_INDEX+STR_SPR_LEN
+
+
+#define PRESS_START_INDEX 0U
+#define GAME_OVER_INDEX 10U
+#define VICTORY_INDEX 18U
 
 typedef enum {
 	LEVEL1 = 0U,
@@ -84,6 +94,10 @@ typedef struct{
 } PLAYER;
 typedef struct
 {
+	UBYTE timer;
+} WHITEFUR;
+typedef struct
+{
 	Box box;
 	BYTE dirX;
 	UBYTE img_index;
@@ -110,5 +124,6 @@ void init_screen();
 void game_screen();
 void game_over();
 void switch_to_level(LEVELID);
+void reset_game();
 
 #endif

@@ -1,7 +1,7 @@
 CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
 BINS	= SRJailbreak.gb
-BONUS =  kwakwa.o kwakwa_screen.o data/press_start.o title_screen.o title.o 
+BONUS =  kwakwa.o kwakwa_screen.o data/press_start.o title_screen.o title.o credits.o staffroll.o title_screen_music.o
 SOURCE =  main.o box_collision.o sound.o game_screen.o physics.o gbt_player.o gbt_player_bank1.o
 ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o music_output.o
 LVLS = levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o
@@ -17,17 +17,25 @@ levels/%.o:	levels/%.c
 SRJailbreak.gb:
 	$(CC) -Wl-yt2 -Wl-yo16 -Wl-ya4 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
 
+credits.o: credits.c
+	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
+	
 kwakwa_screen.o: kwakwa_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
 
 title_screen.o: title_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
-
+	
+staffroll.o: data/staffroll.s
+	$(CC) -Wa-l -Wf-bo8 -c -o staffroll.o data/staffroll.s
 kwakwa.o:
 	$(CC) -Wa-l -Wf-bo3 -c -o kwakwa.o data/kwakwa_logo.s
 
 title.o:
 	$(CC) -Wa-l -Wf-bo3 -c -o title.o data/title.s
+	
+title_screen_music.o:
+	$(CC) -Wa-l -Wf-bo8 -c -o title_screen_music.o title_screen_music.c
 
 data/press_start.o: data/press_start.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
