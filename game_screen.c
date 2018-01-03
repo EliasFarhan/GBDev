@@ -94,9 +94,7 @@ void manage_input() NONBANKED
 		{
 			if(player.key != NULL)
 			{
-				player.key->box.x = player.key->originX;
-				player.key->box.y = player.key->originY;
-				player.key = NULL;
+
 			}
 			else if(player.state != JUMPCLIMB && player.state != CLIMB && player.state != CLIMBWALK)
 			{
