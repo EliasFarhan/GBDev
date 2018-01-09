@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <gb/drawing.h>
-#include <gbt_player.h>
+#include <src/gbt_player.h>
 
 //title screen image
 extern unsigned char title_screen_tiledata[];

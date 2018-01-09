@@ -8,19 +8,13 @@ PIXELS_PER_BYTE = 4
 BITS_PER_PIXEL = 2
 PIXELS_PER_ROW = 8
 BYTES_PER_ROW = 2
-wanted_width = 16
-wanted_height = 16
+wanted_width = 32
 
 '''32x32
 [0, 2], [8,10]
 [1, 3], [9,11]
 [4, 6], [12,14]
 [5, 7], [13,15]
-
-[16,18],[24,26]
-[17,19],[25,27]
-[20,22],[28,30]
-[21,23],[39,31]
 '''
 
 
@@ -41,19 +35,39 @@ def merge_row(data1, data2):
     return new_data
 
 
-def merge(data, width=8):
+def merge_block(data, width=8):
     if width == 8:
-        return data[0]
+        return data
     elif width == 16:
         return merge_row(merge_column(data[0], data[2]),
                          merge_column(data[1], data[3]))
     elif width == 32:
-        return merge_row(merge_column(merge(data[0:4],16), merge(data[8:12],16)),
-                         merge_column(merge(data[4:8],16), merge(data[12:16],16)))
+        return merge_row(merge_column(merge_block(data[0:4], 16), merge_block(data[8:12], 16)),
+                         merge_column(merge_block(data[4:8], 16), merge_block(data[12:16], 16)))
 
 
-if __name__ == '__main__':
-    bin_filename = "peanut.bin"
+def merge(data, width=8):
+    merged_data = []
+    block_nmb = 0
+    if width == 8:
+        block_nmb = int(len(data))
+        for i in range(block_nmb):
+            merged_data.extend(merge_block(data[i], 8))
+    if width == 16:
+        block_nmb = int(len(data)/4)
+
+        for i in range(block_nmb):
+            merged_data.extend(merge_block(data[i*4:i*4+4], 16))
+    if width == 32:
+        block_nmb = int(len(data)/16)
+        for i in range(block_nmb):
+            merged_data.extend(merge_block(data[i*16:i*16+16], 32))
+    print("Merged {0} tiles block".format(str(block_nmb)))
+    print(merged_data)
+    return merged_data
+
+
+def bin2png(bin_filename, wanted_width=8):
     if len(sys.argv) >= 2:
         bin_filename = str(sys.argv[1])
 
@@ -62,12 +76,7 @@ if __name__ == '__main__':
             wanted_width = int(sys.argv[2])
         except ValueError:
             sys.stderr.write("Second argument must be int")
-    if len(sys.argv) >= 4:
-        try:
-            wanted_height = int(sys.argv[3])
-        except ValueError:
-            sys.stderr.write("Third argument must be int")
-    bin_content = []
+
     with open(bin_filename, 'rb') as bin_file:
         bin_content = bin_file.read()
     print(len(bin_content))
@@ -90,9 +99,13 @@ if __name__ == '__main__':
     img_size = len(colors_aligned)
     background_data = numpy.asarray(colors_aligned, dtype=numpy.uint8)
 
-    background_data = background_data.reshape([wanted_width,int(img_size/wanted_width),4])
+    print(background_data.shape)
+    background_data = background_data.reshape([int(len(background_data)/wanted_width), wanted_width, 4])
+    print(background_data.shape)
 
     mode = "RGBA"
-    print(background_data.shape)
     im = Image.fromarray(background_data, mode)
     im.save(bin_filename.replace('.bin', '.png'))
+
+if __name__ == '__main__':
+    bin2png("../data/Whaleposter.bin", 32)

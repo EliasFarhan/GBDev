@@ -7,9 +7,9 @@
 
 
 #include <stdlib.h>
-#include "../game_screen.h"
-#include "../physics.h"
-#include "../box_collision.h"
+#include "../src/game_screen.h"
+#include "../src/physics.h"
+#include "../src/box_collision.h"
 #define BOX3LENGTH 6
 
 size_t boxes_lvl3_length = BOX3LENGTH;

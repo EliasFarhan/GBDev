@@ -7,9 +7,9 @@
 
 
 #include <stdlib.h>
-#include "../game_screen.h"
-#include "../box_collision.h"
-#include "../sound.h"
+#include "../src/game_screen.h"
+#include "../src/box_collision.h"
+#include "../src/sound.h"
 
 #define BOX5LENGTH 4
 
