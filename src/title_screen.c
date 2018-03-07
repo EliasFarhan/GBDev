@@ -4,6 +4,7 @@
 
 //title screen image
 extern unsigned char title_screen_tiledata[];
+extern unsigned char title_screen_tilemap[];
 extern unsigned char press_start_tiledata[];
 extern unsigned char press_start_tilemap[];
 
@@ -13,8 +14,11 @@ extern unsigned char * title_song_Data[];
 
 void title_graphics(UBYTE pstart) NONBANKED {
 	UBYTE i;
+
 	SWITCH_ROM_MBC1(3);
+
 	draw_image(title_screen_tiledata);
+
 	//Show PRESS START
 	SWITCH_ROM_MBC1(5);
 	for(i = 0U; i != 10U;i++)
@@ -49,16 +53,17 @@ void title_graphics(UBYTE pstart) NONBANKED {
 
 void title_screen() NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
-
 	DISPLAY_OFF;
 	HIDE_SPRITES;
 	HIDE_WIN;
-	HIDE_BKG;
+	SHOW_BKG;
 	ENABLE_RAM_MBC1;
+
 	SWITCH_ROM_MBC1(5);
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
 	gbt_play(title_song_Data, 0x08U, 0x01U);
 	gbt_loop(0x01U);
+	SHOW_BKG;
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
@@ -70,7 +75,7 @@ void title_screen() NONBANKED {
 		}
 		title_graphics(pstart);
 		counter++;
-		if(counter == 2)
+		if(counter == 2U)
 		{
 			pstart = !pstart;
 			counter = 0;

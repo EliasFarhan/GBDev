@@ -725,7 +725,8 @@ void game_screen() NONBANKED
 		wait_vbl_done();
 		keys = joypad();
 		manage_input();
-		if(!(player.booleanState & HASGAMEOVER) && !(player.booleanState & HASVICTORY))
+		if(!(player.booleanState & HASGAMEOVER)
+				&& !(player.booleanState & HASVICTORY))
 		{
 			manage_animation();
 			manage_physics(&player);

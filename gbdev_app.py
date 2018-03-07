@@ -57,9 +57,10 @@ class ImageManager():
             return ()
 
     def reload_img(self, filename):
-        self.textureID_map.pop(filename)
-        self.texture_data_map.pop(filename)
-        self.imgs_size_map.pop(filename)
+        if filename in self.textureID_map.keys():
+            self.textureID_map.pop(filename)
+            self.texture_data_map.pop(filename)
+            self.imgs_size_map.pop(filename)
         self.load_image(filename)
 
 
