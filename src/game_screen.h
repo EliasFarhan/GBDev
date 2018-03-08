@@ -92,10 +92,12 @@ typedef struct{
 	KEY* key;
 
 } PLAYER;
+
 typedef struct
 {
 	UBYTE timer;
 } WHITEFUR;
+
 typedef struct
 {
 	Box box;
@@ -106,10 +108,11 @@ typedef struct
 	UBYTE minX;
 	UBYTE dead;
 } ENEMY;
+
 typedef struct
 {
 	Box* boxes;
-	size_t boxes_length;
+	const size_t boxes_length;
 	unsigned char* LvlTileMap;
 	LOCK* lock;
 	KEY* key;

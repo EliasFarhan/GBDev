@@ -9,107 +9,105 @@
 #include <stdlib.h>
 #include "../src/game_screen.h"
 #include "../src/box_collision.h"
-#include "../src/sound.h"
+#include "../src/physics.h"
 
-#define BOX5LENGTH 4
 
-size_t boxes_lvl5_length = BOX5LENGTH;
+extern const size_t boxes_lvl5_length;// = BOX2LENGTH;
 
-Box box_lvl5[BOX5LENGTH] =
+extern const Box box_lvl5[];/* =
 {
-		{64U,96U, 40U, 40U},
-		{104U,96U, 56U, 8U},
-		{72U, 128U, 8U, 32U},
-		{32U, 144U, 128U, 16U}
+		{32U,104U, 136U, 8U},
+		{32U,104U, 8U, 96U},
+		{120U,104U, 32U, 24U}
+
+};*/
+ENEMY enemy_lvl5 []= {
+		{{72U, 96U, 8U, 9U}, 1,0U,0U, 120U, 44U}
 };
-LOCK locks_lvl5[1] =
+UBYTE enemies_nb_lvl5 = 1U;
+extern const unsigned char Lvl5TileMap[];/* =
 {
-	{&(box_lvl5[2]), 1U}
-};
-const unsigned char Lvl5TileMap[] =
-{
-6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,12,14,12, 6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,
+5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+5,12,14,12, 3,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
+5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+5,15,17,12, 3,12,14,12,14,12,14,12,14,12,14,15,17,12,14,3,
+5,16,18,11, 3,11,13,11,13,11,13,11,13,11,13,16,18,11,13,3,
+5,12,14,12, 3,12,14,19,21,27,29,12,14,12,14,12,14,12,14,3,
+5,11,13,11, 3,11,13,20,22,28,30,11,13,11,13,11,13,11,13,3,
+5,12,14,12, 3,12,14,23,25,31,33,12,14,12,14,12,14,12,14,3,
+5,11,13,11, 3,11,13,24,26,32,34,11,13,11,13,11,13,11,13,11,
+5,12,14,12, 3,12,14,12,14,12,14,12,14,12,14, 2, 6, 6, 6,3,
+5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13, 6, 6, 6, 6,3,
+5,12,14,12, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,3,
 5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-5,12,15,17,14,12,14,12,14,12,14,12,14,12,14,12,15,17,14,12,
-5,11,16,18,13,11,13,11,13,11,13,11,13,11,13,11,16,18,13,11,
+5,15,17,12,14,12,14,12,14,12,14,12,14,12,14,15,17,12,14,3,
+5,16,18,11,13,11,13,11,13,11,13,11,13,11,13,16,18,11,13,3,
 5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
-5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
-5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
-5,11,13,11,13,11,13,11,2,6,6,6,3,11,13,11,13,11,13,11,
-5,12,14,12,14,12,14,12,6,6,6,6,3,12,14,12,14,12,14,12,
-5,11,13,11,13,11,13,11,6,6,6,6,3,11,13,11,13,11,13,11,
-5,12,14,12,14,12,14,12,6,6,6,6,3,12,14,12,14,12,14,12,
-5,11,13,11,13,11,13,11,6,6,6,6,6, 6, 6, 6, 6, 6, 6,3,
-5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
-5,11,15,17,13,11,13,11,13,11,13,11,13,11,13,11,15,17,13,11,
-5,12,16,18,14,12,14,12,14,12,14,12,14,12,14,12,16,18,14,12,
-5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
-5,12,14,12,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-6,11,13,11,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
-};
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+};*/
 
-void init_lvl5()
-{
-
-}
 void manage_physics_lvl5(PLAYER* player)
 {
-	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-9U )
-	{
-		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
-		{
 
-			player->box.y = 9U+PLAYER_SIZE;
-			if(player->state == IDLE)
-			{
-				player->state = JUMP;
-
-			}
-			switch_to_level(LEVEL3);
-		}
-	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == 1 )
+	if(player->box.x == 136U && player->box.y == 80U &&
+			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
 	{
 
-		player->box.x = 9U;
+		player->newX = 0U;
+		player->newY = 80U;
+		player->booleanState = player->booleanState | TRANSITIONNING;
+		player->state = CROUCHTRANSITIONIN;
+		player->timer = 0U;
+		player->img_index = 0U;
 
-		switch_to_level(LEVEL6);
+		player->nextLevel = LEVEL6;
 
-	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == 1 )
+	}
+	else if(player->box.x == 136U && player->box.y == 136U &&
+			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
 	{
 
-		player->box.x = 9U;
+		player->newX = 0U;
+		player->newY = 136U;
+		player->booleanState = player->booleanState | TRANSITIONNING;
+		player->state = CROUCHTRANSITIONIN;
+		player->timer = 0U;
+		player->img_index = 0U;
 
-		switch_to_level(LEVEL6);
+		player->nextLevel = LEVEL6;
 
-	}else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl5[0].box))
+	}
+	else if(player->box.x >= 8U && player->box.x <= 16U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
 	{
-		player->key->box.x = player->key->originX;
-		player->key->box.y = player->key->originY;
-		player->key->used = 1U;
-		player->key = NULL;
-		locks_lvl5[0].box->x = 0U;
-		locks_lvl5[0].box->y = 0U;
-		locks_lvl5[0].box->w = 0U;
-		locks_lvl5[0].box->h = 0U;
-		locks_lvl5[0].locked = 0U;
-		play_sound(SOUND_UNLOCK);
+
+		player->box.y = 135U;
+		switch_to_level(LEVEL3);
+	}
+	else if(player->box.x >= 40U && player->box.x <= 48U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
+	{
+
+		player->box.y = 135U;
+		switch_to_level(LEVEL3);
+	}
+	if(checkCollision(&(enemy_lvl5[0].box), &(player->box)))
+	{
+		manage_enemy_collision(player, (ENEMY*) enemy_lvl5);
 	}
 }
 void reset_lvl5()
 {
-	locks_lvl5[0].locked = 1U;
-	//{72U, 128U, 8U, 32U},
-	locks_lvl5[0].box->x = 72U;
-	locks_lvl5[0].box->y = 128U;
-	locks_lvl5[0].box->w = 8U;
-	locks_lvl5[0].box->h = 32U;
+	enemy_lvl5[0].dead = 0U;
 }
 
 Level lvl5 = {
 		box_lvl5,
 		boxes_lvl5_length,
 		Lvl5TileMap,
-		locks_lvl5
+		NULL,
+		NULL,
+		enemy_lvl5
+
 };
 
 

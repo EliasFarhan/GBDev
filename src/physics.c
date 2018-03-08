@@ -94,7 +94,7 @@ void manage_static_physics(PLAYER* player)
 	tmp_box.w = player->box.w;
 	tmp_box.h = player->box.h;
 	contact = 0;
-	for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+	for(i = 0; i != levels[currentLvl]->boxes_length;i++)
 	{
 		if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i])) ||
 				player->box.y >= 144U-GROUND_HEIGHT)
@@ -332,6 +332,7 @@ void manage_physics(PLAYER* player)
 	{
 		manage_climbwalk(player);
 	}
+
 	manage_level_physics(player);
 	manage_key_physics(player);
 

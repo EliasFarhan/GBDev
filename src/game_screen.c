@@ -58,6 +58,7 @@ UBYTE i;
 WHITEFUR whiteFur;
 
 void manage_physics(PLAYER* player);
+
 void reset_lvl1();
 void reset_lvl2();
 void reset_lvl3();
@@ -242,7 +243,7 @@ void manage_input() NONBANKED
 		if(keys & J_A || keys & J_B || keys & J_START)
 		{
 			finish = 1U;
-			currentLvl = LEVEL1;
+			currentLvl = LEVEL6;
 			gbt_stop();
 		}
 	}
@@ -324,7 +325,7 @@ void set_sprites() NONBANKED
 		sprite_index++;
 	}
 	//SHOW WHITEFUR
-	if(currentLvl == LEVEL1)
+	if(currentLvl == LEVEL6)
 	{
 		for (i = 0U; i != 8U; i++)
 		{
@@ -390,7 +391,7 @@ void set_sprites() NONBANKED
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
 		sprite_index += 7;
-					}
+	}
 	//SHOW ENEMIES
 	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
@@ -591,7 +592,7 @@ void set_sprites() NONBANKED
 
 void manage_animation() NONBANKED
 {
-	if(currentLvl == LEVEL1)
+	if(currentLvl == LEVEL6)
 	{
 		whiteFur.timer++;
 		if(whiteFur.timer == 20U)
@@ -716,7 +717,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL1;
+	currentLvl = LEVEL6;
 	init_screen();
 
 	finish = 0U;
@@ -729,6 +730,7 @@ void game_screen() NONBANKED
 				&& !(player.booleanState & HASVICTORY))
 		{
 			manage_animation();
+			SWITCH_ROM_MBC1(6);
 			manage_physics(&player);
 		}
 		if (player.state == DEAD)
@@ -737,7 +739,7 @@ void game_screen() NONBANKED
 			if(player.timer == 60U)
 			{
 				finish = 1U;
-				currentLvl = LEVEL1;
+				currentLvl = LEVEL6;
 				gbt_stop();
 				player.timer = 0U;
 			}
@@ -781,13 +783,12 @@ void init_screen() NONBANKED
 	set_bkg_data(1U, TileEnvironmentLength, tile_environment);
 	set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
 	set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, tile_whale_poster);
-
+	SWITCH_ROM_MBC1(6);
 	//Background
 	for(i = 0; i != 18; i++)
 	{
 		for(j = 0; j!= 20; j++)
 		{
-
 			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[i*20+j]);
 		}
 	}

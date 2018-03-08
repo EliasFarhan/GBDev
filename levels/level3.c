@@ -10,11 +10,11 @@
 #include "../src/game_screen.h"
 #include "../src/physics.h"
 #include "../src/box_collision.h"
-#define BOX3LENGTH 6
 
-size_t boxes_lvl3_length = BOX3LENGTH;
 
-const Box box_lvl3[BOX3LENGTH] =
+extern const size_t boxes_lvl3_length;// = BOX3LENGTH;
+
+extern const Box box_lvl3[];/* =
 {
 
 		{32U,144U, 8U, 48U},
@@ -23,8 +23,8 @@ const Box box_lvl3[BOX3LENGTH] =
 		{56U,144U, 96U, 8U},
 		{120U,96U, 36U, 40U},
 		{0U,64U, 40U, 8U},
-};
-const unsigned char Lvl3TileMap[] =
+};*/
+extern const unsigned char Lvl3TileMap[];/* =
 {
 	6,12,14,12,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 	5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
@@ -44,14 +44,10 @@ const unsigned char Lvl3TileMap[] =
 	5,16,18,11, 6,11,13,11,13,11,13,11,13,11,13,11,16,18,13,11,
 	5,12,14,12, 6,12,14, 2, 6, 6, 4,12,14,12,14,12,14,12,14,12,
 	6,11,13,11, 6,11,13, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
-};
+};*/
 ENEMY enemy_lvl3 []= {
 		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
 };
-void init_lvl3()
-{
-
-}
 void manage_physics_lvl3(PLAYER* player)
 {
 	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-9U )
@@ -62,7 +58,7 @@ void manage_physics_lvl3(PLAYER* player)
 			player->box.y = 8U+PLAYER_SIZE;
 			if(player->state == IDLE)
 				player->state = JUMP;
-			switch_to_level(LEVEL2);
+			switch_to_level(LEVEL5);
 		}
 	}else if(player->box.x >= 38U && player->box.x <= 46U && player->box.y > 144U-9U )
 	{
@@ -72,7 +68,7 @@ void manage_physics_lvl3(PLAYER* player)
 			player->box.y = 8U+PLAYER_SIZE;
 			if(player->state == IDLE)
 				player->state = JUMP;
-			switch_to_level(LEVEL2);
+			switch_to_level(LEVEL5);
 		}
 	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y == 56U &&
 			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
@@ -101,7 +97,7 @@ void manage_physics_lvl3(PLAYER* player)
 		if(player->state == JUMP)
 			player->vely = -3;
 		player->box.y = 135U;
-		switch_to_level(LEVEL5);
+		switch_to_level(LEVEL1);
 	}
 	if(checkCollision(&(enemy_lvl3[0].box), &(player->box)))
 	{

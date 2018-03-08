@@ -5,122 +5,78 @@
  *      Author: efarhan
  */
 
+
 #include <stdlib.h>
 #include "../src/game_screen.h"
 #include "../src/box_collision.h"
-#include "../src/physics.h"
+#include "../src/sound.h"
 
-#define BOX1LENGTH 4U
 
-size_t boxes_lvl1_length = BOX1LENGTH;
+extern const size_t boxes_lvl1_length;// = BOX5LENGTH;
 
-Box box_lvl1[BOX1LENGTH] =
+extern Box box_lvl1[];/* =
 {
-	{72U, 136U, 8U, 48U},
-	{48U, 136U, 24U, 48U},
-	{8U, 88U, 96U, 8U },
-	{72U, 72U, 8U, 56U },
-};
-LOCK locks_lvl1[1] =
+		{64U,96U, 40U, 40U},
+		{104U,96U, 56U, 8U},
+		{72U, 128U, 8U, 32U},
+		{32U, 144U, 128U, 16U}
+};*/
+extern LOCK locks_lvl1[];/* =
 {
-	{&(box_lvl1[0]), 1U}
-};
-/*#define ENEMY1LENGTH 1U
-ENEMY enemy_lvl1 [ENEMY1LENGTH] = {
-		{{24U, 80U, 16U, 16U}, 1,0U, 0U, 72U, 8U}
-};
-UBYTE enemies_nb_lvl1 = ENEMY1LENGTH;*/
-
-unsigned char Lvl1TileMap[] = {
-	6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,12,14,12,14,12,14,3,
-	5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,11,13,11,13,11,13,3,
-	5,12,14,12,14,12,14,12,14, 3,14,12,14,12,14,12,14,12,14,3,
-	5,11,13,11,13,11,13,11,13, 3,13,11,13,11,13,11,13,11,13,3,
-	5,12,14,15,17,12,14,12,14, 3,14,12,14,15,17,12,14,12,14,3,
-	5,11,13,16,18,11,13,11,13, 3,13,11,13,16,18,11,13,11,13,3,
-	5,12,14,12,14,12,14,12,14, 3,14,12,14,12,14,12,14,12,14,3,
-	5,11,13,11,13,11,13,11,13, 3,13,11,13,11,13,11,13,11,13,3,
-	5,12,14,12,14,12,14,12,14, 3,14,12,14,12,14,12,14,12,14,3,
-   13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-	5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4,12,14,12,14,12,14,3,
-	5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-	5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
-	5,11,13,15,17,11,13,11,13,11,13,11,13,15,17,11,13,11,13,3,
-	5,12,14,16,18,12,14,12,14,12,14,12,14,16,18,12,14,12,14,3,
-	5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-   14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
-	6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,1
-};
-
-
-
-
+	{&(box_lvl1[2]), 1U}
+};*/
+extern const unsigned char Lvl1TileMap[];/* =
+{
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+5,12,15,17,14,12,14,12,14,12,14,12,14,12,14,12,15,17,14,12,
+5,11,16,18,13,11,13,11,13,11,13,11,13,11,13,11,16,18,13,11,
+5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
+5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
+5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
+5,11,13,11,13,11,13,11,2,6,6,6,3,11,13,11,13,11,13,11,
+5,12,14,12,14,12,14,12,6,6,6,6,3,12,14,12,14,12,14,12,
+5,11,13,11,13,11,13,11,6,6,6,6,3,11,13,11,13,11,13,11,
+5,12,14,12,14,12,14,12,6,6,6,6,3,12,14,12,14,12,14,12,
+5,11,13,11,13,11,13,11,6,6,6,6,6, 6, 6, 6, 6, 6, 6,3,
+5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
+5,11,15,17,13,11,13,11,13,11,13,11,13,11,13,11,15,17,13,11,
+5,12,16,18,14,12,14,12,14,12,14,12,14,12,14,12,16,18,14,12,
+5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,
+5,12,14,12,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,11,13,11,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+};*/
 
 void manage_physics_lvl1(PLAYER* player)
 {
+	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-9U )
+	{
+		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
+		{
 
-	if(player->box.x == 8U && player->box.y == 136U && (player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1 )
+			player->box.y = 9U+PLAYER_SIZE;
+			if(player->state == IDLE)
+			{
+				player->state = JUMP;
+
+			}
+			switch_to_level(LEVEL3);
+		}
+	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == 1 )
 	{
 
-		player->newX = 160U-PLAYER_SIZE;
-		player->newY = 136U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		player->box.x = 9U;
 
-		player->nextLevel = LEVEL2;
-		//switch_to_level(LEVEL2);
+		switch_to_level(LEVEL2);
 
-	}else if(player->box.x >= 104U && player->box.x <= 136U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
+	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == 1 )
 	{
 
-		player->box.y = 135U;
-		switch_to_level(LEVEL4);
-	}else if(player->box.x == 8U && player->box.y == 80U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1 )
-	{
+		player->box.x = 9U;
 
-		player->newX = 160U-PLAYER_SIZE;
-		player->newY = 80U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		switch_to_level(LEVEL2);
 
-		player->nextLevel = LEVEL2;
-
-	}else if(player->box.x == 72U-PLAYER_SIZE && player->box.y == 80U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
-	{
-
-		player->newX = 72U-2U;
-		player->newY = 80U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
-
-		player->nextLevel = NOLEVEL;
-		//switch_to_level(LEVEL2);
-
-	}
-	else if(player->box.x == 80U && player->box.y == 80U &&
-			(player->state == CROUCHWALK || player->state == CROUCH)&& player->dirX == -1 )
-	{
-
-		player->newX = 72U-PLAYER_SIZE+8U;
-		player->newY = 80U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
-
-		player->nextLevel = NOLEVEL;
-		//switch_to_level(LEVEL2);
-
-	}
-	if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
+	}else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
 	{
 		player->key->box.x = player->key->originX;
 		player->key->box.y = player->key->originY;
@@ -131,33 +87,24 @@ void manage_physics_lvl1(PLAYER* player)
 		locks_lvl1[0].box->w = 0U;
 		locks_lvl1[0].box->h = 0U;
 		locks_lvl1[0].locked = 0U;
-		victory();
-		SWITCH_ROM_MBC1(6);
-
+		play_sound(SOUND_UNLOCK);
 	}
-	/*if(checkCollision(&(enemy_lvl1[0].box), &(player->box)))
-	{
-		manage_enemy_collision(player, (ENEMY*) enemy_lvl1);
-	}*/
-
 }
 void reset_lvl1()
 {
-	//enemy_lvl1[0].dead = 0U;
 	locks_lvl1[0].locked = 1U;
-
-	locks_lvl1[0].box->x = 72U;
-	locks_lvl1[0].box->y = 136U;
+	//{72U, 128U, 8U, 32U},
+	locks_lvl1[0].box->x = 96U;//96U,128U,16U,32U
+	locks_lvl1[0].box->y = 128U;
 	locks_lvl1[0].box->w = 8U;
-	locks_lvl1[0].box->h = 48U;
+	locks_lvl1[0].box->h = 32U;
 }
+
 Level lvl1 = {
 		box_lvl1,
 		boxes_lvl1_length,
 		Lvl1TileMap,
-		locks_lvl1,
-		NULL,
-		//enemy_lvl1,
-
-
+		locks_lvl1
 };
+
+

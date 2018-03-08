@@ -4,13 +4,16 @@ BINS	= SRJailbreak.gb
 BONUS =  data/kwakwa_logo.o src/kwakwa_screen.o data/press_start.o src/title_screen.o src/title.o src/credits.o data/staffroll.o data/title_screen_music.o
 SOURCE =  src/main.o src/box_collision.o src/sound.o src/game_screen.o src/physics.o src/gbt_player.o src/gbt_player_bank1.o
 ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o data/music_output.o
-LVLS = levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o
+LVLS = data/map/level1_map.o data/map/level2_map.o data/map/level3_map.o data/map/level4_map.o data/map/level5_map.o data/map/level6_map.o levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o 
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
 
 levels/%.o:	levels/%.c
 	$(CC) -Wa-l -Wf-bo6 -c -o $@ $<
-	
+
+data/map/%.o: data/map/%.c
+	$(CC) -Wa-l -Wf-bo6 -c -o $@ $<
+
 %.o:	%.c
 	$(CC) -c -o $@ $<
 

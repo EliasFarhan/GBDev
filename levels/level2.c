@@ -11,90 +11,80 @@
 #include "../src/box_collision.h"
 #include "../src/physics.h"
 
-#define BOX2LENGTH 3
 
-size_t boxes_lvl2_length = BOX2LENGTH;
+extern const size_t boxes_lvl2_length;
 
-const Box box_lvl2[BOX2LENGTH] =
+extern const Box box_lvl2[];/* =
 {
-		{32U,104U, 136U, 8U},
-		{32U,104U, 8U, 96U},
-		{120U,104U, 32U, 24U}
+		{104U,88U, 48U, 8U},
+		{96U,136U, 40U, 8U},
+		{8U,96U, 144U, 8U},
+		{0U, 136, 16U, 8U}
+};*/
 
+KEY key_lvl2[1]= {
+		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL6, 0U},
 };
 ENEMY enemy_lvl2 []= {
-		{{72U, 96U, 8U, 9U}, 1,0U,0U, 120U, 44U}
+		{{56U, 136U, 8U, 9U}, 1,0U,0U, 96U, 40U}
 };
-UBYTE enemies_nb_lvl2 = 1U;
-const unsigned char Lvl2TileMap[] =
+extern const unsigned char Lvl2TileMap[];/* =
 {
-6,12,14,12, 6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,
-5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-5,12,14,12, 3,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
-5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-5,15,17,12, 3,12,14,12,14,12,14,12,14,12,14,15,17,12,14,3,
-5,16,18,11, 3,11,13,11,13,11,13,11,13,11,13,16,18,11,13,3,
-5,12,14,12, 3,12,14,19,21,27,29,12,14,12,14,12,14,12,14,3,
-5,11,13,11, 3,11,13,20,22,28,30,11,13,11,13,11,13,11,13,3,
-5,12,14,12, 3,12,14,23,25,31,33,12,14,12,14,12,14,12,14,3,
-5,11,13,11, 3,11,13,24,26,32,34,11,13,11,13,11,13,11,13,11,
-5,12,14,12, 3,12,14,12,14,12,14,12,14,12,14, 2, 6, 6, 6,3,
-5,11,13,11, 3,11,13,11,13,11,13,11,13,11,13, 6, 6, 6, 6,3,
-5,12,14,12, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,3,
-5,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
-5,15,17,12,14,12,14,12,14,12,14,12,14,12,14,15,17,12,14,3,
-5,16,18,11,13,11,13,11,13,11,13,11,13,11,13,16,18,11,13,3,
-5,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,
-6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
-};
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+14,15,17,12,14,12,14,12,14,12,14,12,14,12,14,15,17,12,14,3,
+13,16,18,11,13,11,13,11,13,11,13,11,13,11,13,16,18,11,13,3,
+14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
+13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+14,12,14,12,14,12,14,51,53,59,61,12,14,12,14,12,14,12,14,3,
+13,11,13,11,13,11,13,52,54,60,62,11,13,11,13,11,13,11,13,3,
+14,12,14,12,14,12,14,55,57,63,65,12,14,12,14,12,14,12,14,3,
+13,11,13,11,13,11,13,56,58,64,66,11,13,11,13,11,13,11,13,3,
+14,12,14,12,14,12,14,12,14,12,14,12,14,2,6,6,6,6,6,3,
+5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,3,
+14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,3,
+13,15,17,11,13,11,11,13,13,11,13,11,13,11,13,15,17,11,13,3,
+14,16,18,12,14,12,14,12,14,12,14,12,14,12,14,16,18,12,14,3,
+13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
+6,6,14,12,14,12,14,12,14,12,14,12,6,6,6,6,6,13,14,3,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6
+};*/
 
-void init_lvl2()
-{
-
-}
 void manage_physics_lvl2(PLAYER* player)
 {
+	if(player->box.x >= 104U && player->box.x <= 136U && player->box.y > 144U-9U )
+	{
+		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE || player->state == WALK)
+		{
 
-	if(player->box.x == 136U && player->box.y == 80U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
+			player->box.y = 8U+PLAYER_SIZE;
+			if(player->state == IDLE || player->state == WALK)
+			{
+				player->state = JUMP;
+				player->vely = 1U;
+			}
+			switch_to_level(LEVEL4);
+		}
+	}else if(player->box.x == 8U && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == -1 )
 	{
 
-		player->newX = 0U;
-		player->newY = 80U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		player->box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
-		player->nextLevel = LEVEL1;
+		switch_to_level(LEVEL1);
 
-	}
-	else if(player->box.x == 136U && player->box.y == 136U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
+	}else if(player->box.x == 8U && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == -1 )
 	{
 
-		player->newX = 0U;
-		player->newY = 136U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		player->box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
-		player->nextLevel = LEVEL1;
+		switch_to_level(LEVEL1);
 
 	}
-	else if(player->box.x >= 8U && player->box.x <= 16U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
+	else if(player->key == NULL && !key_lvl2[0].used &&checkCollision(&(player->box), &(key_lvl2[0].box)))
 	{
-
-		player->box.y = 135U;
-		switch_to_level(LEVEL3);
+		player->key = key_lvl2;
 	}
-	else if(player->box.x >= 40U && player->box.x <= 48U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
-	{
 
-		player->box.y = 135U;
-		switch_to_level(LEVEL3);
-	}
 	if(checkCollision(&(enemy_lvl2[0].box), &(player->box)))
 	{
 		manage_enemy_collision(player, (ENEMY*) enemy_lvl2);
@@ -103,6 +93,10 @@ void manage_physics_lvl2(PLAYER* player)
 void reset_lvl2()
 {
 	enemy_lvl2[0].dead = 0U;
+
+	key_lvl2[0].used = 0U;
+	key_lvl2[0].box.x = key_lvl2[0].originX;
+	key_lvl2[0].box.y = key_lvl2[0].originY;
 }
 
 Level lvl2 = {
@@ -110,7 +104,7 @@ Level lvl2 = {
 		boxes_lvl2_length,
 		Lvl2TileMap,
 		NULL,
-		NULL,
+		key_lvl2,
 		enemy_lvl2
 
 };
