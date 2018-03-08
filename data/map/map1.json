@@ -78,12 +78,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":8.18181818181819,
-                 "x":95.8181818181818,
+                 "width":8.18182,
+                 "x":95.8182,
                  "y":56
                 }, 
                 {
-                 "height":16,
+                 "height":8,
                  "id":16,
                  "name":"Boxlvl1",
                  "rotation":0,
@@ -237,7 +237,7 @@
                  "y":368
                 }, 
                 {
-                 "height":72,
+                 "height":64,
                  "id":31,
                  "name":"Boxlvl6",
                  "rotation":0,
@@ -296,12 +296,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
-                 "x":96,
+                 "width":8,
+                 "x":112,
                  "y":96
                 }, 
                 {
-                 "height":120,
+                 "height":96,
                  "id":36,
                  "name":"Boxlvl1",
                  "rotation":0,
@@ -328,7 +328,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":37,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.3",

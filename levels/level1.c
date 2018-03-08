@@ -25,6 +25,7 @@ extern LOCK locks_lvl1[];/* =
 {
 	{&(box_lvl1[2]), 1U}
 };*/
+extern const Box box_locks_lvl1_value[];
 extern const unsigned char Lvl1TileMap[];/* =
 {
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -94,10 +95,10 @@ void reset_lvl1()
 {
 	locks_lvl1[0].locked = 1U;
 	//{72U, 128U, 8U, 32U},
-	locks_lvl1[0].box->x = 96U;//96U,128U,16U,32U
-	locks_lvl1[0].box->y = 128U;
-	locks_lvl1[0].box->w = 8U;
-	locks_lvl1[0].box->h = 32U;
+	locks_lvl1[0].box->x = box_locks_lvl1_value[0].x;//96U,128U,16U,32U
+	locks_lvl1[0].box->y = box_locks_lvl1_value[0].y;
+	locks_lvl1[0].box->w = box_locks_lvl1_value[0].w;
+	locks_lvl1[0].box->h = box_locks_lvl1_value[0].h;
 }
 
 Level lvl1 = {

@@ -110,6 +110,7 @@ def main():
             if imgui.begin_menu("File", True):
                 open_gbtd, selected_none = imgui.menu_item("Open GBTD", None, False, True)
                 open_gbtk, selected_none = imgui.menu_item("Open GBTK", None, False, True)
+
                 clicked_quit, selected_quit = imgui.menu_item("Quit", 'Cmd+Q', False, True)
 
                 if clicked_quit:

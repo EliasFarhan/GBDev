@@ -125,7 +125,7 @@
   <object id="17" name="Boxlvl2" x="160" y="128" width="16" height="16"/>
   <object id="18" name="Boxlvl2" x="256" y="128" width="40" height="16"/>
   <object id="9" name="Boxlvl1" x="95.8182" y="56" width="8.18182" height="40"/>
-  <object id="16" name="Boxlvl1" x="32" y="128" width="128" height="16"/>
+  <object id="16" name="Boxlvl1" x="32" y="128" width="128" height="8"/>
   <object id="13" name="Boxlvl1" x="104" y="88" width="56" height="8"/>
   <object id="19" name="Boxlvl3" x="8" y="200" width="32" height="8"/>
   <object id="20" name="Boxlvl3" x="120" y="200" width="40" height="40"/>
@@ -139,7 +139,7 @@
   <object id="28" name="Boxlvl5" x="32" y="384" width="120" height="8"/>
   <object id="29" name="Boxlvl5" x="120" y="368" width="32" height="24"/>
   <object id="30" name="Boxlvl6" x="160" y="368" width="104" height="8"/>
-  <object id="31" name="Boxlvl6" x="232" y="296" width="8" height="72"/>
+  <object id="31" name="Boxlvl6" x="232" y="296" width="8" height="64"/>
   <object id="35" name="Boxlvl6" x="208" y="376" width="24" height="48"/>
   <object id="33" name="Locklvl6" x="232" y="376" width="8" height="48">
    <properties>
@@ -147,13 +147,13 @@
     <property name="size" type="int" value="4"/>
    </properties>
   </object>
-  <object id="34" name="Locklvl1" x="104" y="96" width="8" height="32">
+  <object id="34" name="Locklvl1" x="112" y="96" width="8" height="32">
    <properties>
     <property name="lock" type="bool" value="true"/>
     <property name="size" type="int" value="2"/>
    </properties>
   </object>
-  <object id="36" name="Boxlvl1" x="32" y="32" width="8" height="120"/>
+  <object id="36" name="Boxlvl1" x="32" y="32" width="8" height="96"/>
  </objectgroup>
  <layer name="Environment" width="40" height="54">
   <data encoding="csv">

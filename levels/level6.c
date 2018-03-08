@@ -25,6 +25,7 @@ extern LOCK locks_lvl6[1];/* =
 {
 	{&(box_lvl6[0]), 1U}
 };*/
+extern Box box_locks_lvl6_value[];
 /*#define ENEMY1LENGTH 1U
 ENEMY enemy_lvl6 [ENEMY1LENGTH] = {
 		{{24U, 80U, 16U, 16U}, 1,0U, 0U, 72U, 8U}
@@ -149,10 +150,10 @@ void reset_lvl6()
 	//enemy_lvl6[0].dead = 0U;
 	locks_lvl6[0].locked = 1U;
 
-	locks_lvl6[0].box->x = 72U;
-	locks_lvl6[0].box->y = 136U;
-	locks_lvl6[0].box->w = 8U;
-	locks_lvl6[0].box->h = 48U;
+	locks_lvl6[0].box->x = box_locks_lvl6_value[0].x;
+	locks_lvl6[0].box->y = box_locks_lvl6_value[0].y;
+	locks_lvl6[0].box->w = box_locks_lvl6_value[0].x;
+	locks_lvl6[0].box->h = box_locks_lvl6_value[0].h;
 }
 
 Level lvl6 = {

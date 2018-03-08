@@ -22,15 +22,19 @@ size_t boxes_lvl1_length = 5;
 Box box_lvl1[5] = 
 {
 {95U,96U,8U,40U},
-{32U,144U,128U,16U},
+{32U,136U,128U,8U},
 {104U,96U,56U,8U},
-{96U,128U,16U,32U},
-{32U,152U,8U,120U}
+{112U,128U,8U,32U},
+{32U,128U,8U,96U}
 };
 LOCK locks_lvl1[1] =
 {
     {&(box_lvl1[3]), 1U}
 };
+const Box box_locks_lvl1_value[1] =
+                {
+                    {112, 128, 8, 32}
+                };
 /*Level lvl1 = {
 &box_lvl1,
  boxes_lvl1_length,

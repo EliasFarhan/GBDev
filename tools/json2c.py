@@ -138,6 +138,10 @@ def json2c(json_filename):
 {
     {&(box_lvl"""+str(i+1)+"""["""+str(locks[i][0][0])+"""]), 1U}
 };\n""")
+                c_file.write("const Box box_locks_lvl" + str(i + 1) + "_value[" + str(len(locks[i])) + """] =
+                {
+                    {""" + ", ".join(map((lambda val : str(val)), boxes[i][locks[i][0][0]])) + """}
+                };\n""")
             c_file.write("/*Level lvl"+str(i+1)+" = {\n&box_lvl"+str(i+1)+",\n boxes_lvl"+str(i+1)+"_length,\n Lvl"+str(i+1)+"TileMap, ")
             if len(locks[i]) == 1:
                 c_file.write("locks_lvl"+str(i+1)+" };*/\n")
