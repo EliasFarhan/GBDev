@@ -52,7 +52,7 @@ void manage_physics_lvl4(PLAYER* player)
 	if(player->box.x == 8U && player->box.y == 136U && (player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1)
 	{
 
-		player->newX = 160U;
+		player->newX = 160U-PLAYER_SIZE;
 		player->newY = 136U;
 
 		player->booleanState = player->booleanState | TRANSITIONNING;
@@ -80,7 +80,7 @@ void manage_physics_lvl4(PLAYER* player)
 			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1 )
 	{
 
-		player->newX = 160U;
+		player->newX = 160U-PLAYER_SIZE;
 		player->newY = 56U;
 		player->booleanState = player->booleanState | TRANSITIONNING;
 		player->state = CROUCHTRANSITIONIN;

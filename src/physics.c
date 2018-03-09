@@ -203,7 +203,7 @@ void manage_climbwalk(PLAYER* player)
 	if(contact == 0)
 	{
 
-		player->box.x += player->dirX*2;
+		player->box.x += player->dirX<<1;
 		player->vely = 1U;
 		player->state = JUMP;
 
@@ -243,7 +243,6 @@ void manage_jumpclimb(PLAYER* player)
 }
 void set_idle(PLAYER* player)
 {
-
 	player->state = IDLE;
 	player->timer = 0U;
 	player->img_index = 0U;
@@ -270,10 +269,11 @@ void manage_jumping(PLAYER* player)
 		if(checkCollision(&(player->box), &(levels[currentLvl]->boxes[i])))
 		{
 
-			if(player->vely >= 0U && player->box.y <=
-					levels[currentLvl]->boxes[i].y-levels[currentLvl]->boxes[i].h+player->vely
-				&& (player->box.x+player->box.w > levels[currentLvl]->boxes[i].x+1U
-						&& player->box.x < levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-1U))
+			if(player->vely >= 0U &&
+					player->box.y <=
+					levels[currentLvl]->boxes[i].y - levels[currentLvl]->boxes[i].h + player->vely
+				&& (player->box.x+player->box.w > levels[currentLvl]->boxes[i].x+2U
+						&& player->box.x < levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-2U))
 			{
 				player->box.y = levels[currentLvl]->boxes[i].y - levels[currentLvl]->boxes[i].h;
 				set_idle(player);
@@ -281,11 +281,11 @@ void manage_jumping(PLAYER* player)
 			}
 			else
 			{
-				if(player->box.x+PLAYER_SIZE == levels[currentLvl]->boxes[i].x+1U)
+				if(player->box.x+PLAYER_SIZE <= levels[currentLvl]->boxes[i].x+2U)
 				{
 					player->box.x = levels[currentLvl]->boxes[i].x-PLAYER_SIZE;
 				}
-				else if( player->box.x == levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-1U)
+				else if( player->box.x >= levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-2U)
 				{
 					player->box.x = levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w;
 				}
