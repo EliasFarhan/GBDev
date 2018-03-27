@@ -21,7 +21,7 @@ const unsigned char Lvl1TileMap[] = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 size_t boxes_lvl1_length = 5;
 Box box_lvl1[5] = 
 {
-{95U,96U,8U,40U},
+{96U,96U,8U,40U},
 {32U,136U,128U,8U},
 {104U,96U,56U,8U},
 {112U,128U,8U,32U},

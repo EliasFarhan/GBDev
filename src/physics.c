@@ -103,10 +103,15 @@ void manage_static_physics(PLAYER* player)
 		}
 
 	}
-	if(contact == 0)
+	if(contact == 0U)
 	{
 		player->state = JUMP;
 		player->vely = 1;
+		player->timer = 0;
+		player->img_index = 0;
+
+		player->booleanState = player->booleanState | HASJUMP;
+
 		return;
 	}
 	//Check if there is a box in front of us
@@ -258,7 +263,7 @@ void manage_jumping(PLAYER* player)
 		if(player->vely > 3U)
 			player->vely = 3U;
 
-		player->timer = 0;
+		player->timer = 0U;
 	}
 	player->box.y += player->vely;
 

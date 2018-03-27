@@ -25,7 +25,7 @@ KEY key_lvl4[1]= {
 		{{32U, 136U, 18U, 16U}, 32U, 136U, LEVEL4, 0U},
 };
 ENEMY enemy_lvl4[1]={
-		{{96U, 96U, 8U, 9U}, 1,0U,0U, 128U, 28U}
+		{{96U, 96U, 6U, 9U}, 1,0U,0U, 128U, 28U}
 };
 extern const unsigned char Lvl4TileMap[];/* =
 {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6,

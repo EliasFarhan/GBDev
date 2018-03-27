@@ -88,7 +88,9 @@ void manage_input() NONBANKED
 				play_sound( SOUND_JUMP );
 				player.booleanState = player.booleanState | HASJUMP;
 			}
-		}else{
+		}
+		else
+		{
 			player.booleanState = player.booleanState & ~HASJUMP;
 		}
 		if (keys & J_B)
@@ -392,7 +394,7 @@ void set_sprites() NONBANKED
 		}
 		sprite_index += 7;
 	}
-	//SHOW ENEMIES
+	//SHOW SEAGULL ENEMIES
 	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
 		SWITCH_ROM_MBC1(6);
@@ -433,6 +435,7 @@ void set_sprites() NONBANKED
 		}
 		sprite_index+=4;
 	}
+	//SHOW KEY LOCK
 	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
 		UBYTE height;
