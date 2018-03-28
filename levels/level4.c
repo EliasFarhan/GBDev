@@ -22,7 +22,7 @@ extern const Box box_lvl4[];/* =
 		{128U, 112U, 8U,112U}
 };*/
 KEY key_lvl4[1]= {
-		{{48U, 136U, 18U, 16U}, 48U, 136U, LEVEL4, 0U},
+		{{40U, 96U, 18U, 16U}, 40U, 96U, LEVEL4, 0U},
 };
 /*
 SEAGULL enemy_lvl4[1]={
