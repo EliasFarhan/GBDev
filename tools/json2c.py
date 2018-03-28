@@ -55,7 +55,7 @@ def tiled2gbtile(tiled_tile):
     return 0
 
 
-def json2c(json_filename):
+def json2c(json_filename, offset):
     with open(json_filename, 'r') as json_file:
         json_content = json_file.read()
     json_obj = json.loads(json_content)
@@ -150,7 +150,7 @@ def json2c(json_filename):
 
 
 def main():
-    json2c("../data/map/map1.json")
+    json2c("../data/map/map1.json", 0)
 
 
 if __name__ == "__main__":

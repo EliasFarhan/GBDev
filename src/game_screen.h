@@ -107,7 +107,7 @@ typedef struct
 	UBYTE maxX;
 	UBYTE minX;
 	UBYTE dead;
-} ENEMY;
+} SEAGULL;
 
 typedef struct
 {
@@ -116,7 +116,7 @@ typedef struct
 	unsigned char* LvlTileMap;
 	LOCK* lock;
 	KEY* key;
-	ENEMY* enemy;
+	SEAGULL* enemy;
 } Level;
 
 

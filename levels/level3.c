@@ -45,7 +45,7 @@ extern const unsigned char Lvl3TileMap[];/* =
 	5,12,14,12, 6,12,14, 2, 6, 6, 4,12,14,12,14,12,14,12,14,12,
 	6,11,13,11, 6,11,13, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 };*/
-ENEMY enemy_lvl3 []= {
+SEAGULL enemy_lvl3 []= {
 		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
 };
 void manage_physics_lvl3(PLAYER* player)
@@ -70,7 +70,7 @@ void manage_physics_lvl3(PLAYER* player)
 				player->state = JUMP;
 			switch_to_level(LEVEL5);
 		}
-	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y == 56U &&
+	}/*else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y == 56U &&
 			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
 	{
 
@@ -83,7 +83,7 @@ void manage_physics_lvl3(PLAYER* player)
 
 		player->nextLevel = LEVEL4;
 
-	}
+	}*/
 	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 104U &&player->box.y <= 136U && player->dirX == 1 )
 	{
 
@@ -101,7 +101,7 @@ void manage_physics_lvl3(PLAYER* player)
 	}
 	if(checkCollision(&(enemy_lvl3[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (ENEMY*) enemy_lvl3);
+		manage_enemy_collision(player, (SEAGULL*) enemy_lvl3);
 	}
 }
 void reset_lvl3()

@@ -22,11 +22,12 @@ extern const Box box_lvl4[];/* =
 		{128U, 112U, 8U,112U}
 };*/
 KEY key_lvl4[1]= {
-		{{32U, 136U, 18U, 16U}, 32U, 136U, LEVEL4, 0U},
+		{{48U, 136U, 18U, 16U}, 48U, 136U, LEVEL4, 0U},
 };
-ENEMY enemy_lvl4[1]={
+/*
+SEAGULL enemy_lvl4[1]={
 		{{96U, 96U, 6U, 9U}, 1,0U,0U, 128U, 28U}
-};
+};*/
 extern const unsigned char Lvl4TileMap[];/* =
 {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6,
  5,12,15,17,14,12,14,12,14,12,14,12,14,12,14,12, 6,15,17,3,
@@ -109,15 +110,15 @@ void manage_physics_lvl4(PLAYER* player)
 	{
 		player->key = key_lvl4;
 	}
-	if(checkCollision(&(enemy_lvl4[0].box), &(player->box)))
+	/*if(checkCollision(&(enemy_lvl4[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (ENEMY*) enemy_lvl4);
-	}
+		manage_enemy_collision(player, (SEAGULL*) enemy_lvl4);
+	}*/
 }
 
 void reset_lvl4()
 {
-	enemy_lvl4[0].dead = 0U;
+	//enemy_lvl4[0].dead = 0U;
 
 	key_lvl4[0].used = 0U;
 	key_lvl4[0].box.x = key_lvl4[0].originX;
@@ -130,7 +131,7 @@ Level lvl4 = {
 		Lvl4TileMap,
 		NULL,
 		key_lvl4,
-		enemy_lvl4
+		NULL//enemy_lvl4
 
 };
 

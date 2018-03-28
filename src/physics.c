@@ -20,7 +20,7 @@ void manage_physics_lvl4(PLAYER* player);
 void manage_physics_lvl5(PLAYER* player);
 void manage_physics_lvl6(PLAYER* player);
 
-void manage_enemy_collision(PLAYER* player, ENEMY* enemy)
+void manage_enemy_collision(PLAYER* player, SEAGULL* enemy)
 {
 	if(enemy->dead)
 	{
@@ -56,29 +56,26 @@ void manage_key_physics(PLAYER* player)
 
 void manage_level_physics(PLAYER* player)
 {
-	if(currentLvl == LEVEL1)
+	switch(currentLvl)
 	{
+	case LEVEL1:
 		manage_physics_lvl1(player);
-
-	} else if(currentLvl == LEVEL2)
-	{
+		break;
+	case  LEVEL2:
 		manage_physics_lvl2(player);
-
-	}else if(currentLvl == LEVEL3)
-	{
+		break;
+	case  LEVEL3:
 		manage_physics_lvl3(player);
-	}
-	else if(currentLvl == LEVEL4)
-	{
+		break;
+	case LEVEL4:
 		manage_physics_lvl4(player);
-	}
-	else if(currentLvl == LEVEL5)
-	{
+		break;
+	case  LEVEL5:
 		manage_physics_lvl5(player);
-	}
-	else if(currentLvl == LEVEL6)
-	{
+		break;
+	case LEVEL6:
 		manage_physics_lvl6(player);
+		break;
 	}
 }
 
@@ -180,7 +177,7 @@ void manage_climbwalk(PLAYER* player)
 		}
 
 	}
-	if(contact == 0)
+	if(contact == 0U)
 	{
 		player->box.y += player->dirY;
 	}
@@ -198,14 +195,14 @@ void manage_climbwalk(PLAYER* player)
 	for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
 	{
 		if(checkCollision(&(tmp_box),  &(levels[currentLvl]->boxes[i]))
-			|| (player->box.x == 160U-GROUND_HEIGHT-PLAYER_SIZE)
-			|| (player->box.x == GROUND_HEIGHT))
+			|| (player->box.x == 160U-GROUND_HEIGHT-PLAYER_SIZE && player->dirX == 1)
+			|| (player->box.x == GROUND_HEIGHT && player->dirX == -1))
 		{
 			contact++;
 		}
 
 	}
-	if(contact == 0)
+	if(contact == 0U)
 	{
 
 		player->box.x += player->dirX<<1;

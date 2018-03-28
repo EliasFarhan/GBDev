@@ -25,7 +25,7 @@ extern const Box box_lvl2[];/* =
 KEY key_lvl2[1]= {
 		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL6, 0U},
 };
-ENEMY enemy_lvl2 []= {
+SEAGULL enemy_lvl2 []= {
 		{{56U, 136U, 8U, 9U}, 1,0U,0U, 96U, 40U}
 };
 extern const unsigned char Lvl2TileMap[];/* =
@@ -87,7 +87,7 @@ void manage_physics_lvl2(PLAYER* player)
 
 	if(checkCollision(&(enemy_lvl2[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (ENEMY*) enemy_lvl2);
+		manage_enemy_collision(player, (SEAGULL*) enemy_lvl2);
 	}
 }
 void reset_lvl2()

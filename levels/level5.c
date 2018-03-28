@@ -21,7 +21,7 @@ extern const Box box_lvl5[];/* =
 		{120U,104U, 32U, 24U}
 
 };*/
-ENEMY enemy_lvl5 []= {
+SEAGULL enemy_lvl5 []= {
 		{{72U, 96U, 8U, 9U}, 1,0U,0U, 120U, 44U}
 };
 UBYTE enemies_nb_lvl5 = 1U;
@@ -92,7 +92,7 @@ void manage_physics_lvl5(PLAYER* player)
 	}
 	if(checkCollision(&(enemy_lvl5[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (ENEMY*) enemy_lvl5);
+		manage_enemy_collision(player, (SEAGULL*) enemy_lvl5);
 	}
 }
 void reset_lvl5()
