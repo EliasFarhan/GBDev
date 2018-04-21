@@ -1,5 +1,7 @@
 import json
 import os
+from os.path import basename
+from os.path import splitext
 from functools import reduce
 
 gb_white_len = 1
@@ -56,6 +58,7 @@ def tiled2gbtile(tiled_tile):
 
 
 def json2c(json_filename, offset):
+
     with open(json_filename, 'r') as json_file:
         json_content = json_file.read()
     json_obj = json.loads(json_content)
@@ -122,35 +125,37 @@ def json2c(json_filename, offset):
 
     for i in range(size[0]*size[1]):
         print(boxes[i])
-        with open(os.path.dirname(json_filename)+"/level"+str(i+1)+"_map.c", "w") as c_file:
+        with open(os.path.dirname(json_filename)+"/level"+str(offset+i+1)+"_map.c", "w") as c_file:
             c_file.write("""#include "../../src/game_screen.h"\n""")
             c_file.write("""# include <stdlib.h>\n""")
-            c_file.write("const unsigned char Lvl"+str(i+1)+"TileMap[] = {"+
+            c_file.write("const unsigned char Lvl"+str(offset+i+1)+"TileMap[] = {"+
                          ",\n".join(map((lambda l : ",".join(map(lambda item: str(item), l))), tiled_map[i]))+"};\n")
-            c_file.write("size_t boxes_lvl"+str(i+1)+"_length = "+str(len(boxes[i]))+";\n")
+            c_file.write("size_t boxes_lvl"+str(offset+i+1)+"_length = "+str(len(boxes[i]))+";\n")
             if len(locks[i]) == 0:
                 #c_file.write("const ")
                 pass
-            c_file.write("Box box_lvl"+str(i+1)+"["+str(len(boxes[i]))+"] = \n")#+str(len(boxes[i]))
-            c_file.write("{\n"+",\n".join(map((lambda l : "{"+",".join(map(lambda item: str(item)+"U", l))+"}"), boxes[i]))+"\n};\n")
+            if len(boxes[i]) > 0:
+                c_file.write("Box box_lvl"+str(offset+i+1)+"["+str(len(boxes[i]))+"] = \n")#+str(len(boxes[i]))
+                c_file.write("{\n"+",\n".join(map((lambda l : "{"+",".join(map(lambda item: str(item)+"U", l))+"}"), boxes[i]))+"\n};\n")
             if len(locks[i]) == 1:
                 c_file.write("LOCK locks_lvl"+str(i+1)+"["+str(len(locks[i]))+"""] =
 {
     {&(box_lvl"""+str(i+1)+"""["""+str(locks[i][0][0])+"""]), 1U}
 };\n""")
-                c_file.write("const Box box_locks_lvl" + str(i + 1) + "_value[" + str(len(locks[i])) + """] =
+                c_file.write("const Box box_locks_lvl" + str(offset+i + 1) + "_value[" + str(len(locks[i])) + """] =
                 {
                     {""" + ", ".join(map((lambda val : str(val)), boxes[i][locks[i][0][0]])) + """}
                 };\n""")
-            c_file.write("/*Level lvl"+str(i+1)+" = {\n&box_lvl"+str(i+1)+",\n boxes_lvl"+str(i+1)+"_length,\n Lvl"+str(i+1)+"TileMap, ")
+            c_file.write("/*Level lvl"+str(offset+i+1)+" = {\n&box_lvl"+str(offset+i+1)+",\n boxes_lvl"+str(offset+i+1)+"_length,\n Lvl"+str(offset+i+1)+"TileMap, ")
             if len(locks[i]) == 1:
-                c_file.write("locks_lvl"+str(i+1)+" };*/\n")
+                c_file.write("locks_lvl"+str(offset+i+1)+" };*/\n")
             else:
                 c_file.write("NULL};*/\n")
 
 
 def main():
     json2c("../data/map/map1.json", 0)
+    json2c("../data/map/map2.json", 6)
 
 
 if __name__ == "__main__":
