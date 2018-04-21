@@ -101,7 +101,7 @@ void manage_physics_lvl3(PLAYER* player)
 	}
 	if(checkCollision(&(enemy_lvl3[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (SEAGULL*) enemy_lvl3);
+		manage_seagull_collision(player, (SEAGULL*) enemy_lvl3);
 	}
 }
 void reset_lvl3()

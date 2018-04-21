@@ -15,12 +15,12 @@
 
 
 //SPRITES INDEX
-#define BW_SPR_LEN 96U
-#define WF_SPR_LEN 20U
-#define SEA_SPR_LEN 16U
-#define ENV_SPR_LEN 9U
-#define DOG_SPR_LEN 12U
-#define STR_SPR_LEN 13U
+#define BW_SPR_LEN 96U //Black Whiskers animation length
+#define WF_SPR_LEN 20U //White Fur animation length
+#define SEA_SPR_LEN 16U //Seagulls animation length
+#define ENV_SPR_LEN 9U //Environment spritesheet length
+#define STR_SPR_LEN 13U //Press Start letters length
+#define DOG_SPR_LEN 48U //Doggy guard animation length
 
 #define BW_INDEX 0U
 #define WF_INDEX BW_SPR_LEN
@@ -111,12 +111,23 @@ typedef struct
 
 typedef struct
 {
+	Box box;
+	BYTE dirX;
+	UBYTE img_index;
+	UBYTE timer;
+	UBYTE maxX;
+	UBYTE minX;
+} DOGGY;
+
+typedef struct
+{
 	Box* boxes;
 	const size_t boxes_length;
 	unsigned char* LvlTileMap;
 	LOCK* lock;
 	KEY* key;
 	SEAGULL* enemy;
+	DOGGY* doggy;
 } Level;
 
 

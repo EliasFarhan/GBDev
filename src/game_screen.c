@@ -250,7 +250,124 @@ void manage_input() NONBANKED
 		}
 	}
 }
+
 UBYTE previous_sprite_index;
+
+void manage_doggy_sprites(UBYTE* sprite_index_ptr)
+{
+	UBYTE origin_index;
+	UBYTE sprite_index = *sprite_index_ptr;
+	//SWITCH_ROM_MBC1(6);
+	origin_index = levels[currentLvl]->doggy->img_index<<4;
+	for(i = 0U; i != 16U; i++)
+	{
+		set_sprite_tile(sprite_index+i , DOG_INDEX + origin_index + i );
+	}
+	for(i = 0U; i != 16U ;i++)
+	{
+		set_sprite_prop(sprite_index+i,0x00U);
+	}
+	move_sprite( sprite_index+0U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-24U);
+	move_sprite( sprite_index+1U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-16U);
+	move_sprite( sprite_index+2U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-24U);
+	move_sprite( sprite_index+3U, levels[currentLvl]->doggy->box.x+8U,  levels[currentLvl]->doggy->box.y-16U);
+
+	move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-8U);
+	move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y);
+	move_sprite( sprite_index+6U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-8U);
+	move_sprite( sprite_index+7U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y);
+
+	move_sprite( sprite_index+8U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-24U);
+	move_sprite( sprite_index+9U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-16U);
+	move_sprite( sprite_index+10U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-24U);
+	move_sprite( sprite_index+11U, levels[currentLvl]->doggy->box.x+24U,  levels[currentLvl]->doggy->box.y-16U);
+
+	move_sprite( sprite_index+12U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-8U);
+	move_sprite( sprite_index+13U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y);
+	move_sprite( sprite_index+14U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-8U);
+	move_sprite( sprite_index+15U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y);
+
+	*sprite_index_ptr += 16U;
+}
+
+void manage_player_sprites()
+{
+	//PLAYER POSITION MANAGEMENT
+	if(player.state != CLIMB && player.state != CLIMBWALK)
+	{
+		if(player.dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,0x00U);
+			}
+			move_sprite( 0U, player.box.x+8U,    player.box.y );
+			move_sprite( 1U, player.box.x+16U,   player.box.y );
+			move_sprite( 2U, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 3U, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirX == -1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPX);
+			}
+			move_sprite( 1, player.box.x+8U,    player.box.y );
+			move_sprite( 0, player.box.x+16U,   player.box.y );
+			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
+
+		}
+	}
+	else //CLIMBING
+	{
+		if(player.dirY == 1 && player.dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPY);
+			}
+			move_sprite( 2, player.box.x+8U,    player.box.y );
+			move_sprite( 3, player.box.x+16U,   player.box.y );
+			move_sprite( 0, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 1, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == -1&& player.dirX == 1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,0x00U);
+			}
+			move_sprite( 0, player.box.x+8U,    player.box.y );
+			move_sprite( 1, player.box.x+16U,   player.box.y );
+			move_sprite( 2, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 3, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == -1&& player.dirX == -1)
+		{
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i,S_FLIPX);
+			}
+			move_sprite( 1, player.box.x+8U,    player.box.y );
+			move_sprite( 0, player.box.x+16U,   player.box.y );
+			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
+		}
+		else if(player.dirY == 1 && player.dirX == -1)
+		{
+			move_sprite( 3, player.box.x+8U,    player.box.y );
+			move_sprite( 2, player.box.x+16U,   player.box.y );
+			move_sprite( 1, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 0, player.box.x+16U,   player.box.y+8 );
+			for(i = 0;i!=4;i++)
+			{
+				set_sprite_prop(i, S_FLIPX|S_FLIPY);
+			}
+
+		}
+	}
+}
 void set_sprites() NONBANKED
 {
 
@@ -258,7 +375,7 @@ void set_sprites() NONBANKED
 	UBYTE sprite_index;
 	KEY* key;
 	key = NULL;
-	sprite_index = 0;
+	sprite_index = 0U;
 	if(player.booleanState & HASVICTORY)
 	{
 		origin_index = 104U;
@@ -271,7 +388,7 @@ void set_sprites() NONBANKED
 		}
 		else
 		{
-		origin_index = 0U;
+			origin_index = 0U;
 		}
 	}
 	else if(player.state == WALK)
@@ -359,8 +476,6 @@ void set_sprites() NONBANKED
 		move_sprite( sprite_index+6, 56U+8U, 136U);
 		move_sprite( sprite_index+7, 56U+8U, 136U+8U);
 		sprite_index+=8U;
-
-
 	}
 	if(player.booleanState & HASGAMEOVER)
 	{
@@ -379,7 +494,7 @@ void set_sprites() NONBANKED
 			}
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
-		sprite_index += 8;
+		sprite_index += 8U;
 	}
 	else if(player.booleanState & HASVICTORY)
 	{
@@ -392,7 +507,7 @@ void set_sprites() NONBANKED
 			move_sprite(sprite_index+i, 54U+(i<<3),108U);
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
-		sprite_index += 7;
+		sprite_index += 7U;
 	}
 	//SHOW SEAGULL ENEMIES
 	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
@@ -417,10 +532,10 @@ void set_sprites() NONBANKED
 			{
 				set_sprite_prop(sprite_index+i,0x00U);
 			}
-			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
 		}
 		else
 		{
@@ -428,13 +543,23 @@ void set_sprites() NONBANKED
 			{
 				set_sprite_prop(sprite_index+i,S_FLIPX);
 			}
-			move_sprite( sprite_index+2, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+0, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+3, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+1, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
 		}
-		sprite_index+=4;
+		sprite_index+=4U;
 	}
+
+	//DOGGY
+	if(levels[currentLvl]->doggy != NULL)
+	{
+
+		SWITCH_ROM_MBC1(7);
+		manage_doggy_sprites(&sprite_index);
+
+	}
+
 	//SHOW KEY LOCK
 	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
@@ -450,7 +575,7 @@ void set_sprites() NONBANKED
 		{
 			set_sprite_prop(sprite_index+i,0x00U);
 			set_sprite_tile( i+sprite_index, ENV_INDEX+8U );
-			if(i<height>>1)
+			if(i < height>>1)
 			{
 			move_sprite(i+sprite_index,levels[currentLvl]->lock->box->x+8U,levels[currentLvl]->lock->box->y-(i<<3)+8U);
 			}
@@ -469,7 +594,7 @@ void set_sprites() NONBANKED
 		move_sprite( sprite_index+2, levels[currentLvl]->lock->box->x+12U, levels[currentLvl]->lock->box->y -(8U<<(height>>2)));
 		move_sprite( sprite_index+1, levels[currentLvl]->lock->box->x+4U,  levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
 		move_sprite( sprite_index+3, levels[currentLvl]->lock->box->x+12U, levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
-		sprite_index+=4;
+		sprite_index+=4U;
 	}
 	//SHOW KEYS
 
@@ -481,6 +606,7 @@ void set_sprites() NONBANKED
 	{
 		key = levels[currentLvl]->key;
 	}
+
 	if(key != NULL)
 	{
 		SWITCH_ROM_MBC1(6);
@@ -497,7 +623,7 @@ void set_sprites() NONBANKED
 		move_sprite( sprite_index+1, key->box.x+8U,  key->box.y+8U);
 		move_sprite( sprite_index+3, key->box.x+16U, key->box.y+8U);
 
-		sprite_index+=4;
+		sprite_index+=4U;
 
 	}
 
@@ -507,91 +633,19 @@ void set_sprites() NONBANKED
 	if(previous_sprite_index != sprite_index)
 	{
 
-	for (i=sprite_index; i<40; i++)
+		for (i=sprite_index; i!=40U; i++)
 		{
-			move_sprite(i,0,200);
+			move_sprite(i,0U,200U);
 			set_sprite_prop (i,0);
 		}
 		previous_sprite_index = sprite_index;
 	}
-	//PLAYER POSITION MANAGEMENT
-	if(player.state != CLIMB && player.state != CLIMBWALK)
-	{
-		if(player.dirX == 1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i,0x00U);
-			}
-			move_sprite( 0, player.box.x+8U,    player.box.y );
-			move_sprite( 1, player.box.x+16U,   player.box.y );
-			move_sprite( 2, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 3, player.box.x+16U,   player.box.y+8 );
-		}
-		else if(player.dirX == -1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i,S_FLIPX);
-			}
-			move_sprite( 1, player.box.x+8U,    player.box.y );
-			move_sprite( 0, player.box.x+16U,   player.box.y );
-			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
 
-		}
-	}
-	else
-	{
-		if(player.dirY == 1 && player.dirX == 1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i,S_FLIPY);
-			}
-			move_sprite( 2, player.box.x+8U,    player.box.y );
-			move_sprite( 3, player.box.x+16U,   player.box.y );
-			move_sprite( 0, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 1, player.box.x+16U,   player.box.y+8 );
-		}
-		else if(player.dirY == -1&& player.dirX == 1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i,0x00U);
-			}
-			move_sprite( 0, player.box.x+8U,    player.box.y );
-			move_sprite( 1, player.box.x+16U,   player.box.y );
-			move_sprite( 2, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 3, player.box.x+16U,   player.box.y+8 );
-		}
-		else if(player.dirY == -1&& player.dirX == -1)
-		{
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i,S_FLIPX);
-			}
-			move_sprite( 1, player.box.x+8U,    player.box.y );
-			move_sprite( 0, player.box.x+16U,   player.box.y );
-			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
-		}
-		else if(player.dirY == 1 && player.dirX == -1)
-		{
-			move_sprite( 3, player.box.x+8U,    player.box.y );
-			move_sprite( 2, player.box.x+16U,   player.box.y );
-			move_sprite( 1, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 0, player.box.x+16U,   player.box.y+8 );
-			for(i = 0;i!=4;i++)
-			{
-				set_sprite_prop(i, S_FLIPX|S_FLIPY);
-			}
-
-		}
-	}
-
+	SWITCH_ROM_MBC1(7);
+	manage_player_sprites();
 
 }
+
 
 void manage_animation() NONBANKED
 {
@@ -684,6 +738,40 @@ void manage_animation() NONBANKED
 			}
 		}
 	}
+	if(levels[currentLvl]->doggy != NULL)
+	{
+
+		levels[currentLvl]->doggy->timer++;
+		if(levels[currentLvl]->doggy->timer == 5U)
+		{
+			levels[currentLvl]->doggy->img_index =1U;
+		}
+		else if(levels[currentLvl]->doggy->timer == 10U)
+		{
+			levels[currentLvl]->doggy->img_index =2U;
+		}
+		else if(levels[currentLvl]->doggy->timer == 15U)
+		{
+			levels[currentLvl]->doggy->img_index =1U;
+		}
+		else if(levels[currentLvl]->doggy->timer == 20U)
+		{
+			levels[currentLvl]->doggy->img_index = 0U;
+			levels[currentLvl]->doggy->timer = 0U;
+		}
+		if(levels[currentLvl]->doggy->timer % 2 == 1)
+		{
+			levels[currentLvl]->doggy->box.x += levels[currentLvl]->doggy->dirX;
+			if(levels[currentLvl]->doggy->box.x+levels[currentLvl]->doggy->box.w > levels[currentLvl]->doggy->maxX)
+			{
+				levels[currentLvl]->doggy->dirX= -1;
+			}
+			else if(levels[currentLvl]->doggy->box.x < levels[currentLvl]->doggy->minX)
+			{
+				levels[currentLvl]->doggy->dirX= 1;
+			}
+		}
+	}
 
 }
 
@@ -720,7 +808,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL6;
+	currentLvl = LEVEL4;
 	init_screen();
 
 	finish = 0U;
@@ -830,7 +918,9 @@ void game_over() NONBANKED
 	//finish = 1U;
 
 }
+
 extern UBYTE credits;
+
 void victory() NONBANKED
 {
 	player.booleanState = player.booleanState | HASVICTORY;

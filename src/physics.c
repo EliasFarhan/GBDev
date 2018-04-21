@@ -20,7 +20,7 @@ void manage_physics_lvl4(PLAYER* player);
 void manage_physics_lvl5(PLAYER* player);
 void manage_physics_lvl6(PLAYER* player);
 
-void manage_enemy_collision(PLAYER* player, SEAGULL* enemy)
+void manage_seagull_collision(PLAYER* player, SEAGULL* enemy)
 {
 	if(enemy->dead)
 	{
@@ -42,6 +42,11 @@ void manage_enemy_collision(PLAYER* player, SEAGULL* enemy)
 		//dead
 		game_over();
 	}
+}
+void manage_doggy_collision(PLAYER* player, DOGGY* enemy)
+{
+	game_over();
+
 }
 
 void manage_key_physics(PLAYER* player)

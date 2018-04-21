@@ -3,9 +3,11 @@
 
 extern unsigned char kwakwa_logo_tiledata[];
 
+extern unsigned char kwakwa_logo_tilemap[];
 void kwakwa_graphics() NONBANKED {
 	SWITCH_ROM_MBC1(3);
-	draw_image(kwakwa_logo_tiledata);
+	set_bkg_tiles(0,0,20,18,kwakwa_logo_tilemap);
+	//draw_image(kwakwa_logo_tiledata);
 }
 
 void kwakwa_screen() NONBANKED {
@@ -19,12 +21,15 @@ void kwakwa_screen() NONBANKED {
 	DISPLAY_OFF;
 	ENABLE_RAM_MBC1;
 
+	SWITCH_ROM_MBC1(3);
+	set_bkg_data(0,255,kwakwa_logo_tiledata);
 	DISPLAY_ON;
+	SHOW_BKG;
 	enable_interrupts();
 	while(1) {
 		wait_vbl_done();
 		keys = joypad();
-		if (pstart == 20) {
+		if (pstart == 30) {
 			break;
 		}
 		kwakwa_graphics();

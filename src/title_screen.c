@@ -17,14 +17,13 @@ void title_graphics(UBYTE pstart) NONBANKED {
 
 	SWITCH_ROM_MBC1(3);
 
-	draw_image(title_screen_tiledata);
+
+	set_bkg_tiles(0,0,20U,18U,title_screen_tilemap);
+	//draw_image(title_screen_tiledata);
 
 	//Show PRESS START
 	SWITCH_ROM_MBC1(5);
-	for(i = 0U; i != 10U;i++)
-		{
-			set_sprite_tile( i, press_start_tilemap[i] );
-		}
+
 
 	if (!pstart) {
 		for(i = 0U; i != 10U;i++)
@@ -34,6 +33,10 @@ void title_graphics(UBYTE pstart) NONBANKED {
 	}
 	else
 	{
+		for(i = 0U; i != 10U;i++)
+		{
+			set_sprite_tile( i, press_start_tilemap[i] );
+		}
 		for(i = 0U; i != 10U;i++)
 		{
 			if(i >= 5U)
@@ -53,19 +56,27 @@ void title_graphics(UBYTE pstart) NONBANKED {
 
 void title_screen() NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
-	DISPLAY_OFF;
+	wait_vbl_done();
+	disable_interrupts();
 	HIDE_SPRITES;
 	HIDE_WIN;
-	SHOW_BKG;
+	HIDE_BKG;
+	DISPLAY_OFF;
+
 	ENABLE_RAM_MBC1;
 
+	SWITCH_ROM_MBC1(3);
+
+	set_bkg_data(0U,255U,title_screen_tiledata);
 	SWITCH_ROM_MBC1(5);
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
-	gbt_play(title_song_Data, 0x08U, 0x01U);
+
+	gbt_play(title_song_Data, 0x08U, 0x07U);
 	gbt_loop(0x01U);
+
+	DISPLAY_ON;
 	SHOW_BKG;
 	SHOW_SPRITES;
-	DISPLAY_ON;
 	enable_interrupts();
 	while(1) {
 		wait_vbl_done();
@@ -75,7 +86,7 @@ void title_screen() NONBANKED {
 		}
 		title_graphics(pstart);
 		counter++;
-		if(counter == 2U)
+		if(counter == 10U)
 		{
 			pstart = !pstart;
 			counter = 0;

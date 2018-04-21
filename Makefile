@@ -8,6 +8,10 @@ LVLS = data/map/level1_map.o data/map/level2_map.o data/map/level3_map.o data/ma
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
 
+SRJailbreak.gb:
+	$(CC) -Wl-yt2 -Wl-yo16 -Wl-ya1 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
+
+
 levels/%.o:	levels/%.c
 	$(CC) -Wa-l -Wf-bo6 -c -o $@ $<
 
@@ -17,9 +21,9 @@ data/map/%.o: data/map/%.c
 %.o:	%.c
 	$(CC) -c -o $@ $<
 
+src/game_screen.o: src/game_screen.c
+	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
 
-SRJailbreak.gb:
-	$(CC) -Wl-yt2 -Wl-yo16 -Wl-ya4 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
 
 src/credits.o: src/credits.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
@@ -57,7 +61,7 @@ src/sound.o: src/sound.c
 	$(CC) -Wa-l -c -o $@ $<
 
 src/physics.o: src/physics.c
-	$(CC) -Wf-bo6 -Wf-ba6 -c -o src/physics.o src/physics.c
+	$(CC) -Wf-bo6 -c -o src/physics.o src/physics.c
 
 data/peanut.o: data/peanut.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
@@ -85,4 +89,4 @@ data/whale_poster.o: data/whale_poster.s
 #	./tools/mod2gbt/mod2gbt data/template.mod song -c 2
 
 clean:
-	rm -f *.o */*.o *.lst *.map *.gb *~ *.rel *.cdb *.ihx *.lnk *.sym *.asm
+	rm -f *.o */*.o */*/*.o *.lst *.map *.gb *~ *.rel *.cdb *.ihx *.lnk *.sym *.asm

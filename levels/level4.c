@@ -28,6 +28,12 @@ KEY key_lvl4[1]= {
 SEAGULL enemy_lvl4[1]={
 		{{96U, 96U, 6U, 9U}, 1,0U,0U, 128U, 28U}
 };*/
+//6 x -1 y
+
+DOGGY enemy_lvl4 []= {
+		{{48U, 144U, 32U, 32U}, 1,0U,0U, 120U, 48U}
+};
+
 extern const unsigned char Lvl4TileMap[];/* =
 {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6,
  5,12,15,17,14,12,14,12,14,12,14,12,14,12,14,12, 6,15,17,3,
@@ -110,10 +116,10 @@ void manage_physics_lvl4(PLAYER* player)
 	{
 		player->key = key_lvl4;
 	}
-	/*if(checkCollision(&(enemy_lvl4[0].box), &(player->box)))
+	if(checkCollision(&(enemy_lvl4[0].box), &(player->box)))
 	{
-		manage_enemy_collision(player, (SEAGULL*) enemy_lvl4);
-	}*/
+		manage_doggy_collision(player, (DOGGY*) enemy_lvl4);
+	}
 }
 
 void reset_lvl4()
@@ -131,7 +137,8 @@ Level lvl4 = {
 		Lvl4TileMap,
 		NULL,
 		key_lvl4,
-		NULL//enemy_lvl4
+		NULL,//enemy_lvl4
+		enemy_lvl4
 
 };
 
