@@ -89,8 +89,8 @@ def json2c(json_filename, offset):
                 box_index = len(boxes[tilemap_index])
                 #LOCK
                 if box_def.get("properties") is not None:
-                    if box_def["properties"].get("lock") is not None:
-                        if box_def["properties"]["lock"]:
+                    for box_property in box_def.get("properties"):
+                        if box_property.get("name") == "lock" and box_property.get("value"):
                             locks[tilemap_index].append([box_index])
                 #BOX
                 boxes[tilemap_index].append([box_topleft_pos[0]-tilemap_row*gb_resolution[0],
@@ -155,7 +155,7 @@ def json2c(json_filename, offset):
 
 def main():
     json2c("../data/map/map1.json", 0)
-    json2c("../data/map/map2.json", 6)
+    #json2c("../data/map/map2.json", 6)
 
 
 if __name__ == "__main__":

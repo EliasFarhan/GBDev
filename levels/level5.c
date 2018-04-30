@@ -21,10 +21,15 @@ extern const Box box_lvl5[];/* =
 		{120U,104U, 32U, 24U}
 
 };*/
+extern LOCK locks_lvl5[1];
+
 SEAGULL enemy_lvl5 []= {
 		{{72U, 96U, 8U, 9U}, 1,0U,0U, 120U, 44U}
 };
 UBYTE enemies_nb_lvl5 = 1U;
+KEY key_lvl5[1]= {
+		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL2, 0U},
+};
 extern const unsigned char Lvl5TileMap[];/* =
 {
 6,12,14,12, 6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -104,8 +109,8 @@ Level lvl5 = {
 		box_lvl5,
 		boxes_lvl5_length,
 		Lvl5TileMap,
-		NULL,
-		NULL,
+		locks_lvl5,
+		key_lvl5,
 		enemy_lvl5
 
 };

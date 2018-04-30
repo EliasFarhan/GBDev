@@ -63,21 +63,24 @@ void manage_physics_lvl1(PLAYER* player)
 			}
 			switch_to_level(LEVEL3);
 		}
-	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == 1 )
+	}
+	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == 1 )
 	{
 
 		player->box.x = 9U;
 
 		switch_to_level(LEVEL2);
 
-	}else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == 1 )
+	}
+	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == 1 )
 	{
 
 		player->box.x = 9U;
 
 		switch_to_level(LEVEL2);
 
-	}else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
+	}
+	else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
 	{
 		player->key->box.x = player->key->originX;
 		player->key->box.y = player->key->originY;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="40">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="41">
  <tileset firstgid="1" source="BG.tsx"/>
  <tileset firstgid="9" source="environment.tsx"/>
  <tileset firstgid="28" source="posters.tsx"/>
@@ -135,7 +135,13 @@
   <object id="25" name="Boxlvl4" x="192" y="184" width="8" height="96"/>
   <object id="26" name="Boxlvl4" x="288" y="144" width="8" height="120"/>
   <object id="39" name="Boxlvl4" x="192" y="240" width="24" height="8"/>
-  <object id="27" name="Boxlvl5" x="32" y="288" width="8" height="104"/>
+  <object id="40" name="Locklvl5" x="32" y="352" width="8" height="32">
+   <properties>
+    <property name="lock" type="bool" value="true"/>
+    <property name="size" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="27" name="Boxlvl5" x="32" y="288" width="8" height="64"/>
   <object id="28" name="Boxlvl5" x="32" y="384" width="120" height="8"/>
   <object id="29" name="Boxlvl5" x="120" y="368" width="32" height="24"/>
   <object id="30" name="Boxlvl6" x="160" y="368" width="104" height="8"/>
@@ -147,13 +153,13 @@
     <property name="size" type="int" value="4"/>
    </properties>
   </object>
+  <object id="36" name="Boxlvl1" x="32" y="32" width="8" height="96"/>
   <object id="34" name="Locklvl1" x="112" y="96" width="8" height="32">
    <properties>
     <property name="lock" type="bool" value="true"/>
     <property name="size" type="int" value="2"/>
    </properties>
   </object>
-  <object id="36" name="Boxlvl1" x="32" y="32" width="8" height="96"/>
  </objectgroup>
  <layer name="Environment" width="40" height="54">
   <data encoding="csv">
@@ -201,10 +207,10 @@
 13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,11,
 13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,11,
 13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,11,
-13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,11,
-13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
-13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,10,14,14,14,11,13,14,14,14,14,14,14,14,14,14,14,14,11,0,0,0,0,0,0,11,
-13,0,0,0,11,0,0,0,0,0,0,0,0,0,0,14,9,9,9,11,13,0,0,0,0,0,0,0,0,0,13,13,11,0,0,0,0,0,0,11,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,11,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,14,14,14,11,13,14,14,14,14,14,14,14,14,14,14,14,11,0,0,0,0,0,0,11,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,9,9,9,11,13,0,0,0,0,0,0,0,0,0,13,13,11,0,0,0,0,0,0,11,
 13,0,0,0,14,14,14,14,14,14,14,14,14,14,14,14,13,13,13,11,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,

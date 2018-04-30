@@ -72,7 +72,11 @@ void manage_physics_lvl4(PLAYER* player)
 	}
 	else if(player->box.x >= 104U && player->box.x <= 136U && player->box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == -1) || player->state == JUMP || player->state == IDLE || player->state == WALK)
+		if((player->state == CLIMBWALK && player->dirY == -1) ||
+				player->state == JUMP ||
+				player->state == IDLE ||
+				player->state == WALK ||
+				player->state == CLIMB)
 		{
 
 			player->box.y = 8U+PLAYER_SIZE;

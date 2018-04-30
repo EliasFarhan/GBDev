@@ -24,12 +24,12 @@ Box box_lvl1[5] =
 {96U,96U,8U,40U},
 {32U,136U,128U,8U},
 {104U,96U,56U,8U},
-{112U,128U,8U,32U},
-{32U,128U,8U,96U}
+{32U,128U,8U,96U},
+{112U,128U,8U,32U}
 };
 LOCK locks_lvl1[1] =
 {
-    {&(box_lvl1[3]), 1U}
+    {&(box_lvl1[4]), 1U}
 };
 const Box box_locks_lvl1_value[1] =
                 {

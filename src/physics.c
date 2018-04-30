@@ -210,7 +210,7 @@ void manage_climbwalk(PLAYER* player)
 	if(contact == 0U)
 	{
 
-		player->box.x += player->dirX<<1;
+		player->box.x += player->dirX<<2;
 		player->vely = 1U;
 		player->state = JUMP;
 
