@@ -11,7 +11,7 @@
 #include "../src/physics.h"
 #include "../src/box_collision.h"
 
-
+extern PLAYER player;
 extern const size_t boxes_lvl3_length;// = BOX3LENGTH;
 
 extern const Box box_lvl3[];/* =
@@ -45,63 +45,70 @@ extern const unsigned char Lvl3TileMap[];/* =
 	5,12,14,12, 6,12,14, 2, 6, 6, 4,12,14,12,14,12,14,12,14,12,
 	6,11,13,11, 6,11,13, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 };*/
+
+extern Box* box1;
+extern Box* box2;
 SEAGULL enemy_lvl3 []= {
 		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
 };
-void manage_physics_lvl3(PLAYER* player)
+void manage_physics_lvl3()
 {
-	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-9U )
+	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
+		if((player.state == CLIMBWALK && player.dirY == 1) || player.state == JUMP ||player.state == JUMPCLIMB || player.state == IDLE)
 		{
 
-			player->box.y = 8U+PLAYER_SIZE;
-			if(player->state == IDLE)
-				player->state = JUMP;
+			player.box.y = 8U+PLAYER_SIZE+1U;
+			if(player.state == IDLE)
+				player.state = JUMP;
 			switch_to_level(LEVEL5);
 		}
-	}else if(player->box.x >= 38U && player->box.x <= 46U && player->box.y > 144U-9U )
+	}
+	if(player.box.x >= 38U && player.box.x <= 46U && player.box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
+		if((player.state == CLIMBWALK && player.dirY == 1) || player.state == JUMP ||player.state == JUMPCLIMB|| player.state == IDLE)
 		{
 
-			player->box.y = 8U+PLAYER_SIZE;
-			if(player->state == IDLE)
-				player->state = JUMP;
+			player.box.y = 8U+PLAYER_SIZE+1U;
+			if(player.state == IDLE)
+				player.state = JUMP;
 			switch_to_level(LEVEL5);
 		}
-	}/*else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y == 56U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == 1 )
+	}/*else if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y == 56U &&
+			(player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == 1 )
 	{
 
-		player->newX = 0U;
-		player->newY = 56U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		player.newX = 0U;
+		player.newY = 56U;
+		player.booleanState = player.booleanState | TRANSITIONNING;
+		player.state = CROUCHTRANSITIONIN;
+		player.timer = 0U;
+		player.img_index = 0U;
 
-		player->nextLevel = LEVEL4;
+		player.nextLevel = LEVEL4;
 
 	}*/
-	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 104U &&player->box.y <= 136U && player->dirX == 1 )
+	if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y >= 104U &&player.box.y <= 136U && player.dirX == 1 )
 	{
 
-		player->box.x = 9U;
+		player.box.x = 9U;
 
 		switch_to_level(LEVEL4);
 
 	}
-	else if(player->box.x >= 8U && player->box.x <= 16U && player->box.y == PLAYER_SIZE+8U && (player->state == CLIMBWALK||player->state == JUMP || player->state == CLIMB || player->state == JUMPCLIMB))
+	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y == PLAYER_SIZE+8U &&
+			(player.state == CLIMBWALK||player.state == JUMP || player.state == CLIMB || player.state == JUMPCLIMB))
 	{
-		if(player->state == JUMP)
-			player->vely = -3;
-		player->box.y = 135U;
+		if(player.state == JUMP)
+			player.vely = -3;
+		player.box.y = 135U;
 		switch_to_level(LEVEL1);
 	}
-	if(checkCollision(&(enemy_lvl3[0].box), &(player->box)))
+	box1 = &(player.box);
+	box2 = &(enemy_lvl3[0].box);
+	if(checkCollision())
 	{
-		manage_seagull_collision(player, (SEAGULL*) enemy_lvl3);
+		manage_seagull_collision((SEAGULL*) enemy_lvl3);
 	}
 }
 void reset_lvl3()

@@ -21,7 +21,7 @@ extern unsigned char press_start_tilemap[];
 
 UBYTE keys;
 UBYTE finish;
-PLAYER player;
+extern PLAYER player;
 
 extern Level lvl1;
 extern Level lvl2;
@@ -38,8 +38,7 @@ Level* levels[6] = {
 		&lvl5,
 		&lvl6
 };
-
-LEVELID currentLvl;
+extern LEVELID currentLvl;
 
 extern unsigned char tile_peanut[];
 extern unsigned char tile_whitefur[];
@@ -53,11 +52,10 @@ extern unsigned char tile_white[];
 UBYTE TileBackgroundLength = 8U;
 extern unsigned char tile_whale_poster[];
 UBYTE TileWhalePosterLength = 48U;
-UBYTE i;
+extern UBYTE i, j;
+extern WHITEFUR whiteFur;
 
-WHITEFUR whiteFur;
-
-void manage_physics(PLAYER* player);
+void manage_physics();
 
 void reset_lvl1();
 void reset_lvl2();
@@ -68,6 +66,7 @@ void reset_lvl6();
 
 void manage_input() NONBANKED
 {
+
 	if(!(player.booleanState & TRANSITIONNING)
 			&& !(player.booleanState & HASGAMEOVER)
 			&& !(player.booleanState & HASVICTORY))
@@ -253,12 +252,11 @@ void manage_input() NONBANKED
 
 UBYTE previous_sprite_index;
 
-void manage_doggy_sprites(UBYTE* sprite_index_ptr)
+void manage_doggy_sprites(UBYTE sprite_index)
 {
 	UBYTE origin_index;
-	UBYTE sprite_index = *sprite_index_ptr;
 	//SWITCH_ROM_MBC1(6);
-	origin_index = levels[currentLvl]->doggy->img_index<<4;
+	origin_index = levels[currentLvl]->doggy->img_index << 4U;
 	for(i = 0U; i != 16U; i++)
 	{
 		set_sprite_tile(sprite_index+i , DOG_INDEX + origin_index + i );
@@ -315,7 +313,6 @@ void manage_doggy_sprites(UBYTE* sprite_index_ptr)
 		move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-8U);
 		move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y);
 	}
-	*sprite_index_ptr += 16U;
 }
 
 void manage_player_sprites()
@@ -404,6 +401,7 @@ void set_sprites() NONBANKED
 	KEY* key;
 	key = NULL;
 	sprite_index = 0U;
+
 	if(player.booleanState & HASVICTORY)
 	{
 		origin_index = 104U;
@@ -474,6 +472,8 @@ void set_sprites() NONBANKED
 	//SHOW WHITEFUR
 	if(currentLvl == LEVEL6)
 	{
+
+
 		for (i = 0U; i != 8U; i++)
 		{
 			if(player.booleanState & HASVICTORY)
@@ -505,6 +505,7 @@ void set_sprites() NONBANKED
 		move_sprite( sprite_index+7, 56U+8U, 136U+8U);
 		sprite_index+=8U;
 	}
+	//MOVE TEXT SPRITES
 	if(player.booleanState & HASGAMEOVER)
 	{
 		SWITCH_ROM_MBC1(5);
@@ -538,9 +539,10 @@ void set_sprites() NONBANKED
 		sprite_index += 7U;
 	}
 	//SHOW SEAGULL ENEMIES
+
+	SWITCH_ROM_MBC1(6);
 	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
-		SWITCH_ROM_MBC1(6);
 		if(levels[currentLvl]->enemy->dead)
 		{
 			origin_index = 0xCU;
@@ -584,15 +586,17 @@ void set_sprites() NONBANKED
 	{
 
 		SWITCH_ROM_MBC1(7);
-		manage_doggy_sprites(&sprite_index);
+		manage_doggy_sprites(sprite_index);
+		sprite_index += 16U;
 
 	}
 
 	//SHOW KEY LOCK
+
+
 	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
 		UBYTE height;
-		SWITCH_ROM_MBC1(6);
 		height = 2U;
 		if(levels[currentLvl]->lock->box->h >= 48U)
 		{
@@ -626,11 +630,13 @@ void set_sprites() NONBANKED
 	}
 	//SHOW KEYS
 
+
 	if(player.key != NULL)
 	{
 		key = player.key;
 	}
-	else if(levels[currentLvl]->key != NULL && !levels[currentLvl]->key->used)
+
+	if(levels[currentLvl]->key != NULL && !levels[currentLvl]->key->used)
 	{
 		key = levels[currentLvl]->key;
 	}
@@ -669,22 +675,27 @@ void set_sprites() NONBANKED
 		previous_sprite_index = sprite_index;
 	}
 
-	SWITCH_ROM_MBC1(7);
-	manage_player_sprites();
+
 
 }
 
 
 void manage_animation() NONBANKED
 {
+
 	if(currentLvl == LEVEL6)
 	{
 		whiteFur.timer++;
 		if(whiteFur.timer == 20U)
 			whiteFur.timer = 0U;
 	}
-	if(player.state == WALK || player.state == CROUCHTRANSITIONIN || player.state == CROUCHTRANSITIONOUT)
+	//PLAYER ANIMATION
+
+	if(player.state == WALK ||
+		player.state == CROUCHTRANSITIONIN ||
+		player.state == CROUCHTRANSITIONOUT)
 	{
+
 		player.timer++;
 		if(player.booleanState & TRANSITIONNING && player.timer % 2U == 1)
 		{
@@ -720,8 +731,9 @@ void manage_animation() NONBANKED
 
 
 	}
-	else if(player.state == CROUCHWALK || player.state == CLIMBWALK)
+	if(player.state == CROUCHWALK || player.state == CLIMBWALK)
 	{
+
 		player.timer++;
 		if(player.timer == 5U)
 			player.img_index++;
@@ -731,22 +743,24 @@ void manage_animation() NONBANKED
 			player.img_index = 0U;
 		}
 	}
+	//SEAGULL ANIMATION
 	SWITCH_ROM_MBC1(6);
-	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
+	if(levels[currentLvl]->enemy != NULL &&
+			!(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
 
 		levels[currentLvl]->enemy->timer++;
 		if(levels[currentLvl]->enemy->timer == 5U)
 		{
-			levels[currentLvl]->enemy->img_index =1U;
+			levels[currentLvl]->enemy->img_index = 1U;
 		}
 		else if(levels[currentLvl]->enemy->timer == 10U)
 		{
-			levels[currentLvl]->enemy->img_index =2U;
+			levels[currentLvl]->enemy->img_index = 2U;
 		}
 		else if(levels[currentLvl]->enemy->timer == 15U)
 		{
-			levels[currentLvl]->enemy->img_index =1U;
+			levels[currentLvl]->enemy->img_index = 1U;
 		}
 		else if(levels[currentLvl]->enemy->timer == 20U)
 		{
@@ -766,21 +780,23 @@ void manage_animation() NONBANKED
 			}
 		}
 	}
+	//DOGGY ANIMATION
 	if(levels[currentLvl]->doggy != NULL)
 	{
 
 		levels[currentLvl]->doggy->timer++;
 		if(levels[currentLvl]->doggy->timer == 5U)
 		{
-			levels[currentLvl]->doggy->img_index =1U;
+			levels[currentLvl]->doggy->img_index = 1U;
 		}
 		else if(levels[currentLvl]->doggy->timer == 10U)
 		{
-			levels[currentLvl]->doggy->img_index =2U;
+			levels[currentLvl]->doggy->img_index = 2U;
+
 		}
 		else if(levels[currentLvl]->doggy->timer == 15U)
 		{
-			levels[currentLvl]->doggy->img_index =1U;
+			levels[currentLvl]->doggy->img_index = 1U;
 		}
 		else if(levels[currentLvl]->doggy->timer == 20U)
 		{
@@ -837,6 +853,7 @@ void game_screen() NONBANKED
 {
 
 	currentLvl = LEVEL6;
+
 	init_screen();
 
 	finish = 0U;
@@ -844,14 +861,17 @@ void game_screen() NONBANKED
 	{
 		wait_vbl_done();
 		keys = joypad();
+
 		manage_input();
+
 		if(!(player.booleanState & HASGAMEOVER)
 				&& !(player.booleanState & HASVICTORY))
 		{
 			manage_animation();
 			SWITCH_ROM_MBC1(6);
-			manage_physics(&player);
+			manage_physics();
 		}
+
 		if (player.state == DEAD)
 		{
 			player.timer ++;
@@ -864,7 +884,8 @@ void game_screen() NONBANKED
 			}
 		}
 		set_sprites();
-
+		SWITCH_ROM_MBC1(7);
+		manage_player_sprites();
 		gbt_update();
 
 		tick_sound();
@@ -879,17 +900,19 @@ void game_screen() NONBANKED
 
 void init_screen() NONBANKED
 {
-	UBYTE j;
 	disable_interrupts();
 	finish = 0U;
 	HIDE_BKG;
 	HIDE_SPRITES;
 	HIDE_WIN;
 	DISPLAY_OFF;
+
 	init_sounds();
 	gbt_play(song_Data, 0x02U, 0x07U);
 	gbt_loop(0x01U);
+
 	ENABLE_RAM_MBC1;
+
 	SWITCH_ROM_MBC1(5);
 	set_sprite_data(BW_INDEX, BW_SPR_LEN, tile_peanut);
 	set_sprite_data(WF_INDEX, WF_SPR_LEN, tile_whitefur);
@@ -902,6 +925,7 @@ void init_screen() NONBANKED
 	set_bkg_data(1U, TileEnvironmentLength, tile_environment);
 	set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
 	set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, tile_whale_poster);
+
 	SWITCH_ROM_MBC1(6);
 	//Background
 	for(i = 0; i != 18; i++)
@@ -917,6 +941,8 @@ void init_screen() NONBANKED
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
+
+	//init player
 	player.booleanState = 0x00;
 	player.box.x = 16U;
 	player.box.y = 144U-GROUND_HEIGHT;
@@ -935,6 +961,7 @@ void init_screen() NONBANKED
 	set_sprites();
 
 }
+
 void game_over() NONBANKED
 {
 	//gbt_stop();

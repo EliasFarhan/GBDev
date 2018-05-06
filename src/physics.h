@@ -9,8 +9,8 @@
 #define PHYSICS_H_
 
 
-void manage_seagull_collision(PLAYER* player, SEAGULL* enemy);
-void manage_doggy_collision(PLAYER* player, DOGGY* enemy);
+void manage_seagull_collision( SEAGULL* enemy);
+void manage_doggy_collision( DOGGY* enemy);
 
 
 #endif /* PHYSICS_H_ */

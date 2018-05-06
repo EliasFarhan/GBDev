@@ -13,7 +13,7 @@
 
 
 extern const size_t boxes_lvl1_length;// = BOX5LENGTH;
-
+extern PLAYER player;
 extern Box box_lvl1[];/* =
 {
 		{64U,96U, 40U, 40U},
@@ -48,44 +48,53 @@ extern const unsigned char Lvl1TileMap[];/* =
 6,11,13,11,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 };*/
 
-void manage_physics_lvl1(PLAYER* player)
+extern Box* box1;
+extern Box* box2;
+
+void manage_physics_lvl1()
 {
-	if(player->box.x >= 8U && player->box.x <= 16U && player->box.y > 144U-9U )
+
+	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE)
+		if((player.state == CLIMBWALK && player.dirY == 1) || player.state == JUMP || player.state == IDLE)
 		{
 
-			player->box.y = 9U+PLAYER_SIZE;
-			if(player->state == IDLE)
+			player.box.y = 9U+PLAYER_SIZE;
+			if(player.state == IDLE)
 			{
-				player->state = JUMP;
+				player.state = JUMP;
 
 			}
 			switch_to_level(LEVEL3);
 		}
 	}
-	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == 1 )
+	if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y >= 96U &&player.box.y <= 136U && player.dirX == 1 )
 	{
 
-		player->box.x = 9U;
+		player.box.x = 9U;
 
 		switch_to_level(LEVEL2);
 
 	}
-	else if(player->box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == 1 )
+	if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y <= 88U &&player.box.y >= 8U && player.dirX == 1 )
 	{
 
-		player->box.x = 9U;
+		player.box.x = 9U;
 
 		switch_to_level(LEVEL2);
 
 	}
-	else if(player->key != NULL && checkCollision(&(player->key->box), locks_lvl1[0].box))
+
+	box2 = locks_lvl1[0].box;
+	box1 = &(player.key->box);
+
+	if(player.key != NULL && checkCollision())
 	{
-		player->key->box.x = player->key->originX;
-		player->key->box.y = player->key->originY;
-		player->key->used = 1U;
-		player->key = NULL;
+		player.key->box.x = player.key->originX;
+		player.key->box.y = player.key->originY;
+		player.key->used = 1U;
+		player.key = NULL;
+
 		locks_lvl1[0].box->x = 0U;
 		locks_lvl1[0].box->y = 0U;
 		locks_lvl1[0].box->w = 0U;

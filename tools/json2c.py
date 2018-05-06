@@ -155,7 +155,7 @@ def json2c(json_filename, offset):
 
 def main():
     json2c("../data/map/map1.json", 0)
-    #json2c("../data/map/map2.json", 6)
+    json2c("../data/map/map2.json", 6)
 
 
 if __name__ == "__main__":

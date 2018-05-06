@@ -31,9 +31,9 @@ LOCK locks_lvl5[1] =
     {&(box_lvl5[0]), 1U}
 };
 const Box box_locks_lvl5_value[1] =
-                {
-                    {32, 96, 8, 32}
-                };
+{
+	{32, 96, 8, 32}
+};
 /*Level lvl5 = {
 &box_lvl5,
  boxes_lvl5_length,

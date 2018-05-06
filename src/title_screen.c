@@ -18,8 +18,8 @@ void title_graphics(UBYTE pstart) NONBANKED {
 	SWITCH_ROM_MBC1(3);
 
 
-	set_bkg_tiles(0,0,20U,18U,title_screen_tilemap);
-	//draw_image(title_screen_tiledata);
+	//set_bkg_tiles(0,0,20U,18U,title_screen_tilemap);
+	draw_image(title_screen_tiledata);
 
 	//Show PRESS START
 	SWITCH_ROM_MBC1(5);
@@ -65,13 +65,14 @@ void title_screen() NONBANKED {
 
 	ENABLE_RAM_MBC1;
 
-	SWITCH_ROM_MBC1(3);
+	//SWITCH_ROM_MBC1(3);
 
-	set_bkg_data(0U,255U,title_screen_tiledata);
+	//set_bkg_data(0U,255U,title_screen_tiledata);
 	SWITCH_ROM_MBC1(5);
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
 
-	gbt_play(title_song_Data, 0x08U, 0x07U);
+	//gbt_play(title_song_Data, 0x08U, 0x07U);
+	gbt_play(title_song_Data, 0x08U, 0x01U);
 	gbt_loop(0x01U);
 
 	DISPLAY_ON;
@@ -86,7 +87,7 @@ void title_screen() NONBANKED {
 		}
 		title_graphics(pstart);
 		counter++;
-		if(counter == 10U)
+		if(counter == 1U)
 		{
 			pstart = !pstart;
 			counter = 0;

@@ -5,7 +5,13 @@
 #include "utils/reset_graphics.c"
 #include "gbt_player.h"
 
+UBYTE i;
+UBYTE j;
 UBYTE credits;
+PLAYER player;
+WHITEFUR whiteFur;
+
+LEVELID currentLvl;
 extern UBYTE finish;
 
 
@@ -23,7 +29,7 @@ void main()
 		title_screen();
 		credits = 0U;
 		reset_game();
-		//disable_APA();
+		disable_APA();
 		while(credits == 0U)
 		{
 
@@ -34,6 +40,6 @@ void main()
 		ENABLE_RAM_MBC1;
 		SWITCH_ROM_MBC1(7);
 		credits_screen();
-		//disable_APA();
+		disable_APA();
 	}
 }

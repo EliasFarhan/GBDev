@@ -33,6 +33,10 @@ SEAGULL enemy_lvl4[1]={
 DOGGY enemy_lvl4 []= {
 		{{48U, 144U, 32U, 32U}, 1,0U,0U, 120U, 48U}
 };
+extern PLAYER player;
+
+extern Box* box1;
+extern Box* box2;
 
 extern const unsigned char Lvl4TileMap[];/* =
 {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6,
@@ -54,75 +58,66 @@ extern const unsigned char Lvl4TileMap[];/* =
 13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
  6,6,6,6,6,6,6,6,6,6,6,6,6,12,14,12,14,12,14,6};
 */
-void manage_physics_lvl4(PLAYER* player)
+void manage_physics_lvl4()
 {
-	if(player->box.x == 8U && player->box.y == 136U && (player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1)
+	/*if(player.box.x == 8U && player.box.y == 136U && (player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == -1)
 	{
 
-		player->newX = 160U-PLAYER_SIZE;
-		player->newY = 136U;
+		player.newX = 160U-PLAYER_SIZE;
+		player.newY = 136U;
 
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
+		player.booleanState = player.booleanState | TRANSITIONNING;
+		player.state = CROUCHTRANSITIONIN;
+		player.timer = 0U;
+		player.img_index = 0U;
 
-		player->nextLevel = LEVEL3;
+		player.nextLevel = LEVEL3;
 
-	}
-	else if(player->box.x >= 104U && player->box.x <= 136U && player->box.y > 144U-9U )
+	}*/
+	if(player.box.x >= 104U && player.box.x <= 136U && player.box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == -1) ||
-				player->state == JUMP ||
-				player->state == IDLE ||
-				player->state == WALK ||
-				player->state == CLIMB)
+		if((player.state == CLIMBWALK && player.dirY == -1) ||
+				player.state == JUMP ||
+				player.state == IDLE ||
+				player.state == WALK ||
+				player.state == CLIMB)
 		{
 
-			player->box.y = 8U+PLAYER_SIZE;
-			if(player->state == IDLE || player->state == WALK)
+			player.box.y = 8U+PLAYER_SIZE;
+			if(player.state == IDLE || player.state == WALK)
 			{
-				player->state = JUMP;
-				player->vely = 1U;
+				player.state = JUMP;
+				player.vely = 1U;
 			}
 			switch_to_level(LEVEL6);
 		}
-	}else if(player->box.x == GROUND_HEIGHT && player->box.y == 56U &&
-			(player->state == CROUCHWALK || player->state == CROUCH) && player->dirX == -1 )
-	{
-
-		player->newX = 160U-PLAYER_SIZE;
-		player->newY = 56U;
-		player->booleanState = player->booleanState | TRANSITIONNING;
-		player->state = CROUCHTRANSITIONIN;
-		player->timer = 0U;
-		player->img_index = 0U;
-
-		player->nextLevel = LEVEL3;
-
 	}
-	else if(player->box.x == 8U && player->box.y >= 104U &&player->box.y <= 136U && player->dirX == -1 )
+
+	if(player.box.x == 8U && player.box.y >= 104U &&player.box.y <= 136U && player.dirX == -1 )
 	{
 
-		player->box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
+		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
 		switch_to_level(LEVEL3);
 
 	}
-	else if(player->box.x >= 136U && player->box.x <= 152U && player->box.y == PLAYER_SIZE+8U && player->state == CLIMBWALK)
+	if(player.box.x >= 136U && player.box.x <= 152U && player.box.y == PLAYER_SIZE+8U && player.state == CLIMBWALK)
 	{
-		if(player->state == JUMP)
-			player->vely = -3;
-		player->box.y = 135U;
+		if(player.state == JUMP)
+			player.vely = -3;
+		player.box.y = 135U;
 		switch_to_level(LEVEL2);
 	}
-	else if(player->key == NULL && !key_lvl4[0].used &&checkCollision(&(player->box), &(key_lvl4[0].box)))
+	box1 = &(player.box);
+	box2 = &(key_lvl4[0].box);
+	if(player.key == NULL && !key_lvl4[0].used && checkCollision())
 	{
-		player->key = key_lvl4;
+		player.key = key_lvl4;
 	}
-	if(checkCollision(&(enemy_lvl4[0].box), &(player->box)))
+	box2 = &(enemy_lvl4[0].box);
+	if(checkCollision())
 	{
-		manage_doggy_collision(player, (DOGGY*) enemy_lvl4);
+		game_over();
 	}
 }
 

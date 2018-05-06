@@ -9,7 +9,7 @@
 #define BOX_COLLISION_H_
 #include "game_screen.h"
 
-char checkCollision(Box* a, Box* b);
+char checkCollision();
 
 
 #endif /* BOX_COLLISION_H_ */

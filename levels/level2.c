@@ -11,7 +11,7 @@
 #include "../src/box_collision.h"
 #include "../src/physics.h"
 
-
+extern PLAYER player;
 extern const size_t boxes_lvl2_length;
 
 extern const Box box_lvl2[];/* =
@@ -50,44 +50,52 @@ extern const unsigned char Lvl2TileMap[];/* =
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,11,13,6
 };*/
 
-void manage_physics_lvl2(PLAYER* player)
+extern Box* box1;
+extern Box* box2;
+
+void manage_physics_lvl2()
 {
-	if(player->box.x >= 104U && player->box.x <= 136U && player->box.y > 144U-9U )
+	if(player.box.x >= 104U && player.box.x <= 136U && player.box.y > 144U-9U )
 	{
-		if((player->state == CLIMBWALK && player->dirY == 1) || player->state == JUMP || player->state == IDLE || player->state == WALK)
+		if((player.state == CLIMBWALK && player.dirY == 1) || player.state == JUMP || player.state == IDLE || player.state == WALK)
 		{
 
-			player->box.y = 8U+PLAYER_SIZE;
-			if(player->state == IDLE || player->state == WALK)
+			player.box.y = 8U+PLAYER_SIZE;
+			if(player.state == IDLE || player.state == WALK)
 			{
-				player->state = JUMP;
-				player->vely = 1U;
+				player.state = JUMP;
+				player.vely = 1U;
 			}
 			switch_to_level(LEVEL4);
 		}
-	}else if(player->box.x == 8U && player->box.y >= 96U &&player->box.y <= 136U && player->dirX == -1 )
+	}
+	if(player.box.x == 8U && player.box.y >= 96U &&player.box.y <= 136U && player.dirX == -1 )
 	{
 
-		player->box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
-
-		switch_to_level(LEVEL1);
-
-	}else if(player->box.x == 8U && player->box.y <= 88U &&player->box.y >= 8U && player->dirX == -1 )
-	{
-
-		player->box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
+		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
 		switch_to_level(LEVEL1);
 
 	}
-	else if(player->key == NULL && !key_lvl2[0].used &&checkCollision(&(player->box), &(key_lvl2[0].box)))
+	if(player.box.x == 8U && player.box.y <= 88U &&player.box.y >= 8U && player.dirX == -1 )
 	{
-		player->key = key_lvl2;
-	}
 
-	if(checkCollision(&(enemy_lvl2[0].box), &(player->box)))
+		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
+
+		switch_to_level(LEVEL1);
+
+	}
+	box1 = &(player.box);
+
+	box2 = &(key_lvl2[0].box);
+	if(player.key == NULL && !key_lvl2[0].used && checkCollision())
 	{
-		manage_seagull_collision(player, (SEAGULL*) enemy_lvl2);
+		player.key = key_lvl2;
+	}
+	box2 = &(enemy_lvl2[0].box);
+	if(checkCollision())
+	{
+		manage_seagull_collision((SEAGULL*) enemy_lvl2);
 	}
 }
 void reset_lvl2()
