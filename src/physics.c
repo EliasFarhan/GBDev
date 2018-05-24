@@ -25,6 +25,8 @@ void manage_physics_lvl3();
 void manage_physics_lvl4();
 void manage_physics_lvl5();
 void manage_physics_lvl6();
+void manage_physics_lvl10();
+void manage_physics_lvl13();
 
 void manage_seagull_collision(SEAGULL* enemy)
 {
@@ -83,6 +85,12 @@ void manage_level_physics()
 	case LEVEL6:
 		manage_physics_lvl6();
 		break;
+	case LEVEL10:
+		manage_physics_lvl10();
+		break;
+	case LEVEL13:
+		manage_physics_lvl13();
+		break;
 	}
 }
 
@@ -102,7 +110,7 @@ void manage_static_physics2()
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		//Check under player if there are ground
-		if(groundContact == 0)
+		if(groundContact == 0U)
 		{
 			tmp_box.x = player.box.x;
 			tmp_box.y = player.box.y+1U;
@@ -113,7 +121,7 @@ void manage_static_physics2()
 			}
 		}
 
-		if(frontContact == 0 && (player.state == WALK || player.state == CROUCHWALK))
+		if(frontContact == 0U && (player.state == WALK || player.state == CROUCHWALK))
 		{
 
 			//Check if there is a box in front of us
@@ -276,7 +284,7 @@ void manage_climbwalk2()
 	{
 		frontContact = 1U;
 	}
-	for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(groundContact == 0U)
@@ -365,7 +373,7 @@ void manage_climbwalk()
 	}
 	else
 	{
-		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+		for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
 		{
 			box2 = &(levels[currentLvl]->boxes[i]);
 			if(checkCollision())
@@ -440,7 +448,7 @@ void manage_jumping()
 
 	box1 = &(player.box);
 
-	for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(checkCollision())

@@ -1,8 +1,16 @@
 import json
 import os
+from enum import Enum
 from os.path import basename
 from os.path import splitext
 from functools import reduce
+
+
+class EnemyType(Enum):
+    NONE = 0
+    SEAGULL = 1
+    DOGGY = 2
+
 
 gb_white_len = 1
 gb_environment_len = 10
@@ -27,6 +35,40 @@ tiled_posters_index = 28
 gb_resolution = (160, 144)
 tile_size = (8,8)
 gb_tilesize = (int(gb_resolution[0]/tile_size[0]), int(gb_resolution[1]/tile_size[1]))
+
+
+class Enemy:
+    type_name: str
+
+    def __init__(self):
+        self.pos = (0,0)
+        self.size = (0,0)
+        self.minX = 0
+        self.maxX = 0
+        self.enemy_name = ""
+        self.type_name = ""
+
+    def data2c(self, lvl):
+        return self.type_name +" " + self.enemy_name +"_lvl" + str(lvl) +\
+               " [] = {{{" + str(self.pos[0]) +"U," + str(self.pos[1]) +\
+               "U, " + str(self.size[0]) +"U, " + str(self.size[1]) +"U},1,0U,0U," + \
+               str(self.maxX) + "U, " + str(self.minX) + "U}};"
+
+
+class Seagull(Enemy):
+    def __init__(self):
+        Enemy.__init__(self)
+        self.size = (6,9)
+        self.enemy_name = "seagull"
+        self.type_name = "SEAGULL"
+
+
+class Doggy(Enemy):
+    def __init__(self):
+        Enemy.__init__(self)
+        self.size = (27,32)
+        self.enemy_name = "doggy"
+        self.type_name = "DOGGY"
 
 
 def tiled2gbtile(tiled_tile):
@@ -73,6 +115,9 @@ def json2c(json_filename, offset):
     locks = [
         [] for n in range(size[0]*size[1])
     ]
+    enemies = [
+        [] for n in range(size[0] * size[1])
+    ]
     tile_per_row = gb_tilesize[0]*size[0]
     for layer in json_obj["layers"]:
         if layer.get("objects") is not None:
@@ -87,11 +132,47 @@ def json2c(json_filename, offset):
                 tilemap_index = tilemap_row+size[0]*tilemap_column
                 print("{0}, {1}".format(tilemap_row, tilemap_column))
                 box_index = len(boxes[tilemap_index])
-                #LOCK
+
+                enemy_type = EnemyType.NONE
+                minX = 0
+                maxX = 0
                 if box_def.get("properties") is not None:
-                    for box_property in box_def.get("properties"):
-                        if box_property.get("name") == "lock" and box_property.get("value"):
-                            locks[tilemap_index].append([box_index])
+                    box_properties = box_def["properties"]
+                    # LOCK
+                    if box_properties.get("lock") is not None and box_properties["lock"]:
+                        locks[tilemap_index].append([box_index])
+                    # ENEMY
+                    if box_properties.get("enemy") is not None and \
+                            box_properties["enemy"] != EnemyType.NONE:
+                        enemy_type = EnemyType(box_properties["enemy"])
+                    if box_properties.get("maxX") is not None:
+                        maxX = box_properties["maxX"]
+                    if box_properties.get("minX") is not None:
+                        minX = box_properties["minX"]
+
+                if enemy_type != EnemyType.NONE:
+
+                    enemy = Enemy()
+                    # SEAGULL
+                    if enemy_type == EnemyType.SEAGULL:
+                        new_seagull = Seagull()
+                        new_seagull.pos = (box_topleft_pos[0] - tilemap_row * gb_resolution[0],
+                                           box_topleft_pos[1] + box_size[1] - tilemap_column * gb_resolution[1])
+                        new_seagull.minX = minX - tilemap_row * gb_resolution[0]
+                        new_seagull.maxX = maxX - tilemap_row * gb_resolution[0]
+                        enemy = new_seagull
+                    # DOGGY
+                    elif enemy_type == EnemyType.DOGGY:
+                        print("Adding new doggy in lvl"+str(tilemap_index))
+                        new_doggy = Doggy()
+                        new_doggy.pos = (box_topleft_pos[0] - tilemap_row * gb_resolution[0],
+                                         box_topleft_pos[1] + box_size[1] - tilemap_column * gb_resolution[1])
+                        new_doggy.minX = minX - tilemap_row * gb_resolution[0]
+                        new_doggy.maxX = maxX - tilemap_row * gb_resolution[0]
+                        enemy = new_doggy
+
+                    enemies[tilemap_index].append(enemy)
+                    continue
                 #BOX
                 boxes[tilemap_index].append([box_topleft_pos[0]-tilemap_row*gb_resolution[0],
                                              box_topleft_pos[1]+box_size[1]-tilemap_column*gb_resolution[1],
@@ -138,9 +219,9 @@ def json2c(json_filename, offset):
                 c_file.write("Box box_lvl"+str(offset+i+1)+"["+str(len(boxes[i]))+"] = \n")#+str(len(boxes[i]))
                 c_file.write("{\n"+",\n".join(map((lambda l : "{"+",".join(map(lambda item: str(item)+"U", l))+"}"), boxes[i]))+"\n};\n")
             if len(locks[i]) == 1:
-                c_file.write("LOCK locks_lvl"+str(i+1)+"["+str(len(locks[i]))+"""] =
+                c_file.write("LOCK locks_lvl"+str(offset+i+1)+"["+str(len(locks[i]))+"""] =
 {
-    {&(box_lvl"""+str(i+1)+"""["""+str(locks[i][0][0])+"""]), 1U}
+    {&(box_lvl"""+str(offset+i+1)+"""["""+str(locks[i][0][0])+"""]), 1U}
 };\n""")
                 c_file.write("const Box box_locks_lvl" + str(offset+i + 1) + "_value[" + str(len(locks[i])) + """] =
                 {
@@ -151,6 +232,9 @@ def json2c(json_filename, offset):
                 c_file.write("locks_lvl"+str(offset+i+1)+" };*/\n")
             else:
                 c_file.write("NULL};*/\n")
+            if len(enemies[i]) >= 1:
+                for enemy in enemies[i]:
+                    c_file.write(enemy.data2c(i+1))
 
 
 def main():

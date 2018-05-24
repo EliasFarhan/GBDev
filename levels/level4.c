@@ -30,9 +30,7 @@ SEAGULL enemy_lvl4[1]={
 };*/
 //6 x -1 y
 
-DOGGY enemy_lvl4 []= {
-		{{48U, 144U, 32U, 32U}, 1,0U,0U, 120U, 48U}
-};
+extern DOGGY doggy_lvl4 [];
 extern PLAYER player;
 
 extern Box* box1;
@@ -90,6 +88,7 @@ void manage_physics_lvl4()
 				player.vely = 1U;
 			}
 			switch_to_level(LEVEL6);
+			return;
 		}
 	}
 
@@ -99,6 +98,7 @@ void manage_physics_lvl4()
 		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
 		switch_to_level(LEVEL3);
+		return;
 
 	}
 	if(player.box.x >= 136U && player.box.x <= 152U && player.box.y == PLAYER_SIZE+8U && player.state == CLIMBWALK)
@@ -107,6 +107,7 @@ void manage_physics_lvl4()
 			player.vely = -3;
 		player.box.y = 135U;
 		switch_to_level(LEVEL2);
+		return;
 	}
 	box1 = &(player.box);
 	box2 = &(key_lvl4[0].box);
@@ -114,7 +115,7 @@ void manage_physics_lvl4()
 	{
 		player.key = key_lvl4;
 	}
-	box2 = &(enemy_lvl4[0].box);
+	box2 = &(doggy_lvl4[0].box);
 	if(checkCollision())
 	{
 		game_over();
@@ -137,7 +138,7 @@ Level lvl4 = {
 		NULL,
 		key_lvl4,
 		NULL,//enemy_lvl4
-		enemy_lvl4
+		doggy_lvl4
 
 };
 

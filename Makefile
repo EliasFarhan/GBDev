@@ -6,7 +6,8 @@ SOURCE =  src/main.o src/box_collision.o src/sound.o src/game_screen.o src/physi
 ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o data/music_output.o
 LVLS = data/map/level1_map.o data/map/level2_map.o data/map/level3_map.o data/map/level4_map.o data/map/level5_map.o data/map/level6_map.o \
 levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o \
-data/map/level7_map.o data/map/level8_map.o data/map/level9_map.o data/map/level10_map.o data/map/level11_map.o data/map/level12_map.o data/map/level13_map.o data/map/level14_map.o data/map/level15_map.o
+data/map/level7_map.o data/map/level8_map.o data/map/level9_map.o data/map/level10_map.o levels/level10.c \
+data/map/level11_map.o data/map/level12_map.o data/map/level13_map.o levels/level13.c data/map/level14_map.o data/map/level15_map.o
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
 
@@ -63,7 +64,7 @@ src/sound.o: src/sound.c
 	$(CC) -Wa-l -c -o $@ $<
 
 src/physics.o: src/physics.c
-	$(CC) -Wf-bo6 -c -o src/physics.o src/physics.c
+	$(CC) -Wf-bo6 -c -o $@ $<
 
 data/peanut.o: data/peanut.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<

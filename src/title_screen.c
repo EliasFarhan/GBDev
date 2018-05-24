@@ -79,10 +79,12 @@ void title_screen() NONBANKED {
 	SHOW_BKG;
 	SHOW_SPRITES;
 	enable_interrupts();
-	while(1) {
+	while(1)
+	{
 		wait_vbl_done();
 		keys = joypad();
-		if (keys & (J_A|J_START)) {
+		if (keys & (J_A|J_START))
+		{
 			break;
 		}
 		title_graphics(pstart);

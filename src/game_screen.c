@@ -29,14 +29,25 @@ extern Level lvl3;
 extern Level lvl4;
 extern Level lvl5;
 extern Level lvl6;
+extern Level lvl10;
+extern Level lvl13;
 
-Level* levels[6] = {
+Level* levels[15] = {
 		&lvl1,
 		&lvl2,
 		&lvl3,
 		&lvl4,
 		&lvl5,
-		&lvl6
+		&lvl6,
+		NULL,
+		NULL,
+		NULL,
+		&lvl10,
+		NULL,
+		NULL,
+		&lvl13,
+		NULL,
+		NULL
 };
 extern LEVELID currentLvl;
 
@@ -63,6 +74,8 @@ void reset_lvl3();
 void reset_lvl4();
 void reset_lvl5();
 void reset_lvl6();
+void reset_lvl10();
+void reset_lvl13();
 
 void manage_input() NONBANKED
 {
@@ -470,7 +483,7 @@ void set_sprites() NONBANKED
 		sprite_index++;
 	}
 	//SHOW WHITEFUR
-	if(currentLvl == LEVEL6)
+	if(currentLvl == LEVEL6 || currentLvl == LEVEL13)
 	{
 
 
@@ -683,7 +696,7 @@ void set_sprites() NONBANKED
 void manage_animation() NONBANKED
 {
 
-	if(currentLvl == LEVEL6)
+	if(currentLvl == LEVEL6 || currentLvl == LEVEL13)
 	{
 		whiteFur.timer++;
 		if(whiteFur.timer == 20U)
@@ -852,7 +865,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL6;
+	currentLvl = LEVEL4;
 
 	init_screen();
 
@@ -984,12 +997,14 @@ extern UBYTE credits;
 
 void victory() NONBANKED
 {
-	player.booleanState = player.booleanState | HASVICTORY;
+	/*player.booleanState = player.booleanState | HASVICTORY;
 	credits = 1U;
 	gbt_play(victory_song_Data, 0x02U, 0x07U);
 	gbt_loop(0x00U);
 	player.box.y = 136U;
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC1(6);*/
+	player.box.x = 8U;
+	switch_to_level(LEVEL13);
 }
 void reset_game() NONBANKED
 {
@@ -1000,4 +1015,6 @@ void reset_game() NONBANKED
 	reset_lvl4();
 	reset_lvl5();
 	reset_lvl6();
+	reset_lvl10();
+	reset_lvl13();
 }

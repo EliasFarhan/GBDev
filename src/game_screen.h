@@ -41,6 +41,15 @@ typedef enum {
 	LEVEL4 = 3U,
 	LEVEL5 = 4U,
 	LEVEL6 = 5U,
+	LEVEL7 = 6U,
+	LEVEL8 = 7U,
+	LEVEL9 = 8U,
+	LEVEL10 = 9U,
+	LEVEL11 = 10U,
+	LEVEL12 = 11U,
+	LEVEL13 = 12U,
+	LEVEL14 = 13U,
+	LEVEL15 = 14U,
 	NOLEVEL,
 } LEVELID;
 typedef struct
