@@ -25,13 +25,14 @@ extern const Box box_lvl5[];/* =
 extern PLAYER player;
 extern LOCK locks_lvl5[1];
 extern const Box box_locks_lvl5_value[];
-SEAGULL enemy_lvl5 []= {
+/*SEAGULL enemy_lvl5 []= {
 		{{72U, 96U, 8U, 9U}, 1,0U,0U, 120U, 44U}
-};
+};*/
+extern SEAGULL seagull_lvl5[];
 UBYTE enemies_nb_lvl5 = 1U;
-KEY key_lvl5[1]= {
-		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL5, 0U},
-};
+extern KEY key_lvl5[1];//= {
+	//	{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL5, 0U},
+//};
 extern const unsigned char Lvl5TileMap[];/* =
 {
 6,12,14,12, 6,12,14,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -103,10 +104,10 @@ void manage_physics_lvl5()
 		return;
 	}
 	box1 = &(player.box);
-	box2 = &(enemy_lvl5[0].box);
+	box2 = &(seagull_lvl5[0].box);
 	if(checkCollision())
 	{
-		manage_seagull_collision((SEAGULL*) enemy_lvl5);
+		manage_seagull_collision((SEAGULL*) seagull_lvl5);
 	}
 	box2 = &(key_lvl5[0].box);
 	if(player.key == NULL && !key_lvl5[0].used &&checkCollision())
@@ -132,7 +133,7 @@ void manage_physics_lvl5()
 }
 void reset_lvl5()
 {
-	enemy_lvl5[0].dead = 0U;
+	seagull_lvl5[0].dead = 0U;
 	key_lvl5[0].used = 0U;
 	key_lvl5[0].box.x = key_lvl5[0].originX;
 	key_lvl5[0].box.y = key_lvl5[0].originY;
@@ -150,7 +151,7 @@ Level lvl5 = {
 		Lvl5TileMap,
 		locks_lvl5,
 		key_lvl5,
-		enemy_lvl5
+		seagull_lvl5
 
 };
 

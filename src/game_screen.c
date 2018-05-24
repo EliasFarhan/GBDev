@@ -280,25 +280,25 @@ void manage_doggy_sprites(UBYTE sprite_index)
 		{
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
-		move_sprite( sprite_index+0U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+1U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-16U);
-		move_sprite( sprite_index+2U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+3U, levels[currentLvl]->doggy->box.x+8U,  levels[currentLvl]->doggy->box.y-16U);
+		move_sprite( sprite_index+0U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+1U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-16U+8U);
+		move_sprite( sprite_index+2U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+3U, levels[currentLvl]->doggy->box.x+8U+8U,  levels[currentLvl]->doggy->box.y-16U+8U);
 
-		move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y);
-		move_sprite( sprite_index+6U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+7U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y);
+		move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y+8U);
+		move_sprite( sprite_index+6U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+7U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y+8U);
 
-		move_sprite( sprite_index+8U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+9U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-16U);
-		move_sprite( sprite_index+10U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+11U, levels[currentLvl]->doggy->box.x+24U,  levels[currentLvl]->doggy->box.y-16U);
+		move_sprite( sprite_index+8U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+9U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-16U+8U);
+		move_sprite( sprite_index+10U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+11U, levels[currentLvl]->doggy->box.x+24U+8U,  levels[currentLvl]->doggy->box.y-16U+8U);
 
-		move_sprite( sprite_index+12U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+13U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y);
-		move_sprite( sprite_index+14U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+15U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y);
+		move_sprite( sprite_index+12U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+13U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y+8U);
+		move_sprite( sprite_index+14U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+15U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y+8U);
 	}
 	else
 	{
@@ -306,25 +306,25 @@ void manage_doggy_sprites(UBYTE sprite_index)
 		{
 			set_sprite_prop(sprite_index+i,S_FLIPX);
 		}
-		move_sprite( sprite_index+10U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+11U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-16U);
-		move_sprite( sprite_index+8U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+9U, levels[currentLvl]->doggy->box.x+8U,  levels[currentLvl]->doggy->box.y-16U);
+		move_sprite( sprite_index+10U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+11U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-16U+8U);
+		move_sprite( sprite_index+8U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+9U, levels[currentLvl]->doggy->box.x+8U+8U,  levels[currentLvl]->doggy->box.y-16U+8U);
 
-		move_sprite( sprite_index+14U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+15U, levels[currentLvl]->doggy->box.x, levels[currentLvl]->doggy->box.y);
-		move_sprite( sprite_index+12U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+13U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y);
+		move_sprite( sprite_index+14U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+15U, levels[currentLvl]->doggy->box.x+8U, levels[currentLvl]->doggy->box.y+8U);
+		move_sprite( sprite_index+12U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+13U, levels[currentLvl]->doggy->box.x+8U+8U, levels[currentLvl]->doggy->box.y+8U);
 
-		move_sprite( sprite_index+2U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+3U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-16U);
-		move_sprite( sprite_index+0U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-24U);
-		move_sprite( sprite_index+1U, levels[currentLvl]->doggy->box.x+24U,  levels[currentLvl]->doggy->box.y-16U);
+		move_sprite( sprite_index+2U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+3U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-16U+8U);
+		move_sprite( sprite_index+0U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y-24U+8U);
+		move_sprite( sprite_index+1U, levels[currentLvl]->doggy->box.x+24U+8U,  levels[currentLvl]->doggy->box.y-16U+8U);
 
-		move_sprite( sprite_index+6U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+7U, levels[currentLvl]->doggy->box.x+16U, levels[currentLvl]->doggy->box.y);
-		move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y-8U);
-		move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x+24U, levels[currentLvl]->doggy->box.y);
+		move_sprite( sprite_index+6U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+7U, levels[currentLvl]->doggy->box.x+16U+8U, levels[currentLvl]->doggy->box.y+8U);
+		move_sprite( sprite_index+4U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y-8U+8U);
+		move_sprite( sprite_index+5U, levels[currentLvl]->doggy->box.x+24U+8U, levels[currentLvl]->doggy->box.y+8U);
 	}
 }
 
@@ -575,10 +575,10 @@ void set_sprites() NONBANKED
 			{
 				set_sprite_prop(sprite_index+i,0x00U);
 			}
-			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x+8U+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x+8U+8U, levels[currentLvl]->enemy->box.y+8U);
 		}
 		else
 		{
@@ -586,10 +586,10 @@ void set_sprites() NONBANKED
 			{
 				set_sprite_prop(sprite_index+i,S_FLIPX);
 			}
-			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
-			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x,  levels[currentLvl]->enemy->box.y+8U);
-			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+2U, levels[currentLvl]->enemy->box.x+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+0U, levels[currentLvl]->enemy->box.x+8U+8U, levels[currentLvl]->enemy->box.y);
+			move_sprite( sprite_index+3U, levels[currentLvl]->enemy->box.x+8U,  levels[currentLvl]->enemy->box.y+8U);
+			move_sprite( sprite_index+1U, levels[currentLvl]->enemy->box.x+8U+8U, levels[currentLvl]->enemy->box.y+8U);
 		}
 		sprite_index+=4U;
 	}
@@ -865,7 +865,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL4;
+	currentLvl = LEVEL1;
 
 	init_screen();
 

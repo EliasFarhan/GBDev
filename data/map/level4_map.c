@@ -29,4 +29,5 @@ Box box_lvl4[3] =
 &box_lvl4,
  boxes_lvl4_length,
  Lvl4TileMap, NULL};*/
-DOGGY doggy_lvl4 [] = {{{40U,72U, 27U, 32U},1,0U,0U,106U, 40U}};
+DOGGY doggy_lvl4 [] = {{{40U,136U, 27U, 32U},1,0U,0U,106U, 40U}};
+KEY key_lvl4 [1] = {{{40U,96U, 18U, 16U}, 40U,96, LEVEL4,0U}};

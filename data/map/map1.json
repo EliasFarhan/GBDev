@@ -354,6 +354,132 @@
                  "width":32,
                  "x":200,
                  "y":248
+                }, 
+                {
+                 "height":16,
+                 "id":45,
+                 "name":"SeagullLvl5",
+                 "properties":
+                    {
+                     "enemy":1,
+                     "maxX":114,
+                     "minX":40
+                    },
+                 "propertytypes":
+                    {
+                     "enemy":"int",
+                     "maxX":"int",
+                     "minX":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":40,
+                 "y":368
+                }, 
+                {
+                 "height":16,
+                 "id":46,
+                 "name":"SeagullLvl2",
+                 "properties":
+                    {
+                     "enemy":1,
+                     "maxX":248,
+                     "minX":200
+                    },
+                 "propertytypes":
+                    {
+                     "enemy":"int",
+                     "maxX":"int",
+                     "minX":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":200,
+                 "y":120
+                }, 
+                {
+                 "height":16,
+                 "id":47,
+                 "name":"SeagullLvl3",
+                 "properties":
+                    {
+                     "enemy":1,
+                     "maxX":154,
+                     "minX":88
+                    },
+                 "propertytypes":
+                    {
+                     "enemy":"int",
+                     "maxX":"int",
+                     "minX":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":88,
+                 "y":264
+                }, 
+                {
+                 "height":16,
+                 "id":48,
+                 "name":"KeyLvl2",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":280,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":49,
+                 "name":"KeyLvl5",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":352
+                }, 
+                {
+                 "height":16,
+                 "id":50,
+                 "name":"KeyLvl4",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":200,
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -372,7 +498,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":45,
+ "nextobjectid":51,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.5",

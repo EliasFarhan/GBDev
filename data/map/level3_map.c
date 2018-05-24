@@ -31,3 +31,4 @@ Box box_lvl3[5] =
 &box_lvl3,
  boxes_lvl3_length,
  Lvl3TileMap, NULL};*/
+SEAGULL seagull_lvl3 [] = {{{88U,136U, 6U, 9U},1,0U,0U,154U, 88U}};

@@ -48,9 +48,10 @@ extern const unsigned char Lvl3TileMap[];/* =
 
 extern Box* box1;
 extern Box* box2;
-SEAGULL enemy_lvl3 []= {
-		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
-};
+extern SEAGULL seagull_lvl3 [];
+//SEAGULL seagull_lvl3 []= {
+//		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
+//};
 void manage_physics_lvl3()
 {
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
@@ -105,15 +106,15 @@ void manage_physics_lvl3()
 		switch_to_level(LEVEL1);
 	}
 	box1 = &(player.box);
-	box2 = &(enemy_lvl3[0].box);
+	box2 = &(seagull_lvl3[0].box);
 	if(checkCollision())
 	{
-		manage_seagull_collision((SEAGULL*) enemy_lvl3);
+		manage_seagull_collision((SEAGULL*) seagull_lvl3);
 	}
 }
 void reset_lvl3()
 {
-	enemy_lvl3[0].dead = 0U;
+	seagull_lvl3[0].dead = 0U;
 }
 Level lvl3 = {
 		box_lvl3,
@@ -121,7 +122,7 @@ Level lvl3 = {
 		Lvl3TileMap,
 		NULL,
 		NULL,
-		enemy_lvl3
+		seagull_lvl3
 };
 
 

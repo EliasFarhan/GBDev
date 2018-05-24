@@ -21,9 +21,9 @@ extern const Box box_lvl4[];/* =
 		{24U,104U, 112U, 8U},
 		{128U, 112U, 8U,112U}
 };*/
-KEY key_lvl4[1]= {
-		{{40U, 96U, 18U, 16U}, 40U, 96U, LEVEL4, 0U},
-};
+extern KEY key_lvl4[1];//= {
+//		{{40U, 96U, 18U, 16U}, 40U, 96U, LEVEL4, 0U},
+//};
 /*
 SEAGULL enemy_lvl4[1]={
 		{{96U, 96U, 6U, 9U}, 1,0U,0U, 128U, 28U}

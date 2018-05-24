@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="45">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="51">
  <tileset firstgid="1" source="BG.tsx"/>
  <tileset firstgid="9" source="environment.tsx"/>
  <tileset firstgid="28" source="posters.tsx"/>
@@ -165,6 +165,42 @@
     <property name="enemy" type="int" value="2"/>
     <property name="maxX" type="int" value="266"/>
     <property name="minX" type="int" value="200"/>
+   </properties>
+  </object>
+  <object id="45" name="SeagullLvl5" x="40" y="368" width="16" height="16">
+   <properties>
+    <property name="enemy" type="int" value="1"/>
+    <property name="maxX" type="int" value="114"/>
+    <property name="minX" type="int" value="40"/>
+   </properties>
+  </object>
+  <object id="46" name="SeagullLvl2" x="200" y="120" width="16" height="16">
+   <properties>
+    <property name="enemy" type="int" value="1"/>
+    <property name="maxX" type="int" value="248"/>
+    <property name="minX" type="int" value="200"/>
+   </properties>
+  </object>
+  <object id="47" name="SeagullLvl3" x="88" y="264" width="16" height="16">
+   <properties>
+    <property name="enemy" type="int" value="1"/>
+    <property name="maxX" type="int" value="154"/>
+    <property name="minX" type="int" value="88"/>
+   </properties>
+  </object>
+  <object id="48" name="KeyLvl2" x="280" y="64" width="16" height="16">
+   <properties>
+    <property name="key" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="49" name="KeyLvl5" x="128" y="352" width="16" height="16">
+   <properties>
+    <property name="key" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="50" name="KeyLvl4" x="200" y="224" width="16" height="16">
+   <properties>
+    <property name="key" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

@@ -37,6 +37,17 @@ tile_size = (8,8)
 gb_tilesize = (int(gb_resolution[0]/tile_size[0]), int(gb_resolution[1]/tile_size[1]))
 
 
+class Key:
+    def __init__(self):
+        self.pos = (0, 0)
+        self.size = (18,16)
+    def data2c(self, lvl):
+        return "KEY key_lvl" + str(lvl) + \
+               " [1] = {{{" + str(self.pos[0]) + "U," + str(self.pos[1]) + \
+               "U, " + str(self.size[0]) + "U, " + str(self.size[1]) + "U}, " + \
+                str(self.pos[0]) + "U," + str(self.pos[1])+", LEVEL"+str(lvl)+",0U}};"
+
+
 class Enemy:
     type_name: str
 
@@ -115,6 +126,9 @@ def json2c(json_filename, offset):
     locks = [
         [] for n in range(size[0]*size[1])
     ]
+    keys = [
+        [] for n in range(size[0] * size[1])
+    ]
     enemies = [
         [] for n in range(size[0] * size[1])
     ]
@@ -133,6 +147,7 @@ def json2c(json_filename, offset):
                 print("{0}, {1}".format(tilemap_row, tilemap_column))
                 box_index = len(boxes[tilemap_index])
 
+                is_key = False
                 enemy_type = EnemyType.NONE
                 minX = 0
                 maxX = 0
@@ -149,6 +164,9 @@ def json2c(json_filename, offset):
                         maxX = box_properties["maxX"]
                     if box_properties.get("minX") is not None:
                         minX = box_properties["minX"]
+                    #KEY
+                    if box_properties.get("key") is not None and box_properties["key"]:
+                        is_key = True
 
                 if enemy_type != EnemyType.NONE:
 
@@ -172,6 +190,12 @@ def json2c(json_filename, offset):
                         enemy = new_doggy
 
                     enemies[tilemap_index].append(enemy)
+                    continue
+                if is_key:
+                    new_key = Key()
+                    new_key.pos = (box_topleft_pos[0] - tilemap_row * gb_resolution[0],
+                                       box_topleft_pos[1] + box_size[1] - tilemap_column * gb_resolution[1])
+                    keys[tilemap_index].append(new_key)
                     continue
                 #BOX
                 boxes[tilemap_index].append([box_topleft_pos[0]-tilemap_row*gb_resolution[0],
@@ -234,7 +258,9 @@ def json2c(json_filename, offset):
                 c_file.write("NULL};*/\n")
             if len(enemies[i]) >= 1:
                 for enemy in enemies[i]:
-                    c_file.write(enemy.data2c(i+1))
+                    c_file.write(enemy.data2c(i+1)+"\n")
+            if len(keys[i]) == 1:
+                c_file.write(keys[i][0].data2c(i+1)+"\n")
 
 
 def main():

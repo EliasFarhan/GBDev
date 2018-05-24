@@ -21,13 +21,14 @@ extern const Box box_lvl2[];/* =
 		{8U,96U, 144U, 8U},
 		{0U, 136, 16U, 8U}
 };*/
-
-KEY key_lvl2[1]= {
-		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL6, 0U},
-};
-SEAGULL enemy_lvl2 []= {
+extern KEY key_lvl2[];
+//KEY key_lvl2[1]= {
+//		{{120U, 80U, 18U, 16U}, 120U, 80U, LEVEL6, 0U},
+//};
+extern SEAGULL seagull_lvl2 [];
+/*SEAGULL seagull_lvl2 []= {
 		{{56U, 136U, 8U, 9U}, 1,0U,0U, 96U, 40U}
-};
+};*/
 extern const unsigned char Lvl2TileMap[];/* =
 {
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -92,15 +93,15 @@ void manage_physics_lvl2()
 	{
 		player.key = key_lvl2;
 	}
-	box2 = &(enemy_lvl2[0].box);
+	box2 = &(seagull_lvl2[0].box);
 	if(checkCollision())
 	{
-		manage_seagull_collision((SEAGULL*) enemy_lvl2);
+		manage_seagull_collision((SEAGULL*) seagull_lvl2);
 	}
 }
 void reset_lvl2()
 {
-	enemy_lvl2[0].dead = 0U;
+	seagull_lvl2[0].dead = 0U;
 
 	key_lvl2[0].used = 0U;
 	key_lvl2[0].box.x = key_lvl2[0].originX;
@@ -113,7 +114,7 @@ Level lvl2 = {
 		Lvl2TileMap,
 		NULL,
 		key_lvl2,
-		enemy_lvl2
+		seagull_lvl2
 
 };
 
