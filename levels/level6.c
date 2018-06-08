@@ -139,7 +139,7 @@ void manage_physics_lvl6()
 		locks_lvl6[0].box->w = 0U;
 		locks_lvl6[0].box->h = 0U;
 		locks_lvl6[0].locked = 0U;
-		victory();
+		switch_to_world(WORLD2);
 
 	}
 	/*if(checkCollision(&(enemy_lvl6[0].box), &(player.box)))
@@ -159,6 +159,7 @@ void reset_lvl6()
 	locks_lvl6[0].box->h = box_locks_lvl6_value[0].h;
 }
 
+/*
 Level lvl6 = {
 		box_lvl6,
 		boxes_lvl6_length,
@@ -169,3 +170,4 @@ Level lvl6 = {
 
 
 };
+*/

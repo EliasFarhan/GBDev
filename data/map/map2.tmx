@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="60" height="54" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="9">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="60" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="10">
  <tileset firstgid="1" source="BG.tsx"/>
  <tileset firstgid="9" source="environment.tsx"/>
- <layer id="1" name="BG" width="60" height="54">
+ <layer name="BG" width="60" height="54">
   <data encoding="csv">
 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
 3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,
@@ -60,7 +60,7 @@
 3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4
 </data>
  </layer>
- <layer id="2" name="Environment" width="60" height="54">
+ <layer name="Environment" width="60" height="54">
   <data encoding="csv">
 14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,10,10,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,10,10,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,11,
 9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
@@ -118,7 +118,7 @@
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
 </data>
  </layer>
- <layer id="3" name="Poster" width="60" height="54">
+ <layer name="Poster" width="60" height="54">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -176,7 +176,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Boxes">
+ <objectgroup name="Boxes">
   <object id="1" name="box7" x="32" y="288" width="8" height="96"/>
   <object id="2" name="box7" x="32" y="384" width="96" height="8"/>
   <object id="3" name="box7" x="128" y="352" width="32" height="40"/>
@@ -190,5 +190,10 @@
   <object id="6" name="box4" x="32" y="240" width="128" height="8"/>
   <object id="7" name="box4" x="32" y="144" width="8" height="72"/>
   <object id="8" name="box4" x="56" y="184" width="104" height="8"/>
+  <object id="9" name="WALL1" x="0" y="392" width="8" height="32">
+   <properties>
+    <property name="wall" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

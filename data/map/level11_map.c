@@ -19,7 +19,13 @@ const unsigned char Lvl11TileMap[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,
 11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,
 1,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14};
 size_t boxes_lvl11_length = 0;
-/*Level lvl11 = {
-&box_lvl11,
- boxes_lvl11_length,
- Lvl11TileMap, NULL};*/
+Level lvl11 = {
+NULL, 
+0U,
+Lvl11TileMap,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+};

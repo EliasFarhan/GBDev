@@ -36,7 +36,7 @@ void manage_physics_lvl10()
 void reset_lvl10()
 {
 }
-
+/*
 Level lvl10 = {
 		box_lvl10,
 		boxes_lvl10_length,
@@ -44,5 +44,5 @@ Level lvl10 = {
 		NULL
 
 };
-
+*/
 

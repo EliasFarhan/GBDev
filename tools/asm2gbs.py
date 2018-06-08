@@ -93,6 +93,7 @@ def main():
     gbs_data  = read_asmfile(asmfile)
    
     write_gbs(gbs_data, gbsfile)
+
 if __name__ == '__main__':
     main()
     

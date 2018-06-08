@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="51">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="40" height="54" tilewidth="8" tileheight="8" infinite="0" nextobjectid="52">
  <tileset firstgid="1" source="BG.tsx"/>
  <tileset firstgid="9" source="environment.tsx"/>
  <tileset firstgid="28" source="posters.tsx"/>
@@ -201,6 +201,11 @@
   <object id="50" name="KeyLvl4" x="200" y="224" width="16" height="16">
    <properties>
     <property name="key" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="51" name="WALL6" x="312" y="392" width="8" height="32">
+   <properties>
+    <property name="wall" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

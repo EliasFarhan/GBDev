@@ -26,9 +26,15 @@ Box box_lvl2[4] =
 {0U,144U,16U,16U},
 {96U,144U,40U,16U}
 };
-/*Level lvl2 = {
-&box_lvl2,
- boxes_lvl2_length,
- Lvl2TileMap, NULL};*/
 SEAGULL seagull_lvl2 [] = {{{40U,136U, 6U, 9U},1,0U,0U,88U, 40U}};
 KEY key_lvl2 [1] = {{{120U,80U, 18U, 16U}, 120U,80, LEVEL2,0U}};
+Level lvl2 = {
+box_lvl2,
+boxes_lvl2_length,
+Lvl2TileMap,
+NULL,
+NULL,
+key_lvl2,
+seagull_lvl2,
+NULL,
+};

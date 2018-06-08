@@ -26,7 +26,13 @@ Box box_lvl10[4] =
 {32U,72U,8U,72U},
 {56U,48U,104U,8U}
 };
-/*Level lvl10 = {
-&box_lvl10,
- boxes_lvl10_length,
- Lvl10TileMap, NULL};*/
+Level lvl10 = {
+box_lvl10,
+boxes_lvl10_length,
+Lvl10TileMap,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+};

@@ -113,11 +113,11 @@ void reset_lvl1()
 	locks_lvl1[0].box->h = box_locks_lvl1_value[0].h;
 }
 
-Level lvl1 = {
+/*Level lvl1 = {
 		box_lvl1,
 		boxes_lvl1_length,
 		Lvl1TileMap,
 		locks_lvl1
-};
+};*/
 
 

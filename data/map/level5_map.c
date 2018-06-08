@@ -34,9 +34,15 @@ const Box box_locks_lvl5_value[1] =
                 {
                     {32, 96, 8, 32}
                 };
-/*Level lvl5 = {
-&box_lvl5,
- boxes_lvl5_length,
- Lvl5TileMap, locks_lvl5 };*/
 SEAGULL seagull_lvl5 [] = {{{40U,96U, 6U, 9U},1,0U,0U,114U, 40U}};
 KEY key_lvl5 [1] = {{{128U,80U, 18U, 16U}, 128U,80, LEVEL5,0U}};
+Level lvl5 = {
+box_lvl5,
+boxes_lvl5_length,
+Lvl5TileMap,
+locks_lvl5,
+NULL,
+key_lvl5,
+seagull_lvl5,
+NULL,
+};

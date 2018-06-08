@@ -131,6 +131,7 @@ void reset_lvl4()
 	key_lvl4[0].box.y = key_lvl4[0].originY;
 }
 
+/*
 Level lvl4 = {
 		box_lvl4,
 		boxes_lvl4_length,
@@ -141,5 +142,5 @@ Level lvl4 = {
 		doggy_lvl4
 
 };
-
+*/
 

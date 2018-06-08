@@ -39,7 +39,7 @@ void manage_physics_lvl13()
 void reset_lvl13()
 {
 }
-
+/*
 Level lvl13 = {
 		box_lvl13,
 		boxes_lvl13_length,
@@ -48,3 +48,4 @@ Level lvl13 = {
 		&key_lvl13
 
 };
+*/

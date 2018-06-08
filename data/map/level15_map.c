@@ -19,7 +19,13 @@ const unsigned char Lvl15TileMap[] = {11,13,11,13,11,13,11,13,11,13,11,13,11,13,
 3,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,3,
 2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 size_t boxes_lvl15_length = 0;
-/*Level lvl15 = {
-&box_lvl15,
- boxes_lvl15_length,
- Lvl15TileMap, NULL};*/
+Level lvl15 = {
+NULL, 
+0U,
+Lvl15TileMap,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+};

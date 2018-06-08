@@ -145,6 +145,7 @@ void reset_lvl5()
 	locks_lvl5[0].box->h = box_locks_lvl5_value[0].h;
 }
 
+/*
 Level lvl5 = {
 		box_lvl5,
 		boxes_lvl5_length,
@@ -154,5 +155,5 @@ Level lvl5 = {
 		seagull_lvl5
 
 };
-
+*/
 

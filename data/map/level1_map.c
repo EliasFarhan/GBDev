@@ -35,7 +35,13 @@ const Box box_locks_lvl1_value[1] =
                 {
                     {112, 128, 8, 32}
                 };
-/*Level lvl1 = {
-&box_lvl1,
- boxes_lvl1_length,
- Lvl1TileMap, locks_lvl1 };*/
+Level lvl1 = {
+box_lvl1,
+boxes_lvl1_length,
+Lvl1TileMap,
+locks_lvl1,
+NULL,
+NULL,
+NULL,
+NULL,
+};

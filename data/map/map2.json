@@ -135,6 +135,25 @@
                  "width":104,
                  "x":56,
                  "y":184
+                }, 
+                {
+                 "height":32,
+                 "id":9,
+                 "name":"WALL1",
+                 "properties":
+                    {
+                     "wall":true
+                    },
+                 "propertytypes":
+                    {
+                     "wall":"bool"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":0,
+                 "y":392
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -142,7 +161,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":9,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.5",

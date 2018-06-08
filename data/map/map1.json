@@ -480,6 +480,25 @@
                  "width":16,
                  "x":200,
                  "y":224
+                }, 
+                {
+                 "height":32,
+                 "id":51,
+                 "name":"WALL6",
+                 "properties":
+                    {
+                     "wall":true
+                    },
+                 "propertytypes":
+                    {
+                     "wall":"bool"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":312,
+                 "y":392
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -498,7 +517,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":51,
+ "nextobjectid":52,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.5",

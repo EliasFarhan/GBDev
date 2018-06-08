@@ -12,6 +12,7 @@ PLAYER player;
 WHITEFUR whiteFur;
 
 LEVELID currentLvl;
+WORLDID currentWorld;
 extern UBYTE finish;
 
 

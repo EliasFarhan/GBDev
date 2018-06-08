@@ -49,6 +49,12 @@ Level* levels[15] = {
 		NULL,
 		NULL
 };
+
+World worlds[] = {
+		{LEVEL6},
+		{LEVEL11}
+};
+extern WORLDID currentWorld;
 extern LEVELID currentLvl;
 
 extern unsigned char tile_peanut[];
@@ -82,7 +88,8 @@ void manage_input() NONBANKED
 
 	if(!(player.booleanState & TRANSITIONNING)
 			&& !(player.booleanState & HASGAMEOVER)
-			&& !(player.booleanState & HASVICTORY))
+			&& !(player.booleanState & HASVICTORY)
+			&& !(player.booleanState & WORLD_SWITCH))
 	{
 		if(keys & J_A)
 		{
@@ -261,6 +268,23 @@ void manage_input() NONBANKED
 			gbt_stop();
 		}
 	}
+	else if(player.booleanState & WORLD_SWITCH)
+	{
+		if (keys & J_LEFT)
+		{
+
+			player.dirX = -1;
+		}
+		else if (keys & J_RIGHT)
+		{
+
+			player.dirX = 1;
+		}
+		else
+		{
+			player.dirX = 1;
+		}
+	}
 }
 
 UBYTE previous_sprite_index;
@@ -415,7 +439,8 @@ void set_sprites() NONBANKED
 	key = NULL;
 	sprite_index = 0U;
 
-	if(player.booleanState & HASVICTORY)
+	if((player.booleanState & HASVICTORY)||
+			(player.booleanState & WORLD_SWITCH))
 	{
 		origin_index = 104U;
 	}
@@ -493,6 +518,17 @@ void set_sprites() NONBANKED
 			{
 				set_sprite_tile( i+sprite_index, WF_INDEX+i+12U );
 			}
+			else if(player.booleanState & WORLD_SWITCH)
+			{
+				if(i >=4U)
+				{
+					set_sprite_tile( i+sprite_index, WF_INDEX+i+16U+(whiteFur.img_index<<2U) );
+				}
+				else
+				{
+					set_sprite_tile( i+sprite_index, WF_INDEX+i+12U );
+				}
+			}
 			else
 			{
 				if(whiteFur.timer >= 10U && i >=4U)
@@ -508,14 +544,14 @@ void set_sprites() NONBANKED
 
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
-		move_sprite( sprite_index+0, 56U,    120U);
-		move_sprite( sprite_index+1, 56U,    120U+8U);
-		move_sprite( sprite_index+2, 56U+8U, 120U);
-		move_sprite( sprite_index+3, 56U+8U, 120U+8U);
-		move_sprite( sprite_index+4, 56U,    136U);
-		move_sprite( sprite_index+5, 56U,    136U+8U);
-		move_sprite( sprite_index+6, 56U+8U, 136U);
-		move_sprite( sprite_index+7, 56U+8U, 136U+8U);
+		move_sprite( sprite_index+0, whiteFur.posX,    120U);
+		move_sprite( sprite_index+1, whiteFur.posX,    120U+8U);
+		move_sprite( sprite_index+2, whiteFur.posX+8U, 120U);
+		move_sprite( sprite_index+3, whiteFur.posX+8U, 120U+8U);
+		move_sprite( sprite_index+4, whiteFur.posX,    136U);
+		move_sprite( sprite_index+5, whiteFur.posX,    136U+8U);
+		move_sprite( sprite_index+6, whiteFur.posX+8U, 136U);
+		move_sprite( sprite_index+7, whiteFur.posX+8U, 136U+8U);
 		sprite_index+=8U;
 	}
 	//MOVE TEXT SPRITES
@@ -538,8 +574,10 @@ void set_sprites() NONBANKED
 		}
 		sprite_index += 8U;
 	}
+	// SHOW VICTORY TEXT
 	else if(player.booleanState & HASVICTORY)
 	{
+
 		SWITCH_ROM_MBC1(5);
 		for(i = 0; i != 7; i++)
 		{
@@ -550,6 +588,7 @@ void set_sprites() NONBANKED
 			set_sprite_prop(sprite_index+i,0x00U);
 		}
 		sprite_index += 7U;
+
 	}
 	//SHOW SEAGULL ENEMIES
 
@@ -605,8 +644,6 @@ void set_sprites() NONBANKED
 	}
 
 	//SHOW KEY LOCK
-
-
 	if(levels[currentLvl]->lock != NULL && levels[currentLvl]->lock->locked)
 	{
 		UBYTE height;
@@ -640,6 +677,19 @@ void set_sprites() NONBANKED
 		move_sprite( sprite_index+1, levels[currentLvl]->lock->box->x+4U,  levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
 		move_sprite( sprite_index+3, levels[currentLvl]->lock->box->x+12U, levels[currentLvl]->lock->box->y+8U -(8U<<(height>>2) ));
 		sprite_index+=4U;
+	}
+	//SHOW WALL
+	if(levels[currentLvl]->wall != NULL)
+	{
+		const UBYTE height = levels[currentLvl]->wall->box->h>>3;
+		for(i = 0; i != height; i++)
+		{
+			set_sprite_prop(sprite_index+i,0x00U);
+			set_sprite_tile( i+sprite_index, ENV_INDEX+8U );
+			move_sprite(i+sprite_index,levels[currentLvl]->wall->box->x+8U,levels[currentLvl]->wall->box->y-(i<<3)+8U);
+
+		}
+		sprite_index+=height;
 	}
 	//SHOW KEYS
 
@@ -699,8 +749,31 @@ void manage_animation() NONBANKED
 	if(currentLvl == LEVEL6 || currentLvl == LEVEL13)
 	{
 		whiteFur.timer++;
+		if(player.booleanState & WORLD_SWITCH)
+		{
+			if(whiteFur.timer == 5U)
+			{
+				whiteFur.img_index = 0U;
+			}
+			else if(whiteFur.timer == 10U)
+			{
+				whiteFur.img_index = 1U;
+			}
+			else if(whiteFur.timer == 15U)
+			{
+				whiteFur.img_index = 2U;
+			}
+			else if(whiteFur.timer == 20U)
+			{
+				whiteFur.img_index = 1U;
+			}
+			if(whiteFur.posX != 169U)
+				whiteFur.posX++;
+		}
+
 		if(whiteFur.timer == 20U)
 			whiteFur.timer = 0U;
+
 	}
 	//PLAYER ANIMATION
 
@@ -865,8 +938,8 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL1;
-
+	currentLvl = LEVEL4;
+	whiteFur.posX = 56U;
 	init_screen();
 
 	finish = 0U;
@@ -906,10 +979,6 @@ void game_screen() NONBANKED
 	}
 
 }
-
-
-
-
 
 void init_screen() NONBANKED
 {
@@ -995,14 +1064,21 @@ void game_over() NONBANKED
 
 extern UBYTE credits;
 
+void switch_to_world(WORLDID newWorldId) NONBANKED
+{
+	currentWorld = newWorldId;
+	player.booleanState = player.booleanState | WORLD_SWITCH;
+
+}
+
 void victory() NONBANKED
 {
-	/*player.booleanState = player.booleanState | HASVICTORY;
+	player.booleanState = player.booleanState | HASVICTORY;
 	credits = 1U;
 	gbt_play(victory_song_Data, 0x02U, 0x07U);
 	gbt_loop(0x00U);
 	player.box.y = 136U;
-	SWITCH_ROM_MBC1(6);*/
+	SWITCH_ROM_MBC1(6);
 	player.box.x = 8U;
 	switch_to_level(LEVEL13);
 }

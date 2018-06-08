@@ -60,10 +60,19 @@ class Enemy:
         self.type_name = ""
 
     def data2c(self, lvl):
-        return self.type_name +" " + self.enemy_name +"_lvl" + str(lvl) +\
+        return self.type_name + " " +self.level_descriptor(lvl) +\
                " [] = {{{" + str(self.pos[0]) +"U," + str(self.pos[1]) +\
                "U, " + str(self.size[0]) +"U, " + str(self.size[1]) +"U},1,0U,0U," + \
                str(self.maxX) + "U, " + str(self.minX) + "U}};"
+
+    def level_descriptor(self, lvl):
+        return  self.enemy_name + "_lvl" + str(lvl)
+
+    def contain_type(enemy_list, enemy_type):
+        for enemy in enemy_list:
+            if enemy.type_name == enemy_type:
+                return enemy
+        return None
 
 
 class Seagull(Enemy):
@@ -126,6 +135,9 @@ def json2c(json_filename, offset):
     locks = [
         [] for n in range(size[0]*size[1])
     ]
+    walls = [
+        [] for n in range(size[0] * size[1])
+    ]
     keys = [
         [] for n in range(size[0] * size[1])
     ]
@@ -164,6 +176,9 @@ def json2c(json_filename, offset):
                         maxX = box_properties["maxX"]
                     if box_properties.get("minX") is not None:
                         minX = box_properties["minX"]
+                    #WALL
+                    if box_properties.get("wall") is not None and box_properties["wall"]:
+                        walls[tilemap_index].append([box_index])
                     #KEY
                     if box_properties.get("key") is not None and box_properties["key"]:
                         is_key = True
@@ -236,12 +251,11 @@ def json2c(json_filename, offset):
             c_file.write("const unsigned char Lvl"+str(offset+i+1)+"TileMap[] = {"+
                          ",\n".join(map((lambda l : ",".join(map(lambda item: str(item), l))), tiled_map[i]))+"};\n")
             c_file.write("size_t boxes_lvl"+str(offset+i+1)+"_length = "+str(len(boxes[i]))+";\n")
-            if len(locks[i]) == 0:
-                #c_file.write("const ")
-                pass
+
             if len(boxes[i]) > 0:
                 c_file.write("Box box_lvl"+str(offset+i+1)+"["+str(len(boxes[i]))+"] = \n")#+str(len(boxes[i]))
                 c_file.write("{\n"+",\n".join(map((lambda l : "{"+",".join(map(lambda item: str(item)+"U", l))+"}"), boxes[i]))+"\n};\n")
+
             if len(locks[i]) == 1:
                 c_file.write("LOCK locks_lvl"+str(offset+i+1)+"["+str(len(locks[i]))+"""] =
 {
@@ -251,16 +265,52 @@ def json2c(json_filename, offset):
                 {
                     {""" + ", ".join(map((lambda val : str(val)), boxes[i][locks[i][0][0]])) + """}
                 };\n""")
-            c_file.write("/*Level lvl"+str(offset+i+1)+" = {\n&box_lvl"+str(offset+i+1)+",\n boxes_lvl"+str(offset+i+1)+"_length,\n Lvl"+str(offset+i+1)+"TileMap, ")
-            if len(locks[i]) == 1:
-                c_file.write("locks_lvl"+str(offset+i+1)+" };*/\n")
-            else:
-                c_file.write("NULL};*/\n")
+            if len(walls[i]) == 1:
+                c_file.write("WALL walls_lvl" + str(offset + i + 1) + "[" + str(len(walls[i])) + """] =
+            {
+                {&(box_lvl""" + str(offset + i + 1) + """[""" + str(walls[i][0][0]) + """]), 1U}
+            };\n""")
+                c_file.write("const Box box_walls_lvl" + str(offset + i + 1) + "_value[" + str(len(walls[i])) + """] =
+                            {
+                                {""" + ", ".join(map((lambda val: str(val)), boxes[i][walls[i][0][0]])) + """}
+                            };\n""")
             if len(enemies[i]) >= 1:
                 for enemy in enemies[i]:
-                    c_file.write(enemy.data2c(i+1)+"\n")
+                    c_file.write(enemy.data2c(i + 1) + "\n")
             if len(keys[i]) == 1:
-                c_file.write(keys[i][0].data2c(i+1)+"\n")
+                c_file.write(keys[i][0].data2c(i + 1) + "\n")
+
+            c_file.write("Level lvl"+str(offset+i+1)+
+                         " = {\n")
+            if(len(boxes[i]) >0):
+                c_file.write("box_lvl"+str(offset+i+1)+
+                         ",\nboxes_lvl"+str(offset+i+1)+"_length,\n")
+            else:
+                c_file.write("NULL, \n0U,\n")
+            c_file.write("Lvl"+str(offset+i+1)+"TileMap,\n")
+
+            if len(locks[i]) == 1:
+                c_file.write("locks_lvl"+str(offset+i+1)+",\n")
+            else:
+                c_file.write("NULL,\n")
+            if len(walls[i]) == 1:
+                c_file.write("walls_lvl" + str(offset + i + 1)+",\n")
+            else:
+                c_file.write("NULL,\n")
+            if(len(keys[i]) == 1):
+                c_file.write("key_lvl"+str(offset+i+1)+",\n")
+            else:
+                c_file.write("NULL,\n")
+            if(Enemy.contain_type(enemies[i], "SEAGULL") is not None):
+                c_file.write(Enemy.contain_type(enemies[i], "SEAGULL").level_descriptor(i+1)+",\n")
+            else:
+                c_file.write("NULL,\n")
+            if (Enemy.contain_type(enemies[i], "DOGGY") is not None):
+                c_file.write(Enemy.contain_type(enemies[i], "DOGGY").level_descriptor(i + 1)+",\n")
+            else:
+                c_file.write("NULL,\n")
+            c_file.write("};\n")
+
 
 
 def main():

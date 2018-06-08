@@ -116,6 +116,7 @@ void reset_lvl3()
 {
 	seagull_lvl3[0].dead = 0U;
 }
+/*
 Level lvl3 = {
 		box_lvl3,
 		boxes_lvl3_length,
@@ -124,5 +125,5 @@ Level lvl3 = {
 		NULL,
 		seagull_lvl3
 };
-
+*/
 

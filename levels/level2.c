@@ -107,7 +107,7 @@ void reset_lvl2()
 	key_lvl2[0].box.x = key_lvl2[0].originX;
 	key_lvl2[0].box.y = key_lvl2[0].originY;
 }
-
+/*
 Level lvl2 = {
 		box_lvl2,
 		boxes_lvl2_length,
@@ -117,5 +117,5 @@ Level lvl2 = {
 		seagull_lvl2
 
 };
-
+*/
 

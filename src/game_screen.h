@@ -10,13 +10,14 @@
 #define HASKEY 0x08
 #define HASGAMEOVER 0x10
 #define HASVICTORY 0x20
+#define WORLD_SWITCH 0x40
 #define PLAYER_SIZE 16U
 #define DEAD_SEAGULL_TIME 15U
 
 
 //SPRITES INDEX
-#define BW_SPR_LEN 96U //Black Whiskers animation length
-#define WF_SPR_LEN 20U //White Fur animation length
+#define BW_SPR_LEN 108U //Black Whiskers animation length
+#define WF_SPR_LEN 32U //White Fur animation length
 #define SEA_SPR_LEN 16U //Seagulls animation length
 #define ENV_SPR_LEN 9U //Environment spritesheet length
 #define STR_SPR_LEN 13U //Press Start letters length
@@ -33,6 +34,12 @@
 #define PRESS_START_INDEX 0U
 #define GAME_OVER_INDEX 10U
 #define VICTORY_INDEX 18U
+
+typedef enum {
+	WORLD1 = 0U,
+	WORLD2 = 1U,
+	WORLD3 = 2U
+} WORLDID;
 
 typedef enum {
 	LEVEL1 = 0U,
@@ -86,6 +93,10 @@ typedef struct
 	Box* box;
 	UBYTE locked;
 } LOCK;
+typedef struct
+{
+	Box* box;
+} WALL;
 typedef struct{
 	Box box;
 	enum AnimationState state;//0 right, 1 left, 2 up, 3 down
@@ -105,6 +116,8 @@ typedef struct{
 typedef struct
 {
 	UBYTE timer;
+	UBYTE img_index;
+	UBYTE posX;
 } WHITEFUR;
 
 typedef struct
@@ -134,12 +147,16 @@ typedef struct
 	const size_t boxes_length;
 	unsigned char* LvlTileMap;
 	LOCK* lock;
+	WALL* wall;
 	KEY* key;
 	SEAGULL* enemy;
 	DOGGY* doggy;
 } Level;
 
-
+typedef struct
+{
+	LEVELID firstLevel;
+} World;
 
 
 
@@ -147,6 +164,7 @@ void init_screen();
 void game_screen();
 void game_over();
 void switch_to_level(LEVELID);
+void switch_to_world(WORLDID);
 void reset_game();
 
 #endif
