@@ -12,7 +12,7 @@ data/map/level11_map.o data/map/level12_map.o data/map/level13_map.o levels/leve
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
 
 SRJailbreak.gb:
-	$(CC) -Wl-yt3 -Wl-yo16 -Wl-ya1 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS) 
+	$(CC) -Wl-yt3 -Wl-yo16 -Wl-ya1 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS)
 
 
 levels/%.o:	levels/%.c

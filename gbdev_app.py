@@ -20,6 +20,7 @@ from os.path import isfile, join
 from PIL import Image
 
 import tools.bin2png
+import tools.json2c
 
 
 class ImageManager():
@@ -107,9 +108,11 @@ def main():
         imgui.new_frame()
 
         if imgui.begin_main_menu_bar():
-            if imgui.begin_menu("File", True):
+            if imgui.begin_menu("Fimainle", True):
                 open_gbtd, selected_none = imgui.menu_item("Open GBTD", None, False, True)
                 open_gbtk, selected_none = imgui.menu_item("Open GBTK", None, False, True)
+                
+                export_json, selected_none = imgui.menu_item("Export Default Json", None, False, True)
 
                 clicked_quit, selected_quit = imgui.menu_item("Quit", 'Cmd+Q', False, True)
 
@@ -119,6 +122,8 @@ def main():
                     os.system("wine tools/GBTD/GBTD.EXE &")
                 if open_gbtk:
                     os.system("wine tools/GBTK.exe &")
+                if export_json:
+                    tools.json2c.default_use()
                 imgui.end_menu()
             imgui.end_main_menu_bar()
 

@@ -313,10 +313,10 @@ def json2c(json_filename, offset):
 
 
 
-def main():
-    json2c("../data/map/map1.json", 0)
-    json2c("../data/map/map2.json", 6)
+def default_use(relative_path=""):
+    json2c(relative_path+"data/map/map1.json", 0)
+    json2c(relative_path+"data/map/map2.json", 6)
 
 
 if __name__ == "__main__":
-    main()
+    default_use("../")

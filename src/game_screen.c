@@ -938,7 +938,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 void game_screen() NONBANKED
 {
 
-	currentLvl = LEVEL4;
+	currentLvl = LEVEL6;
 	whiteFur.posX = 56U;
 	init_screen();
 
