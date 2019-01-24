@@ -4,11 +4,10 @@
 extern unsigned char kwakwa_logo_tiledata[];
 
 extern unsigned char kwakwa_logo_tilemap[];
-void kwakwa_graphics() NONBANKED {
-	SWITCH_ROM_MBC1(3);
-	set_bkg_tiles(0,0,20,18,kwakwa_logo_tilemap);
+//void kwakwa_graphics() NONBANKED {
+	//SWITCH_ROM_MBC1(3);
 	//draw_image(kwakwa_logo_tiledata);
-}
+//}
 
 void kwakwa_screen() NONBANKED {
 	UBYTE pstart = 0;
@@ -23,6 +22,8 @@ void kwakwa_screen() NONBANKED {
 
 	SWITCH_ROM_MBC1(3);
 	set_bkg_data(0,255,kwakwa_logo_tiledata);
+
+	set_bkg_tiles(0,0,20,18,kwakwa_logo_tilemap);
 	DISPLAY_ON;
 	SHOW_BKG;
 	enable_interrupts();
@@ -32,7 +33,7 @@ void kwakwa_screen() NONBANKED {
 		if (pstart == 30) {
 			break;
 		}
-		kwakwa_graphics();
+		//kwakwa_graphics();
 		pstart++;
 	}
 }

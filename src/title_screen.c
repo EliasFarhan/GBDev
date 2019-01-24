@@ -18,7 +18,6 @@ void title_graphics(UBYTE pstart) NONBANKED {
 	SWITCH_ROM_MBC1(3);
 
 
-	//set_bkg_tiles(0,0,20U,18U,title_screen_tilemap);
 	draw_image(title_screen_tiledata);
 
 	//Show PRESS START
@@ -68,6 +67,7 @@ void title_screen() NONBANKED {
 	//SWITCH_ROM_MBC1(3);
 
 	//set_bkg_data(0U,255U,title_screen_tiledata);
+	//set_bkg_tiles(0,0,20U,18U,title_screen_tilemap);
 	SWITCH_ROM_MBC1(5);
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
 

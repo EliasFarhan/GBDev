@@ -163,7 +163,7 @@ void manage_static_physics2()
 		{
 			if((player.box.x > 8U && player.dirX == -1) || (player.box.x< 160U-8U-PLAYER_SIZE && player.dirX == 1))
 			{
-				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
+				if(!(player.state == CROUCHWALK && (player.timer & 1U == 0U)))
 				{
 					player.box.x += player.dirX;
 				}
@@ -249,7 +249,7 @@ void manage_static_physics()
 		{
 			if((player.box.x > 8U && player.dirX == -1) || (player.box.x< 160U-8U-PLAYER_SIZE && player.dirX == 1))
 			{
-				if(!(player.state == CROUCHWALK && player.timer % 2U == 1U))
+				if(!(player.state == CROUCHWALK && (player.timer & 1U == 0U)))
 				{
 					player.box.x += player.dirX;
 				}

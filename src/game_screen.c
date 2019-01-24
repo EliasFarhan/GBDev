@@ -374,10 +374,10 @@ void manage_player_sprites()
 			{
 				set_sprite_prop(i,S_FLIPX);
 			}
-			move_sprite( 1, player.box.x+8U,    player.box.y );
-			move_sprite( 0, player.box.x+16U,   player.box.y );
-			move_sprite( 3, player.box.x+8U,    player.box.y+8 );
-			move_sprite( 2, player.box.x+16U,   player.box.y+8 );
+			move_sprite( 1U, player.box.x+8U,    player.box.y );
+			move_sprite( 0U, player.box.x+16U,   player.box.y );
+			move_sprite( 3U, player.box.x+8U,    player.box.y+8 );
+			move_sprite( 2U, player.box.x+16U,   player.box.y+8 );
 
 		}
 	}

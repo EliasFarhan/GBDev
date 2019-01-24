@@ -28,6 +28,7 @@ class ImageManager():
         self.textureID_map = {}
         self.imgs_size_map = {}
         self.texture_data_map = {}
+
     def load_image(self, filename):
         if filename in self.textureID_map:
             return self.textureID_map[filename]
@@ -108,7 +109,7 @@ def main():
         imgui.new_frame()
 
         if imgui.begin_main_menu_bar():
-            if imgui.begin_menu("Fimainle", True):
+            if imgui.begin_menu("Menu", True):
                 open_gbtd, selected_none = imgui.menu_item("Open GBTD", None, False, True)
                 open_gbtk, selected_none = imgui.menu_item("Open GBTK", None, False, True)
                 
@@ -159,6 +160,7 @@ def main():
         imgui.render()
 
         pygame.display.flip()
+
 
 if __name__ == "__main__":
     main()
