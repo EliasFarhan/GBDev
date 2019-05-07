@@ -926,7 +926,10 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	{
 		for(j = 0; j!= 20; j++)
 		{
-			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[i*20+j]);
+			int i_4 = i << 2;
+
+			int result = ((i_4+i)<<2);
+			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
 		}
 	}
 	SHOW_BKG;
@@ -1014,7 +1017,9 @@ void init_screen() NONBANKED
 	{
 		for(j = 0; j!= 20; j++)
 		{
-			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[i*20+j]);
+			int i_4 = i << 2;
+			int result = (i_4+i)<<2;
+			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
 		}
 	}
 	SPRITES_8x8;//TODO: why not 8x16?
