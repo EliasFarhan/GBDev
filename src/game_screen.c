@@ -783,7 +783,7 @@ void manage_animation() NONBANKED
 	{
 
 		player.timer++;
-		if(player.booleanState & TRANSITIONNING && player.timer % 2U == 1)
+		if(player.booleanState & TRANSITIONNING && (player.timer & 1U == 1U))
 		{
 			player.box.x += player.dirX;
 		}
@@ -853,7 +853,7 @@ void manage_animation() NONBANKED
 			levels[currentLvl]->enemy->img_index = 0U;
 			levels[currentLvl]->enemy->timer = 0U;
 		}
-		if(levels[currentLvl]->enemy->timer %2 == 1 && levels[currentLvl]->enemy->dead == 0U)
+		if((levels[currentLvl]->enemy->timer & 1U == 1U) && levels[currentLvl]->enemy->dead == 0U)
 		{
 			levels[currentLvl]->enemy->box.x += levels[currentLvl]->enemy->dirX;
 			if(levels[currentLvl]->enemy->box.x+levels[currentLvl]->enemy->box.w > levels[currentLvl]->enemy->maxX)
@@ -889,7 +889,7 @@ void manage_animation() NONBANKED
 			levels[currentLvl]->doggy->img_index = 0U;
 			levels[currentLvl]->doggy->timer = 0U;
 		}
-		if(levels[currentLvl]->doggy->timer % 2 == 1)
+		if(levels[currentLvl]->doggy->timer & 1U == 1U)
 		{
 			levels[currentLvl]->doggy->box.x += levels[currentLvl]->doggy->dirX;
 			if(levels[currentLvl]->doggy->box.x+levels[currentLvl]->doggy->box.w > levels[currentLvl]->doggy->maxX)
@@ -1079,8 +1079,6 @@ void victory() NONBANKED
 	gbt_loop(0x00U);
 	player.box.y = 136U;
 	SWITCH_ROM_MBC1(6);
-	player.box.x = 8U;
-	switch_to_level(LEVEL13);
 }
 void reset_game() NONBANKED
 {

@@ -30,7 +30,7 @@ void main()
 		title_screen();
 		credits = 0U;
 		reset_game();
-		disable_APA();
+		//disable_APA();
 		while(credits == 0U)
 		{
 

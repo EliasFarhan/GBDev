@@ -139,7 +139,7 @@ void manage_physics_lvl6()
 		locks_lvl6[0].box->w = 0U;
 		locks_lvl6[0].box->h = 0U;
 		locks_lvl6[0].locked = 0U;
-		switch_to_world(WORLD2);
+		victory();//switch_to_world(WORLD2);
 
 	}
 	/*if(checkCollision(&(enemy_lvl6[0].box), &(player.box)))

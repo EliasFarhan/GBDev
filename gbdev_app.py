@@ -93,11 +93,13 @@ def main():
 
     pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGL)
     pygame.display.set_caption("GBDev tool window")
+    imgui.create_context()
+
+    renderer = PygameRenderer()
     io = imgui.get_io()
     io.fonts.add_font_default()
     io.display_size = size
 
-    renderer = PygameRenderer()
 
     while 1:
         for event in pygame.event.get():
@@ -158,7 +160,7 @@ def main():
         gl.glClearColor(1, 1, 1, 1)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
         imgui.render()
-
+        renderer.render(imgui.get_draw_data())
         pygame.display.flip()
 
 

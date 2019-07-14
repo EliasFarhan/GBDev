@@ -1,7 +1,7 @@
 CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
 BINS	= SRJailbreak.gb
-BONUS =  data/kwakwa_logo.o src/kwakwa_screen.o data/press_start.o src/title_screen.o src/title.o src/credits.o data/staffroll.o data/title_screen_music.o
+BONUS =  data/kwakwa_logo.o src/kwakwa_screen.o data/press_start.o src/title_screen.o src/titlescreen2.o src/credits.o data/staffroll.o data/title_screen_music.o
 SOURCE =  src/main.o src/box_collision.o src/sound.o src/game_screen.o src/physics.o src/gbt_player.o src/gbt_player_bank1.o
 ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o data/music_output.o
 LVLS = data/map/level1_map.o data/map/level2_map.o data/map/level3_map.o data/map/level4_map.o data/map/level5_map.o data/map/level6_map.o \
@@ -9,7 +9,7 @@ levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o 
 data/map/level7_map.o data/map/level8_map.o data/map/level9_map.o data/map/level10_map.o levels/level10.c \
 data/map/level11_map.o data/map/level12_map.o data/map/level13_map.o levels/level13.c data/map/level14_map.o data/map/level15_map.o
 
-all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS) 
+all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS)
 
 SRJailbreak.gb:
 	$(CC) -Wl-yt3 -Wl-yo16 -Wl-ya1 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS)
@@ -30,21 +30,21 @@ src/game_screen.o: src/game_screen.c
 
 src/credits.o: src/credits.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
-	
+
 src/kwakwa_screen.o: src/kwakwa_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
 
 src/title_screen.o: src/title_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
-	
+
 data/staffroll.o: data/staffroll.s
 	$(CC) -Wa-l -Wf-bo8 -c -o data/staffroll.o data/staffroll.s
 data/kwakwa_logo.o:
 	$(CC) -Wa-l -Wf-bo3 -c -o data/kwakwa_logo.o data/kwakwa_logo.s
 
-src/title.o:
-	$(CC) -Wa-l -Wf-bo3 -c -o src/title.o data/title.s
-	
+src/titlescreen2.o:
+	$(CC) -Wa-l -Wf-bo3 -c -o src/titlescreen2.o data/titlescreen2.s
+
 data/title_screen_music.o:
 	$(CC) -Wa-l -Wf-bo8 -c -o data/title_screen_music.o data/title_screen_music.c
 
@@ -56,7 +56,7 @@ src/gbt_player.o: src/gbt_player.s
 
 src/gbt_player_bank1.o: src/gbt_player_bank1.s
 	$(CC) -Wa-l -Wf-bo4 -c -o src/gbt_player_bank1.o src/gbt_player_bank1.s
-	
+
 data/music_output.o:  data/music_output.c
 	$(CC) -Wa-l -Wf-bo2 -c -o data/music_output.o data/music_output.c
 
@@ -74,20 +74,20 @@ data/white_fur.o: data/white_fur.s
 
 data/seagull.o: data/seagull.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-	
+
 data/guard.o: data/guard.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-	
+
 data/background.o: data/background.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
 data/environment.o: data/environment.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-	
+
 data/whale_poster.o: data/whale_poster.s
 	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
-	
+
 #data/music_output.c:
 #	./tools/mod2gbt/mod2gbt data/template.mod song -c 2
 
