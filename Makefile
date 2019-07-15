@@ -38,12 +38,12 @@ src/title_screen.o: src/title_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
 
 data/staffroll.o: data/staffroll.s
-	$(CC) -Wa-l -Wf-bo8 -c -o data/staffroll.o data/staffroll.s
+	$(CC) -Wa-l -Wf-bo8 -c -o data/staffroll.o data/staffroll_merge.s
 data/kwakwa_logo.o:
 	$(CC) -Wa-l -Wf-bo3 -c -o data/kwakwa_logo.o data/kwakwa_logo.s
 
 src/titlescreen2.o:
-	$(CC) -Wa-l -Wf-bo3 -c -o src/titlescreen2.o data/titlescreen2.s
+	$(CC) -Wa-l -Wf-bo3 -c -o src/titlescreen2.o data/titlescreen2_merge.s
 
 data/title_screen_music.o:
 	$(CC) -Wa-l -Wf-bo8 -c -o data/title_screen_music.o data/title_screen_music.c

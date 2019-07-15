@@ -926,9 +926,9 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	{
 		for(j = 0; j!= 20; j++)
 		{
-			int i_4 = i << 2;
+			const int i_4 = i << 2;
 
-			int result = ((i_4+i)<<2);
+			const int result = ((i_4+i)<<2);
 			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
 		}
 	}
@@ -1017,8 +1017,8 @@ void init_screen() NONBANKED
 	{
 		for(j = 0; j!= 20; j++)
 		{
-			int i_4 = i << 2;
-			int result = (i_4+i)<<2;
+			const int i_4 = i << 2;
+			const int result = (i_4+i)<<2;
 			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
 		}
 	}

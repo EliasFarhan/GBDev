@@ -20,13 +20,11 @@ void main()
 {
 	ENABLE_RAM_MBC1;
 	SWITCH_ROM_MBC1(7);
-    kwakwa_screen();
+  kwakwa_screen();
 	//disable_APA();
 	credits = 0U;
 	while(1)
 	{
-		ENABLE_RAM_MBC1;
-		SWITCH_ROM_MBC1(7);
 		title_screen();
 		credits = 0U;
 		reset_game();
@@ -38,9 +36,8 @@ void main()
 
 		}
 		//disable_APA();
-		ENABLE_RAM_MBC1;
-		SWITCH_ROM_MBC1(7);
+
 		credits_screen();
-		disable_APA();
+		//disable_APA();
 	}
 }

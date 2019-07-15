@@ -54,6 +54,7 @@ void title_graphics(UBYTE pstart) NONBANKED {
 
 void title_screen() NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
+	UBYTE i, j;
 	wait_vbl_done();
 	disable_interrupts();
 	HIDE_SPRITES;
@@ -62,12 +63,24 @@ void title_screen() NONBANKED {
 	DISPLAY_OFF;
 
 	ENABLE_RAM_MBC1;
-
-	SWITCH_ROM_MBC1(3);
-	set_bkg_data(0U,255U,titlescreen2_tiledata);
-	set_bkg_tiles(0,0,20U,18U,titlescreen2_tilemap);
 	SWITCH_ROM_MBC1(5);
+	for(i = 0; i != 0x6U; i++)
+	{
+		set_sprite_prop(i,0x00U);
+	}
+	for (i=0x6u; i!=40U; i++)
+	{
+		move_sprite(i,0U,200U);
+		set_sprite_prop (i,0);
+	}
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
+	SWITCH_ROM_MBC1(3);
+	set_bkg_data(0U,191U,titlescreen2_tiledata);
+	set_bkg_tiles(0,0,20,18, titlescreen2_tilemap);
+
+
+	SPRITES_8x8;//TODO: why not 8x16?
+
 
 	//gbt_play(title_song_Data, 0x08U, 0x07U);
 	gbt_play(title_song_Data, 0x08U, 0x07U);
