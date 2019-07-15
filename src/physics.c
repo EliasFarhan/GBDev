@@ -35,8 +35,8 @@ void manage_seagull_collision(SEAGULL* enemy)
 		return;
 	}
 	if(player.vely >= 0U && player.box.y <= enemy->box.y-enemy->box.h+player.vely
-				&& (player.box.x+player.box.w > enemy->box.x+1U
-				&& player.box.x < enemy->box.x+enemy->box.w-1U) && enemy->box.w < 20U)
+				&& (player.box.x + player.box.w > enemy->box.x
+				&& player.box.x < enemy->box.x+enemy->box.w) && enemy->box.w < 20U)
 	{
 		//enemy dead
 		player.state = JUMP;
@@ -521,5 +521,3 @@ void manage_physics()
 
 
 }
-
-

@@ -19,7 +19,7 @@ const unsigned char Lvl5TileMap[] = {6,13,11,13,1,13,11,6,6,6,6,6,6,6,6,6,6,6,6,
 5,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};
 size_t boxes_lvl5_length = 4;
-Box box_lvl5[4] = 
+Box box_lvl5[4] =
 {
 {32U,96U,8U,32U},
 {32U,64U,8U,64U},
@@ -34,7 +34,7 @@ const Box box_locks_lvl5_value[1] =
                 {
                     {32, 96, 8, 32}
                 };
-SEAGULL seagull_lvl5 [] = {{{40U,96U, 6U, 9U},1,0U,0U,114U, 40U}};
+SEAGULL seagull_lvl5 [] = {{{40U,96U, 9U, 9U},1,0U,0U,114U, 40U}};
 KEY key_lvl5 [1] = {{{128U,80U, 18U, 16U}, 128U,80, LEVEL5,0U}};
 Level lvl5 = {
 box_lvl5,

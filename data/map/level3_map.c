@@ -19,7 +19,7 @@ const unsigned char Lvl3TileMap[] = {6,13,11,13,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
 5,13,11,13,1,13,11,2,6,6,4,13,11,13,11,13,11,13,11,13,
 6,14,12,14,1,14,12,6,1,1,1,6,6,6,6,6,6,6,6,6};
 size_t boxes_lvl3_length = 5;
-Box box_lvl3[5] = 
+Box box_lvl3[5] =
 {
 {8U,64U,32U,8U},
 {120U,96U,40U,40U},
@@ -27,7 +27,7 @@ Box box_lvl3[5] =
 {32U,144U,8U,48U},
 {56U,152U,32U,24U}
 };
-SEAGULL seagull_lvl3 [] = {{{88U,136U, 6U, 9U},1,0U,0U,154U, 88U}};
+SEAGULL seagull_lvl3 [] = {{{88U,136U, 9U, 9U},1,0U,0U,154U, 88U}};
 Level lvl3 = {
 box_lvl3,
 boxes_lvl3_length,

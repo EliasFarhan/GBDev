@@ -66,6 +66,7 @@ void manage_physics_lvl1()
 
 			}
 			switch_to_level(LEVEL3);
+			return;
 		}
 	}
 	if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y >= 96U &&player.box.y <= 136U && player.dirX == 1 )
@@ -74,7 +75,7 @@ void manage_physics_lvl1()
 		player.box.x = 9U;
 
 		switch_to_level(LEVEL2);
-
+		return;
 	}
 	if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y <= 88U &&player.box.y >= 8U && player.dirX == 1 )
 	{
@@ -82,7 +83,7 @@ void manage_physics_lvl1()
 		player.box.x = 9U;
 
 		switch_to_level(LEVEL2);
-
+		return;
 	}
 
 	box2 = locks_lvl1[0].box;
@@ -119,5 +120,3 @@ void reset_lvl1()
 		Lvl1TileMap,
 		locks_lvl1
 };*/
-
-

@@ -72,7 +72,7 @@ void manage_physics_lvl5()
 		player.img_index = 0U;
 
 		player.nextLevel = LEVEL6;
-
+		return;
 	}
 	if(player.box.x == 136U && player.box.y == 136U &&
 			(player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == 1 )
@@ -156,4 +156,3 @@ Level lvl5 = {
 
 };
 */
-

@@ -63,6 +63,7 @@ void manage_physics_lvl3()
 			if(player.state == IDLE)
 				player.state = JUMP;
 			switch_to_level(LEVEL5);
+			return;
 		}
 	}
 	if(player.box.x >= 38U && player.box.x <= 46U && player.box.y > 144U-9U )
@@ -74,6 +75,7 @@ void manage_physics_lvl3()
 			if(player.state == IDLE)
 				player.state = JUMP;
 			switch_to_level(LEVEL5);
+			return;
 		}
 	}/*else if(player.box.x == 160U-PLAYER_SIZE-GROUND_HEIGHT && player.box.y == 56U &&
 			(player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == 1 )
@@ -95,6 +97,7 @@ void manage_physics_lvl3()
 		player.box.x = 9U;
 
 		switch_to_level(LEVEL4);
+		return;
 
 	}
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y == PLAYER_SIZE+8U &&
@@ -104,6 +107,7 @@ void manage_physics_lvl3()
 			player.vely = -3;
 		player.box.y = 135U;
 		switch_to_level(LEVEL1);
+		return;
 	}
 	box1 = &(player.box);
 	box2 = &(seagull_lvl3[0].box);
@@ -126,4 +130,3 @@ Level lvl3 = {
 		seagull_lvl3
 };
 */
-

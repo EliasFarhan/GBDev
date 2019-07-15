@@ -19,14 +19,14 @@ const unsigned char Lvl2TileMap[] = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 6,6,11,13,11,13,11,13,11,13,11,13,6,6,6,6,6,13,11,3,
 1,1,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,14,12,6};
 size_t boxes_lvl2_length = 4;
-Box box_lvl2[4] = 
+Box box_lvl2[4] =
 {
 {0U,96U,152U,8U},
 {104U,96U,48U,16U},
 {0U,144U,16U,16U},
 {96U,144U,40U,16U}
 };
-SEAGULL seagull_lvl2 [] = {{{40U,136U, 6U, 9U},1,0U,0U,88U, 40U}};
+SEAGULL seagull_lvl2 [] = {{{40U,136U, 9U, 9U},1,0U,0U,88U, 40U}};
 KEY key_lvl2 [1] = {{{120U,80U, 18U, 16U}, 120U,80, LEVEL2,0U}};
 Level lvl2 = {
 box_lvl2,

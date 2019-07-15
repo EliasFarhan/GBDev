@@ -68,6 +68,7 @@ void manage_physics_lvl2()
 				player.vely = 1U;
 			}
 			switch_to_level(LEVEL4);
+			return;
 		}
 	}
 	if(player.box.x == 8U && player.box.y >= 96U &&player.box.y <= 136U && player.dirX == -1 )
@@ -76,7 +77,7 @@ void manage_physics_lvl2()
 		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
 		switch_to_level(LEVEL1);
-
+		return;
 	}
 	if(player.box.x == 8U && player.box.y <= 88U &&player.box.y >= 8U && player.dirX == -1 )
 	{
@@ -84,7 +85,7 @@ void manage_physics_lvl2()
 		player.box.x = 160U-PLAYER_SIZE-GROUND_HEIGHT-1U;
 
 		switch_to_level(LEVEL1);
-
+		return;
 	}
 	box1 = &(player.box);
 
@@ -118,4 +119,3 @@ Level lvl2 = {
 
 };
 */
-
