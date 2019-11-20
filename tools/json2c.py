@@ -148,6 +148,7 @@ def json2c(json_filename, offset):
     for layer in json_obj["layers"]:
         if layer.get("objects") is not None:
             for box_def in layer["objects"]:
+                print("[Debug] Object: " + str(box_def))
                 #Calculate lock index
                 box_size = int(box_def["width"]), int(box_def["height"])
                 box_topleft_pos = int(box_def["x"]), int(box_def["y"])
@@ -165,23 +166,25 @@ def json2c(json_filename, offset):
                 maxX = 0
                 if box_def.get("properties") is not None:
                     box_properties = box_def["properties"]
-                    # LOCK
-                    if box_properties.get("lock") is not None and box_properties["lock"]:
-                        locks[tilemap_index].append([box_index])
-                    # ENEMY
-                    if box_properties.get("enemy") is not None and \
-                            box_properties["enemy"] != EnemyType.NONE:
-                        enemy_type = EnemyType(box_properties["enemy"])
-                    if box_properties.get("maxX") is not None:
-                        maxX = box_properties["maxX"]
-                    if box_properties.get("minX") is not None:
-                        minX = box_properties["minX"]
-                    #WALL
-                    if box_properties.get("wall") is not None and box_properties["wall"]:
-                        walls[tilemap_index].append([box_index])
-                    #KEY
-                    if box_properties.get("key") is not None and box_properties["key"]:
-                        is_key = True
+                    print("[Debug] Box properties: "+str(box_properties))
+                    for box_property in box_properties:
+                        print("[Debug] Box property: " + str(box_property))
+                        # LOCK
+                        if box_property["name"] == "lock" and box_property["value"]:
+                            locks[tilemap_index].append([box_index])
+                        # ENEMY
+                        if box_property["name"] == "enemy" and box_property["value"] != EnemyType.NONE:
+                            enemy_type = EnemyType(box_property["value"])
+                        if box_property["name"] == "maxX":
+                            maxX = box_property["value"]
+                        if box_property["name"] == "minX":
+                            minX = box_property["value"]
+                        #WALL
+                        if box_property["name"] == "wall" and box_property["value"]:
+                            walls[tilemap_index].append([box_index])
+                        #KEY
+                        if box_property["name"] == "key" and box_property["value"]:
+                            is_key = True
 
                 if enemy_type != EnemyType.NONE:
 
