@@ -21,7 +21,7 @@ void kwakwa_screen() NONBANKED {
 	ENABLE_RAM_MBC1;
 
 	SWITCH_ROM_MBC1(3);
-	set_bkg_data(0,255,kwakwa_logo_tiledata);
+	set_bkg_data(0,30,kwakwa_logo_tiledata);
 
 	set_bkg_tiles(0,0,20,18,kwakwa_logo_tilemap);
 	DISPLAY_ON;
