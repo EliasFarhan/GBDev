@@ -149,7 +149,7 @@ def main():
 
         for img in imgs_id:
             img_size = img_manager.get_image_size(img[0])
-            if img[1] is not 0 and img_size is not ():
+            if img[1] != 0 and img_size != ():
                 imgui.image(img[1], img_size[0]*2, img_size[1]*2, (0,1), (1,0))
                 imgui.same_line()
 

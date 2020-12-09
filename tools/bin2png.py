@@ -83,7 +83,7 @@ def bin2png(bin_filename, wanted_width=8):
     colors = []
     colors_8x8 = []
     for i in range(int(len(bin_content) / BYTES_PER_ROW)):
-        if i % 8 == 0 and i is not 0:
+        if i % 8 == 0 and i != 0:
             colors.append(colors_8x8)
             colors_8x8 = []
         for j in reversed(range(0,8)):

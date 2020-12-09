@@ -165,23 +165,25 @@ def json2c(json_filename, offset):
                 maxX = 0
                 if box_def.get("properties") is not None:
                     box_properties = box_def["properties"]
-                    # LOCK
-                    if box_properties.get("lock") is not None and box_properties["lock"]:
-                        locks[tilemap_index].append([box_index])
-                    # ENEMY
-                    if box_properties.get("enemy") is not None and \
-                            box_properties["enemy"] != EnemyType.NONE:
-                        enemy_type = EnemyType(box_properties["enemy"])
-                    if box_properties.get("maxX") is not None:
-                        maxX = box_properties["maxX"]
-                    if box_properties.get("minX") is not None:
-                        minX = box_properties["minX"]
-                    #WALL
-                    if box_properties.get("wall") is not None and box_properties["wall"]:
-                        walls[tilemap_index].append([box_index])
-                    #KEY
-                    if box_properties.get("key") is not None and box_properties["key"]:
-                        is_key = True
+                    for box_property in box_properties:
+                        print(box_property)
+                        # LOCK
+                        if box_property["name"] == "lock":
+                            locks[tilemap_index].append([box_index])
+                        # ENEMY
+                        if box_property["name"] == "enemy" and \
+                                box_property["value"] != EnemyType.NONE:
+                            enemy_type = EnemyType(box_property["value"])
+                        if box_property["name"] == "maxX":
+                            maxX = box_property["value"]
+                        if box_property["name"] == "minX":
+                            minX = box_property["value"]
+                        #WALL
+                        if box_property["name"] == "wall" and box_property["value"]:
+                            walls[tilemap_index].append([box_index])
+                        #KEY
+                        if box_property["name"] == "key" and box_property["value"]:
+                            is_key = True
 
                 if enemy_type != EnemyType.NONE:
 
@@ -243,7 +245,7 @@ def json2c(json_filename, offset):
 
                 index += 1
 
-    for i in range(size[0]*size[1]):
+    for i in range(size[0] * size[1]):
         print(boxes[i])
         with open(os.path.dirname(json_filename)+"/level"+str(offset+i+1)+"_map.c", "w") as c_file:
             c_file.write("""#include "../../src/game_screen.h"\n""")
@@ -276,15 +278,13 @@ def json2c(json_filename, offset):
                             };\n""")
             if len(enemies[i]) >= 1:
                 for enemy in enemies[i]:
-                    c_file.write(enemy.data2c(i + 1) + "\n")
+                    c_file.write(enemy.data2c(offset + i + 1) + "\n")
             if len(keys[i]) == 1:
-                c_file.write(keys[i][0].data2c(i + 1) + "\n")
+                c_file.write(keys[i][0].data2c(offset + i + 1) + "\n")
 
-            c_file.write("Level lvl"+str(offset+i+1)+
-                         " = {\n")
-            if(len(boxes[i]) >0):
-                c_file.write("box_lvl"+str(offset+i+1)+
-                         ",\nboxes_lvl"+str(offset+i+1)+"_length,\n")
+            c_file.write("Level lvl"+str(offset + i + 1) + " = {\n")
+            if len(boxes[i]) > 0:
+                c_file.write("box_lvl"+str(offset + i + 1) + ",\nboxes_lvl"+str(offset + i + 1)+"_length,\n")
             else:
                 c_file.write("NULL, \n0U,\n")
             c_file.write("Lvl"+str(offset+i+1)+"TileMap,\n")
@@ -297,21 +297,19 @@ def json2c(json_filename, offset):
                 c_file.write("walls_lvl" + str(offset + i + 1)+",\n")
             else:
                 c_file.write("NULL,\n")
-            if(len(keys[i]) == 1):
-                c_file.write("key_lvl"+str(offset+i+1)+",\n")
+            if len(keys[i]) == 1:
+                c_file.write("key_lvl"+str(offset + i + 1)+",\n")
             else:
                 c_file.write("NULL,\n")
-            if(Enemy.contain_type(enemies[i], "SEAGULL") is not None):
-                c_file.write(Enemy.contain_type(enemies[i], "SEAGULL").level_descriptor(i+1)+",\n")
+            if Enemy.contain_type(enemies[i], "SEAGULL") is not None:
+                c_file.write(Enemy.contain_type(enemies[i], "SEAGULL").level_descriptor(offset + i + 1)+",\n")
             else:
                 c_file.write("NULL,\n")
-            if (Enemy.contain_type(enemies[i], "DOGGY") is not None):
-                c_file.write(Enemy.contain_type(enemies[i], "DOGGY").level_descriptor(i + 1)+",\n")
+            if Enemy.contain_type(enemies[i], "DOGGY") is not None:
+                c_file.write(Enemy.contain_type(enemies[i], "DOGGY").level_descriptor(offset + i + 1)+",\n")
             else:
                 c_file.write("NULL,\n")
             c_file.write("};\n")
-
-
 
 def default_use(relative_path=""):
     json2c(relative_path+"data/map/map1.json", 0)

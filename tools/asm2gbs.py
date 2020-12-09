@@ -51,6 +51,7 @@ def read_asmfile(asmfile):
 
     return gbsdata
 
+
 def write_gbs(gbs_data, gbsfile):
     with open(gbsfile, 'w') as f:
         f.write(".area _CODE_3\n")
@@ -67,7 +68,8 @@ def write_gbs(gbs_data, gbsfile):
         
         for i in range(len(gbs_data.tilemap)/8):
             f.write(".db "+",".join(gbs_data.tilemap[i*8:i*8+8])+"\n")
-                
+
+
 def main():
     argv = sys.argv
     asmfile = ""
