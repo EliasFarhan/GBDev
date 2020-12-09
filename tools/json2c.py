@@ -148,6 +148,7 @@ def json2c(json_filename, offset):
     for layer in json_obj["layers"]:
         if layer.get("objects") is not None:
             for box_def in layer["objects"]:
+                print("[Debug] Object: " + str(box_def))
                 #Calculate lock index
                 box_size = int(box_def["width"]), int(box_def["height"])
                 box_topleft_pos = int(box_def["x"]), int(box_def["y"])
