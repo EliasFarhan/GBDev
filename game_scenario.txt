@@ -1,0 +1,58 @@
+
+Hi! I am the narrator. I will guide you from now on.
+
+Do you this to be a game?
+-Yes: Alright, let's play!
+-No: A free thinker.
+-I do not know. True, let's not rush any answer.
+
+Do you want to lose the game?
+-Yes: Game over screen.
+-No: that's more reasonable
+-I don't know: We'll come back to it.
+
+
+This is the box. It is not any box.
+
+This box contains the answer. The answer to any question. 
+
+Before you take you decide if you open the box, please meet some characters:
+
+Hi! I am Toni. I opened the box and I know the answer!
+
+Hi! I am Wuthrer. I will not open the box, because I don't need the answer.
+
+Hi! I am Caro and I don't know if I will open the box.
+
+Do you want to open the box?
+Yes:
+Wuthrer: Are you sure that you want to reveal the answer to anything?
+Toni: Let them come to me! 
+Wuthrer: Not knowing the answer is what makes life meaningful.
+Caro: But is it though?
+Caro: You and I simply don't know what life is with the answer.
+Toni: While I know what life is with the answer, but I will not spoil it to you both.
+Toni: It is choice that you have to make, not I.
+
+No: Wuthrer screen: Yes! 
+Toni: Come on! Open it! 
+Wuthrer: Only weak minds do need to know the answer.
+Toni: It is not a question of need, but a question of why.
+Toni: Any why question has an answer. this answer.
+Wuthrer: But it is the quest to find an answer that is important, not the actual answer.
+Wuthrer: Not taking a shortcut. It is an endless fight to decide not to look the answer.
+Caro: And I don't know how long I will keep on fighting, before I finally decide to open the box.
+
+
+I don't know:
+Caro: Right, one should not have to make the decision.
+Wuthrer: There is no in between. You either open the box or you don't!
+Toni: You are just jealous, because one day or another, she will open the box.
+Toni: She will left your camp and come to mine.
+Toni: This is the natural way of the universe. From ignorance to knowledge.
+Toni: From you to me!
+
+
+Do you definitevely open the box?
+Yes: Open box ending -> freezing the game
+No: Title screen
