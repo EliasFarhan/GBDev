@@ -1,0 +1,577 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : FreeWare ANSI-C Compiler
+                              3 ; Version 2.3.1 Sat Jul  2 20:15:55 2022
+                              4 
+                              5 ;--------------------------------------------------------
+                              6 	.module lcc65600
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _choice4
+                             12 	.globl _answer3_3_t_9
+                             13 	.globl _answer3_3_t_8
+                             14 	.globl _answer3_3_t_7
+                             15 	.globl _answer3_3_t_6
+                             16 	.globl _answer3_3_t_5
+                             17 	.globl _answer3_3_t_4
+                             18 	.globl _answer3_3_w_3
+                             19 	.globl _answer3_3_w_2
+                             20 	.globl _answer3_3_c_1
+                             21 	.globl _answer3_2_c_11
+                             22 	.globl _answer3_2_c_10
+                             23 	.globl _answer3_2_w_9
+                             24 	.globl _answer3_2_w_8
+                             25 	.globl _answer3_2_w_7
+                             26 	.globl _answer3_2_w_6
+                             27 	.globl _answer3_2_t_5
+                             28 	.globl _answer3_2_t_4
+                             29 	.globl _answer3_2_w_3
+                             30 	.globl _answer3_2_t_2
+                             31 	.globl _answer3_2_w_1
+                             32 	.globl _answer4_1_t_9
+                             33 	.globl _answer3_1_t_8
+                             34 	.globl _answer3_1_t_7
+                             35 	.globl _answer3_1_c_6
+                             36 	.globl _answer3_1_c_5
+                             37 	.globl _answer3_1_w_4
+                             38 	.globl _answer3_1_t_3
+                             39 	.globl _answer3_1_w_2
+                             40 	.globl _answer3_1_w_1
+                             41 	.globl _choice3
+                             42 	.globl _caro2
+                             43 	.globl _caro1
+                             44 	.globl _wuthrer3
+                             45 	.globl _wuthrer2
+                             46 	.globl _wuthrer1
+                             47 	.globl _tony2
+                             48 	.globl _tony1
+                             49 	.globl _box4
+                             50 	.globl _box3
+                             51 	.globl _box2
+                             52 	.globl _box1
+                             53 	.globl _answer2_3
+                             54 	.globl _answer2_2
+                             55 	.globl _choice2
+                             56 	.globl _answer3
+                             57 	.globl _answer2
+                             58 	.globl _answer1
+                             59 	.globl _choice1
+                             60 	.globl _intro1
+                             61 	.globl _wuthrer_test
+                             62 ;--------------------------------------------------------
+                             63 ; special function registers
+                             64 ;--------------------------------------------------------
+                             65 ;--------------------------------------------------------
+                             66 ; special function bits 
+                             67 ;--------------------------------------------------------
+                             68 ;--------------------------------------------------------
+                             69 ; internal ram data
+                             70 ;--------------------------------------------------------
+                             71 	.area _DATA
+                             72 ;--------------------------------------------------------
+                             73 ; overlayable items in internal ram 
+                             74 ;--------------------------------------------------------
+                             75 	.area _OVERLAY
+                             76 ;--------------------------------------------------------
+                             77 ; indirectly addressable internal ram data
+                             78 ;--------------------------------------------------------
+                             79 	.area _ISEG
+                             80 ;--------------------------------------------------------
+                             81 ; bit data
+                             82 ;--------------------------------------------------------
+                             83 	.area _BSEG
+                             84 ;--------------------------------------------------------
+                             85 ; external ram data
+                             86 ;--------------------------------------------------------
+                             87 	.area _XSEG
+                             88 ;--------------------------------------------------------
+                             89 ; global & static initialisations
+                             90 ;--------------------------------------------------------
+                             91 	.area _GSINIT
+                             92 	.area _GSFINAL
+                             93 	.area _GSINIT
+                             94 ;--------------------------------------------------------
+                             95 ; Home
+                             96 ;--------------------------------------------------------
+                             97 	.area _HOME
+                             98 	.area _CODE_2
+                             99 ;--------------------------------------------------------
+                            100 ; code
+                            101 ;--------------------------------------------------------
+                            102 	.area _CODE_2
+                            103 	.area _CODE_2
+   0000                     104 _wuthrer_test:
+   0000 4C 61 20 63 6F 6D   105 	.ascii "La commodification des corps dans les structures gouvernemen"
+        6D 6F 64 69 66 69
+        63 61 74 69 6F 6E
+        20 64 65 73 20 63
+        6F 72 70 73 20 64
+        61 6E 73 20 6C 65
+        73 20 73 74 72 75
+        63 74 75 72 65 73
+        20 67 6F 75 76 65
+        72 6E 65 6D 65 6E
+   003C 74 61 6C 65 73 20   106 	.ascii "tales et industrielles."
+        65 74 20 69 6E 64
+        75 73 74 72 69 65
+        6C 6C 65 73 2E
+   0053 00                  107 	.db 0x00
+   0054                     108 _intro1:
+   0054 48 69 21 20 49 20   109 	.ascii "Hi! I am the narrator. I will guide you from now on."
+        61 6D 20 74 68 65
+        20 6E 61 72 72 61
+        74 6F 72 2E 20 49
+        20 77 69 6C 6C 20
+        67 75 69 64 65 20
+        79 6F 75 20 66 72
+        6F 6D 20 6E 6F 77
+        20 6F 6E 2E
+   0088 00                  110 	.db 0x00
+   0089                     111 _choice1:
+   0089 44 6F 20 79 6F 75   112 	.ascii "Do you want this to be a game?"
+        20 77 61 6E 74 20
+        74 68 69 73 20 74
+        6F 20 62 65 20 61
+        20 67 61 6D 65 3F
+   00A7 00                  113 	.db 0x00
+   00A8                     114 _answer1:
+   00A8 41 6C 72 69 67 68   115 	.ascii "Alright, let's play!"
+        74 2C 20 6C 65 74
+        27 73 20 70 6C 61
+        79 21
+   00BC 00                  116 	.db 0x00
+   00BD                     117 _answer2:
+   00BD 41 20 66 72 65 65   118 	.ascii "A free thinker!"
+        20 74 68 69 6E 6B
+        65 72 21
+   00CC 00                  119 	.db 0x00
+   00CD                     120 _answer3:
+   00CD 54 72 75 65 2C 20   121 	.ascii "True, let's not rush any answer."
+        6C 65 74 27 73 20
+        6E 6F 74 20 72 75
+        73 68 20 61 6E 79
+        20 61 6E 73 77 65
+        72 2E
+   00ED 00                  122 	.db 0x00
+   00EE                     123 _choice2:
+   00EE 44 6F 20 79 6F 75   124 	.ascii "Do you want to lose the game?"
+        20 77 61 6E 74 20
+        74 6F 20 6C 6F 73
+        65 20 74 68 65 20
+        67 61 6D 65 3F
+   010B 00                  125 	.db 0x00
+   010C                     126 _answer2_2:
+   010C 54 68 61 74 27 73   127 	.ascii "That's more reasonable."
+        20 6D 6F 72 65 20
+        72 65 61 73 6F 6E
+        61 62 6C 65 2E
+   0123 00                  128 	.db 0x00
+   0124                     129 _answer2_3:
+   0124 57 65 27 6C 6C 20   130 	.ascii "We'll come back to it."
+        63 6F 6D 65 20 62
+        61 63 6B 20 74 6F
+        20 69 74 2E
+   013A 00                  131 	.db 0x00
+   013B                     132 _box1:
+   013B 54 68 69 73 20 69   133 	.ascii "This is the box. It is not any box."
+        73 20 74 68 65 20
+        62 6F 78 2E 20 49
+        74 20 69 73 20 6E
+        6F 74 20 61 6E 79
+        20 62 6F 78 2E
+   015E 00                  134 	.db 0x00
+   015F                     135 _box2:
+   015F 54 68 69 73 20 62   136 	.ascii "This box contains the answer to any question."
+        6F 78 20 63 6F 6E
+        74 61 69 6E 73 20
+        74 68 65 20 61 6E
+        73 77 65 72 20 74
+        6F 20 61 6E 79 20
+        71 75 65 73 74 69
+        6F 6E 2E
+   018C 00                  137 	.db 0x00
+   018D                     138 _box3:
+   018D 42 65 66 6F 72 65   139 	.ascii "Before you decide if you open the box,"
+        20 79 6F 75 20 64
+        65 63 69 64 65 20
+        69 66 20 79 6F 75
+        20 6F 70 65 6E 20
+        74 68 65 20 62 6F
+        78 2C
+   01B3 00                  140 	.db 0x00
+   01B4                     141 _box4:
+   01B4 50 6C 65 61 73 65   142 	.ascii "Please meet some characters:"
+        20 6D 65 65 74 20
+        73 6F 6D 65 20 63
+        68 61 72 61 63 74
+        65 72 73 3A
+   01D0 00                  143 	.db 0x00
+   01D1                     144 _tony1:
+   01D1 48 69 21 20 49 20   145 	.ascii "Hi! I am Toni."
+        61 6D 20 54 6F 6E
+        69 2E
+   01DF 00                  146 	.db 0x00
+   01E0                     147 _tony2:
+   01E0 49 20 6F 70 65 6E   148 	.ascii "I opened the box and I know the answer!"
+        65 64 20 74 68 65
+        20 62 6F 78 20 61
+        6E 64 20 49 20 6B
+        6E 6F 77 20 74 68
+        65 20 61 6E 73 77
+        65 72 21
+   0207 00                  149 	.db 0x00
+   0208                     150 _wuthrer1:
+   0208 48 69 21 20 49 20   151 	.ascii "Hi! I am Wuthrer."
+        61 6D 20 57 75 74
+        68 72 65 72 2E
+   0219 00                  152 	.db 0x00
+   021A                     153 _wuthrer2:
+   021A 49 20 77 69 6C 6C   154 	.ascii "I will not open the box,"
+        20 6E 6F 74 20 6F
+        70 65 6E 20 74 68
+        65 20 62 6F 78 2C
+   0232 00                  155 	.db 0x00
+   0233                     156 _wuthrer3:
+   0233 62 65 63 61 75 73   157 	.ascii "because I don't need the answer."
+        65 20 49 20 64 6F
+        6E 27 74 20 6E 65
+        65 64 20 74 68 65
+        20 61 6E 73 77 65
+        72 2E
+   0253 00                  158 	.db 0x00
+   0254                     159 _caro1:
+   0254 48 69 21 20 49 20   160 	.ascii "Hi! I am Caro."
+        61 6D 20 43 61 72
+        6F 2E
+   0262 00                  161 	.db 0x00
+   0263                     162 _caro2:
+   0263 49 20 64 6F 6E 27   163 	.ascii "I don't know if I will open the box."
+        74 20 6B 6E 6F 77
+        20 69 66 20 49 20
+        77 69 6C 6C 20 6F
+        70 65 6E 20 74 68
+        65 20 62 6F 78 2E
+   0287 00                  164 	.db 0x00
+   0288                     165 _choice3:
+   0288 44 6F 20 79 6F 75   166 	.ascii "Do you want to open the box?"
+        20 77 61 6E 74 20
+        74 6F 20 6F 70 65
+        6E 20 74 68 65 20
+        62 6F 78 3F
+   02A4 00                  167 	.db 0x00
+   02A5                     168 _answer3_1_w_1:
+   02A5 41 72 65 20 79 6F   169 	.ascii "Are you sure that you want..."
+        75 20 73 75 72 65
+        20 74 68 61 74 20
+        79 6F 75 20 77 61
+        6E 74 2E 2E 2E
+   02C2 00                  170 	.db 0x00
+   02C3                     171 _answer3_1_w_2:
+   02C3 74 6F 20 72 65 76   172 	.ascii "to reveal the answer to anything?"
+        65 61 6C 20 74 68
+        65 20 61 6E 73 77
+        65 72 20 74 6F 20
+        61 6E 79 74 68 69
+        6E 67 3F
+   02E4 00                  173 	.db 0x00
+   02E5                     174 _answer3_1_t_3:
+   02E5 4C 65 74 20 74 68   175 	.ascii "Let them come to me!"
+        65 6D 20 63 6F 6D
+        65 20 74 6F 20 6D
+        65 21
+   02F9 00                  176 	.db 0x00
+   02FA                     177 _answer3_1_w_4:
+   02FA 4E 6F 74 20 6B 6E   178 	.ascii "Not knowing the answer is what makes life meaningful."
+        6F 77 69 6E 67 20
+        74 68 65 20 61 6E
+        73 77 65 72 20 69
+        73 20 77 68 61 74
+        20 6D 61 6B 65 73
+        20 6C 69 66 65 20
+        6D 65 61 6E 69 6E
+        67 66 75 6C 2E
+   032F 00                  179 	.db 0x00
+   0330                     180 _answer3_1_c_5:
+   0330 42 75 74 20 69 73   181 	.ascii "But is it though?"
+        20 69 74 20 74 68
+        6F 75 67 68 3F
+   0341 00                  182 	.db 0x00
+   0342                     183 _answer3_1_c_6:
+   0342 57 65 20 73 69 6D   184 	.ascii "We simply don't know what life is with the answer."
+        70 6C 79 20 64 6F
+        6E 27 74 20 6B 6E
+        6F 77 20 77 68 61
+        74 20 6C 69 66 65
+        20 69 73 20 77 69
+        74 68 20 74 68 65
+        20 61 6E 73 77 65
+        72 2E
+   0374 00                  185 	.db 0x00
+   0375                     186 _answer3_1_t_7:
+   0375 57 68 69 6C 65 20   187 	.ascii "While I know what life is with the answer,..."
+        49 20 6B 6E 6F 77
+        20 77 68 61 74 20
+        6C 69 66 65 20 69
+        73 20 77 69 74 68
+        20 74 68 65 20 61
+        6E 73 77 65 72 2C
+        2E 2E 2E
+   03A2 00                  188 	.db 0x00
+   03A3                     189 _answer3_1_t_8:
+   03A3 62 75 74 20 49 20   190 	.ascii "but I will not spoil it to you both."
+        77 69 6C 6C 20 6E
+        6F 74 20 73 70 6F
+        69 6C 20 69 74 20
+        74 6F 20 79 6F 75
+        20 62 6F 74 68 2E
+   03C7 00                  191 	.db 0x00
+   03C8                     192 _answer4_1_t_9:
+   03C8 49 74 20 69 73 20   193 	.ascii "It is choice that you have to make, not I."
+        63 68 6F 69 63 65
+        20 74 68 61 74 20
+        79 6F 75 20 68 61
+        76 65 20 74 6F 20
+        6D 61 6B 65 2C 20
+        6E 6F 74 20 49 2E
+   03F2 00                  194 	.db 0x00
+   03F3                     195 _answer3_2_w_1:
+   03F3 59 65 73 21         196 	.ascii "Yes!"
+   03F7 00                  197 	.db 0x00
+   03F8                     198 _answer3_2_t_2:
+   03F8 43 6F 6D 65 20 6F   199 	.ascii "Come on! Open it!"
+        6E 21 20 4F 70 65
+        6E 20 69 74 21
+   0409 00                  200 	.db 0x00
+   040A                     201 _answer3_2_w_3:
+   040A 4F 6E 6C 79 20 77   202 	.ascii "Only weak minds do need to know the answer."
+        65 61 6B 20 6D 69
+        6E 64 73 20 64 6F
+        20 6E 65 65 64 20
+        74 6F 20 6B 6E 6F
+        77 20 74 68 65 20
+        61 6E 73 77 65 72
+        2E
+   0435 00                  203 	.db 0x00
+   0436                     204 _answer3_2_t_4:
+   0436 49 74 20 69 73 20   205 	.ascii "It is not a question of need, but a question of why."
+        6E 6F 74 20 61 20
+        71 75 65 73 74 69
+        6F 6E 20 6F 66 20
+        6E 65 65 64 2C 20
+        62 75 74 20 61 20
+        71 75 65 73 74 69
+        6F 6E 20 6F 66 20
+        77 68 79 2E
+   046A 00                  206 	.db 0x00
+   046B                     207 _answer3_2_t_5:
+   046B 41 6E 79 20 77 68   208 	.ascii "Any why question has an answer. This answer."
+        79 20 71 75 65 73
+        74 69 6F 6E 20 68
+        61 73 20 61 6E 20
+        61 6E 73 77 65 72
+        2E 20 54 68 69 73
+        20 61 6E 73 77 65
+        72 2E
+   0497 00                  209 	.db 0x00
+   0498                     210 _answer3_2_w_6:
+   0498 42 75 74 20 69 74   211 	.ascii "But it's the quest that is important,..."
+        27 73 20 74 68 65
+        20 71 75 65 73 74
+        20 74 68 61 74 20
+        69 73 20 69 6D 70
+        6F 72 74 61 6E 74
+        2C 2E 2E 2E
+   04C0 00                  212 	.db 0x00
+   04C1                     213 _answer3_2_w_7:
+   04C1 6E 6F 74 20 74 68   214 	.ascii "not the actual answer."
+        65 20 61 63 74 75
+        61 6C 20 61 6E 73
+        77 65 72 2E
+   04D7 00                  215 	.db 0x00
+   04D8                     216 _answer3_2_w_8:
+   04D8 4E 6F 74 20 74 61   217 	.ascii "Not taking a shortcut."
+        6B 69 6E 67 20 61
+        20 73 68 6F 72 74
+        63 75 74 2E
+   04EE 00                  218 	.db 0x00
+   04EF                     219 _answer3_2_w_9:
+   04EF 49 74 27 73 20 61   220 	.ascii "It's an endless fight not to look in the box."
+        6E 20 65 6E 64 6C
+        65 73 73 20 66 69
+        67 68 74 20 6E 6F
+        74 20 74 6F 20 6C
+        6F 6F 6B 20 69 6E
+        20 74 68 65 20 62
+        6F 78 2E
+   051C 00                  221 	.db 0x00
+   051D                     222 _answer3_2_c_10:
+   051D 41 6E 64 20 49 20   223 	.ascii "And I don't know how long I will keep on fighting,..."
+        64 6F 6E 27 74 20
+        6B 6E 6F 77 20 68
+        6F 77 20 6C 6F 6E
+        67 20 49 20 77 69
+        6C 6C 20 6B 65 65
+        70 20 6F 6E 20 66
+        69 67 68 74 69 6E
+        67 2C 2E 2E 2E
+   0552 00                  224 	.db 0x00
+   0553                     225 _answer3_2_c_11:
+   0553 62 65 66 6F 72 65   226 	.ascii "before I finally decide to open the box."
+        20 49 20 66 69 6E
+        61 6C 6C 79 20 64
+        65 63 69 64 65 20
+        74 6F 20 6F 70 65
+        6E 20 74 68 65 20
+        62 6F 78 2E
+   057B 00                  227 	.db 0x00
+   057C                     228 _answer3_3_c_1:
+   057C 52 69 67 68 74 2C   229 	.ascii "Right, one should not have to make the decision."
+        20 6F 6E 65 20 73
+        68 6F 75 6C 64 20
+        6E 6F 74 20 68 61
+        76 65 20 74 6F 20
+        6D 61 6B 65 20 74
+        68 65 20 64 65 63
+        69 73 69 6F 6E 2E
+   05AC 00                  230 	.db 0x00
+   05AD                     231 _answer3_3_w_2:
+   05AD 54 68 65 72 65 20   232 	.ascii "There is no in between."
+        69 73 20 6E 6F 20
+        69 6E 20 62 65 74
+        77 65 65 6E 2E
+   05C4 00                  233 	.db 0x00
+   05C5                     234 _answer3_3_w_3:
+   05C5 59 6F 75 20 65 69   235 	.ascii "You either open the box or you don't!"
+        74 68 65 72 20 6F
+        70 65 6E 20 74 68
+        65 20 62 6F 78 20
+        6F 72 20 79 6F 75
+        20 64 6F 6E 27 74
+        21
+   05EA 00                  236 	.db 0x00
+   05EB                     237 _answer3_3_t_4:
+   05EB 59 6F 75 20 61 72   238 	.ascii "You are just jealous, because one day or another,..."
+        65 20 6A 75 73 74
+        20 6A 65 61 6C 6F
+        75 73 2C 20 62 65
+        63 61 75 73 65 20
+        6F 6E 65 20 64 61
+        79 20 6F 72 20 61
+        6E 6F 74 68 65 72
+        2C 2E 2E 2E
+   061F 00                  239 	.db 0x00
+   0620                     240 _answer3_3_t_5:
+   0620 73 68 65 20 77 69   241 	.ascii "she will open the box."
+        6C 6C 20 6F 70 65
+        6E 20 74 68 65 20
+        62 6F 78 2E
+   0636 00                  242 	.db 0x00
+   0637                     243 _answer3_3_t_6:
+   0637 53 68 65 20 77 69   244 	.ascii "She will left your camp and come to mine."
+        6C 6C 20 6C 65 66
+        74 20 79 6F 75 72
+        20 63 61 6D 70 20
+        61 6E 64 20 63 6F
+        6D 65 20 74 6F 20
+        6D 69 6E 65 2E
+   0660 00                  245 	.db 0x00
+   0661                     246 _answer3_3_t_7:
+   0661 54 68 69 73 20 69   247 	.ascii "This is the natural way of the universe."
+        73 20 74 68 65 20
+        6E 61 74 75 72 61
+        6C 20 77 61 79 20
+        6F 66 20 74 68 65
+        20 75 6E 69 76 65
+        72 73 65 2E
+   0689 00                  248 	.db 0x00
+   068A                     249 _answer3_3_t_8:
+   068A 46 72 6F 6D 20 69   250 	.ascii "From ignorance to knowledge."
+        67 6E 6F 72 61 6E
+        63 65 20 74 6F 20
+        6B 6E 6F 77 6C 65
+        64 67 65 2E
+   06A6 00                  251 	.db 0x00
+   06A7                     252 _answer3_3_t_9:
+   06A7 46 72 6F 6D 20 79   253 	.ascii "From you to me!"
+        6F 75 20 74 6F 20
+        6D 65 21
+   06B6 00                  254 	.db 0x00
+   06B7                     255 _choice4:
+   06B7 44 6F 20 79 6F 75   256 	.ascii "Do you definitively open the box?"
+        20 64 65 66 69 6E
+        69 74 69 76 65 6C
+        79 20 6F 70 65 6E
+        20 74 68 65 20 62
+        6F 78 3F
+   06D8 00                  257 	.db 0x00
+ASxxxx Assembler V01.75  (GameBoy Z80-like CPU), page 1.
+
+Symbol Table
+
+  9 _answer1                           00A8 GR
+  9 _answer2                           00BD GR
+  9 _answer2_2                         010C GR
+  9 _answer2_3                         0124 GR
+  9 _answer3                           00CD GR
+  9 _answer3_1_c_5                     0330 GR
+  9 _answer3_1_c_6                     0342 GR
+  9 _answer3_1_t_3                     02E5 GR
+  9 _answer3_1_t_7                     0375 GR
+  9 _answer3_1_t_8                     03A3 GR
+  9 _answer3_1_w_1                     02A5 GR
+  9 _answer3_1_w_2                     02C3 GR
+  9 _answer3_1_w_4                     02FA GR
+  9 _answer3_2_c_10                    051D GR
+  9 _answer3_2_c_11                    0553 GR
+  9 _answer3_2_t_2                     03F8 GR
+  9 _answer3_2_t_4                     0436 GR
+  9 _answer3_2_t_5                     046B GR
+  9 _answer3_2_w_1                     03F3 GR
+  9 _answer3_2_w_3                     040A GR
+  9 _answer3_2_w_6                     0498 GR
+  9 _answer3_2_w_7                     04C1 GR
+  9 _answer3_2_w_8                     04D8 GR
+  9 _answer3_2_w_9                     04EF GR
+  9 _answer3_3_c_1                     057C GR
+  9 _answer3_3_t_4                     05EB GR
+  9 _answer3_3_t_5                     0620 GR
+  9 _answer3_3_t_6                     0637 GR
+  9 _answer3_3_t_7                     0661 GR
+  9 _answer3_3_t_8                     068A GR
+  9 _answer3_3_t_9                     06A7 GR
+  9 _answer3_3_w_2                     05AD GR
+  9 _answer3_3_w_3                     05C5 GR
+  9 _answer4_1_t_9                     03C8 GR
+  9 _box1                              013B GR
+  9 _box2                              015F GR
+  9 _box3                              018D GR
+  9 _box4                              01B4 GR
+  9 _caro1                             0254 GR
+  9 _caro2                             0263 GR
+  9 _choice1                           0089 GR
+  9 _choice2                           00EE GR
+  9 _choice3                           0288 GR
+  9 _choice4                           06B7 GR
+  9 _intro1                            0054 GR
+  9 _tony1                             01D1 GR
+  9 _tony2                             01E0 GR
+  9 _wuthrer1                          0208 GR
+  9 _wuthrer2                          021A GR
+  9 _wuthrer3                          0233 GR
+  9 _wuthrer_test                      0000 GR
+
+ASxxxx Assembler V01.75  (GameBoy Z80-like CPU), page 2.
+
+Area Table
+
+   0 _CODE                              size    0   flags 0
+   1 _DATA                              size    0   flags 0
+   2 _OVERLAY                           size    0   flags 0
+   3 _ISEG                              size    0   flags 0
+   4 _BSEG                              size    0   flags 0
+   5 _XSEG                              size    0   flags 0
+   6 _GSINIT                            size    0   flags 0
+   7 _GSFINAL                           size    0   flags 0
+   8 _HOME                              size    0   flags 0
+   9 _CODE_2                            size  6D9   flags 0

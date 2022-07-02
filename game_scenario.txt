@@ -14,9 +14,10 @@ Do you want to lose the game?
 
 This is the box. It is not any box.
 
-This box contains the answer. The answer to any question. 
+This box contains the answer to any question. 
 
-Before you take you decide if you open the box, please meet some characters:
+Before you decide if you open the box, 
+please meet some characters:
 
 Hi! I am Toni. I opened the box and I know the answer!
 
@@ -39,8 +40,8 @@ Toni: Come on! Open it!
 Wuthrer: Only weak minds do need to know the answer.
 Toni: It is not a question of need, but a question of why.
 Toni: Any why question has an answer. this answer.
-Wuthrer: But it is the quest to find an answer that is important, not the actual answer.
-Wuthrer: Not taking a shortcut. It is an endless fight to decide not to look the answer.
+Wuthrer: But it's the quest that is important, not the actual answer.
+Wuthrer: Not taking a shortcut. It's an endless fight not to look in the box.
 Caro: And I don't know how long I will keep on fighting, before I finally decide to open the box.
 
 

@@ -1,18 +1,15 @@
 CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
-BINS	= SRJailbreak.gb
-BONUS =  data/kwakwa_logo.o src/kwakwa_screen.o data/press_start.o src/title_screen.o src/titlescreen2.o src/credits.o data/staffroll.o data/title_screen_music.o
-SOURCE =  src/main.o src/box_collision.o src/sound.o src/game_screen.o src/physics.o src/gbt_player.o src/gbt_player_bank1.o
-ASSETS = data/peanut.o data/guard.o data/environment.o data/background.o data/whale_poster.o data/white_fur.o data/seagull.o data/music_output.o
-LVLS = data/map/level1_map.o data/map/level2_map.o data/map/level3_map.o data/map/level4_map.o data/map/level5_map.o data/map/level6_map.o \
-levels/level1.o levels/level2.o levels/level3.o levels/level4.o levels/level5.o levels/level6.o \
-data/map/level7_map.o data/map/level8_map.o data/map/level9_map.o data/map/level10_map.o levels/level10.c \
-data/map/level11_map.o data/map/level12_map.o data/map/level13_map.o levels/level13.c data/map/level14_map.o data/map/level15_map.o
+BINS	= EGJ2022.gb
+BONUS =  data/egj2022/title_screen_gb.o data/egj2022/toni_screen.o data/egj2022/wuthrer_screen.o data/egj2022/box_close_screen.o data/egj2022/caro_screen.o
+SOURCE =  src/main.o src/title_screen.o src/game_screen.o
+ASSETS = data/egj2022/alphabet.o data/egj2022/text.o
+LVLS = 
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS)
 
-SRJailbreak.gb:
-	$(CC) -Wl-yt3 -Wl-yo16 -Wl-ya1 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS)
+EGJ2022.gb:
+	$(CC) -Wl-yt1 -Wl-yo8 -Wl-ya0 -o $(BINS) $(LVLS) $(SOURCE) $(BONUS) $(ASSETS)
 
 
 levels/%.o:	levels/%.c
@@ -25,7 +22,7 @@ data/map/%.o: data/map/%.c
 	$(CC) -c -o $@ $<
 
 src/game_screen.o: src/game_screen.c
-	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
+	$(CC) -Wa-l -c -o $@ $<
 
 
 src/credits.o: src/credits.c
@@ -35,57 +32,39 @@ src/kwakwa_screen.o: src/kwakwa_screen.c
 	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
 
 src/title_screen.o: src/title_screen.c
-	$(CC) -Wa-l -Wf-bo7 -c -o $@ $<
+	$(CC) -Wa-l -c -o $@ $<
 
-data/staffroll.o: data/staffroll.s
-	$(CC) -Wa-l -Wf-bo8 -c -o data/staffroll.o data/staffroll_merge.s
-data/kwakwa_logo.o:
-	$(CC) -Wa-l -Wf-bo3 -c -o data/kwakwa_logo.o data/kwakwa_logo_merge.s
+data/egj2022/title_screen_gb.o:
+	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/title_screen_gb_merge.s
 
-src/titlescreen2.o:
-	$(CC) -Wa-l -Wf-bo3 -c -o src/titlescreen2.o data/titlescreen2_merge.s
+data/egj2022/toni_screen.o:
+	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/toni_gb_wbox_merge.s
+
+data/egj2022/wuthrer_screen.o:
+	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/wuthrer_gb_wbox_merge.s
+data/egj2022/box_close_screen.o:
+	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/box_close_gb_wbox_merge.s
+data/egj2022/alphabet.o:
+	$(CC) -Wa-l -Wf-bo2 -c -o $@ data/egj2022/alphabet.c
+data/egj2022/caro_screen.o:
+	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/caro_gb_wbox_merge.s
+data/egj2022/text.o:
+	$(CC) -Wa-l -Wf-bo2 -c -o $@ data/egj2022/text.c
 
 data/title_screen_music.o:
 	$(CC) -Wa-l -Wf-bo8 -c -o data/title_screen_music.o data/title_screen_music.c
-
-data/press_start.o: data/press_start.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
 src/gbt_player.o: src/gbt_player.s
 	$(CC) -Wa-l -c -o src/gbt_player.o src/gbt_player.s
 
 src/gbt_player_bank1.o: src/gbt_player_bank1.s
-	$(CC) -Wa-l -Wf-bo4 -c -o src/gbt_player_bank1.o src/gbt_player_bank1.s
+	$(CC) -Wa-l -Wf-bo3 -c -o src/gbt_player_bank1.o src/gbt_player_bank1.s
 
 data/music_output.o:  data/music_output.c
 	$(CC) -Wa-l -Wf-bo2 -c -o data/music_output.o data/music_output.c
 
 src/sound.o: src/sound.c
 	$(CC) -Wa-l -c -o $@ $<
-
-src/physics.o: src/physics.c
-	$(CC) -Wf-bo6 -c -o $@ $<
-
-data/peanut.o: data/peanut.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/white_fur.o: data/white_fur.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/seagull.o: data/seagull.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/guard.o: data/guard.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/background.o: data/background.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/environment.o: data/environment.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
-
-data/whale_poster.o: data/whale_poster.s
-	$(CC) -Wa-l -Wf-bo5 -c -o $@ $<
 
 
 #data/music_output.c:
