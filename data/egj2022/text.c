@@ -36,7 +36,7 @@ const BYTE answer3_1_t_3[] = "Let them come to me!";
 const BYTE answer3_1_w_4[] = "Not knowing the answer is what makes life meaningful.";
 const BYTE answer3_1_c_5[] = "But is it though?";
 const BYTE answer3_1_c_6[] = "We simply don't know what life is with the answer.";
-const BYTE answer3_1_t_7[] =  "While I know what life is with the answer,...";
+const BYTE answer3_1_t_7[] = "While I know what life is with the answer,...";
 const BYTE answer3_1_t_8[] = "but I will not spoil it to you both.";
 const BYTE answer4_1_t_9[] = "It is choice that you have to make, not I.";
 

@@ -13,6 +13,7 @@
 #define TONI_SIZE 116u
 #define BOX_CLOSE_SIZE 139u
 #define CARO_SIZE 119u
+#define BOX_CHOICE_SIZE 73u
 
 #define LOWER_A 32
 
@@ -27,8 +28,16 @@ enum ScreenType
 	CLOSE_BOX_CHOICE = 5u
 };
 
+enum Choice
+{
+	YES = 0,
+	NO = 1,
+	MAYBE = 2
+};
+
 UBYTE finish;
 UBYTE keys;
+UBYTE previousKeys;
 
 UBYTE screenType;
 
@@ -107,14 +116,15 @@ extern unsigned char toni_gb_wbox_tiledata[];
 extern unsigned char toni_gb_wbox_tilemap[];
 extern unsigned char caro_gb_wbox_tiledata[];
 extern unsigned char caro_gb_wbox_tilemap[];
+extern unsigned char box_close_gb_wchoice_tiledata[];
+extern unsigned char box_close_gb_wchoice_tilemap[];
 
 extern unsigned char Alphabet[];
+extern unsigned char Arrow[];
 
 extern BYTE wuthrer_test[];
 
-
-
-
+BYTE choiceIndex;
 
 void victory() NONBANKED
 {
@@ -201,11 +211,53 @@ void init_text_bg() NONBANKED
 			{
 				tile += CARO_SIZE;
 			}
+			else if(screenType = CLOSE_BOX_CHOICE)
+			{
+				tile += BOX_CHOICE_SIZE;
+			}
 			set_bkg_tiles(origin_x+j, origin_y+i, 1, 1, &tile);
 		}
 	}
+
+
 }
 
+void manage_sprites() NONBANKED
+{
+	UBYTE offset = 0u;
+	if(screenType == CLOSE_BOX_CHOICE)
+	{
+
+		set_sprite_tile(0, 'Y'-'A');
+		move_sprite(0, 134u, 89u);
+		set_sprite_tile(1, 'E'-'A');
+		move_sprite(1, 142u, 89u);
+		set_sprite_tile(2, 'S'-'A');
+		move_sprite(2, 150u, 89u);
+
+		
+		set_sprite_tile(3, 'N'-'A');
+		move_sprite(3, 142u, 98u);
+		set_sprite_tile(4, 'O'-'A');
+		move_sprite(4, 150u, 98u);
+
+		set_sprite_tile(5, 'M'-'A');
+		move_sprite(5, 120u, 107u);		
+		set_sprite_tile(6, 'A'-'A');
+		move_sprite(6, 128u, 107u);		
+		set_sprite_tile(7, 'Y'-'A');
+		move_sprite(7, 134u, 107u);		
+		set_sprite_tile(8, 'B'-'A');
+		move_sprite(8, 142u, 107u);		
+		set_sprite_tile(9, 'E'-'A');
+		move_sprite(9, 150u, 107u);
+
+		set_sprite_tile(10, ALPHABET_LEN);
+		offset = choiceIndex+(choiceIndex<<3u);
+		move_sprite(10, 157u, 89u+offset);
+	}
+
+}
 
 void init_screen() NONBANKED
 {
@@ -221,6 +273,8 @@ void init_screen() NONBANKED
 
 
 	//TODO sprite alphabet
+	set_sprite_data(0, ALPHABET_LEN, Alphabet);
+	set_sprite_data(ALPHABET_LEN, 1, Arrow);
 
 	//set current dialog bg
 	if(screenType == WUTHRER)
@@ -255,6 +309,14 @@ void init_screen() NONBANKED
 		
 		SWITCH_ROM_MBC1(2);
 		set_win_data(CARO_SIZE, ALPHABET_LEN, Alphabet);
+	}
+	else if(screenType == CLOSE_BOX_CHOICE)
+	{
+		SWITCH_ROM_MBC1(1);
+		set_bkg_data(0, BOX_CHOICE_SIZE, box_close_gb_wchoice_tiledata);
+		
+		SWITCH_ROM_MBC1(2);
+		set_win_data(BOX_CHOICE_SIZE, ALPHABET_LEN, Alphabet);
 	}
 	//set_bkg_data(1U, TileEnvironmentLength, tile_environment);
 	//set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
@@ -295,6 +357,14 @@ void init_screen() NONBANKED
 		SWITCH_ROM_MBC1(2);
 		init_text_bg();
 	}
+	else if(screenType == CLOSE_BOX_CHOICE)
+	{
+		SWITCH_ROM_MBC1(1);
+		set_bkg_tiles(0,0, 20, 18, box_close_gb_wchoice_tilemap);
+		
+		SWITCH_ROM_MBC1(2);
+		init_text_bg();
+	}
 	SPRITES_8x8;//TODO: why not 8x16?
 
 	SHOW_BKG;
@@ -312,6 +382,29 @@ void game_over() NONBANKED
 }
 void manage_input() NONBANKED
 {
+	if(keys & J_UP)
+	{
+		if(!(previousKeys & J_UP))
+		{
+			choiceIndex--;
+			if(choiceIndex == -1)
+			{
+				choiceIndex = 2;
+			}
+		}
+	}
+
+	if(keys & J_DOWN)
+	{
+		if(!(previousKeys & J_DOWN))
+		{
+			choiceIndex++;
+			if(choiceIndex == 3)
+			{
+				choiceIndex = 0;
+			}
+		}
+	}
 
 	if(keys & J_A)
 	{
@@ -333,6 +426,12 @@ void manage_input() NONBANKED
 			screenType = CARO;
 			init_screen();
 		}
+		else if(currentTxt == caro1)
+		{
+			currentTxt = choice1;
+			screenType = CLOSE_BOX_CHOICE;
+			init_screen();
+		}
 	}
 }
 void game_screen() NONBANKED
@@ -340,14 +439,17 @@ void game_screen() NONBANKED
 	screenType = CLOSE_BOX;
 	SWITCH_ROM_MBC1(2);
 	currentTxt = intro1;
+	choiceIndex = 0;
 	init_screen();
 	finish = 0U;
 	while(!finish)
 	{
 		wait_vbl_done();
+		previousKeys = keys;
 		keys = joypad();
 
 		manage_input();
+		manage_sprites();
 		//manage_text_sprites();
 		//gbt_update();
 
