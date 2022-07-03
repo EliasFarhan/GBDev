@@ -14,6 +14,8 @@
 #define BOX_CLOSE_SIZE 139u
 #define CARO_SIZE 119u
 #define BOX_CHOICE_SIZE 73u
+#define GAME_OVER_SIZE 72u
+#define BOX_OPEN_SIZE 123u
 
 #define LOWER_A 32
 
@@ -25,7 +27,8 @@ enum ScreenType
 	CARO = 2u,
 	CLOSE_BOX = 3u,
 	OPEN_BOX = 4u,
-	CLOSE_BOX_CHOICE = 5u
+	CLOSE_BOX_CHOICE = 5u,
+	GAME_OVER = 6u
 };
 
 enum Choice
@@ -40,6 +43,14 @@ UBYTE keys;
 UBYTE previousKeys;
 
 UBYTE screenType;
+
+enum BoolValue
+{
+	IS_GAME = 1u,
+	HAS_CHOSEN_GAME = 1u<<1u,
+};
+
+UBYTE gameState;
 
 BYTE* currentTxt;
 extern UBYTE credits;
@@ -118,6 +129,10 @@ extern unsigned char caro_gb_wbox_tiledata[];
 extern unsigned char caro_gb_wbox_tilemap[];
 extern unsigned char box_close_gb_wchoice_tiledata[];
 extern unsigned char box_close_gb_wchoice_tilemap[];
+extern unsigned char game_over_tiledata[];
+extern unsigned char game_over_tilemap[];
+extern unsigned char box_open_tiledata[];
+extern unsigned char box_open_tilemap[];
 
 extern unsigned char Alphabet[];
 extern unsigned char Arrow[];
@@ -125,10 +140,6 @@ extern unsigned char Arrow[];
 extern BYTE wuthrer_test[];
 
 BYTE choiceIndex;
-
-void victory() NONBANKED
-{
-}
 unsigned char tile;
 void init_text_bg() NONBANKED
 {
@@ -215,6 +226,7 @@ void init_text_bg() NONBANKED
 			{
 				tile += BOX_CHOICE_SIZE;
 			}
+			
 			set_bkg_tiles(origin_x+j, origin_y+i, 1, 1, &tile);
 		}
 	}
@@ -257,6 +269,15 @@ void manage_sprites() NONBANKED
 		move_sprite(10, 157u, 89u+offset);
 	}
 
+}
+
+void move_sprite_out() NONBANKED
+{
+	UBYTE i;
+	for(i = 0; i != 11; i++)
+	{
+		move_sprite(i, 168u, 152u);
+	}
 }
 
 void init_screen() NONBANKED
@@ -318,6 +339,16 @@ void init_screen() NONBANKED
 		SWITCH_ROM_MBC1(2);
 		set_win_data(BOX_CHOICE_SIZE, ALPHABET_LEN, Alphabet);
 	}
+	else if(screenType == GAME_OVER)
+	{
+		SWITCH_ROM_MBC1(1);
+		set_bkg_data(0, GAME_OVER_SIZE, game_over_tiledata);
+	}
+	else if(screenType == OPEN_BOX)
+	{
+		SWITCH_ROM_MBC1(2);
+		set_bkg_data(0, BOX_OPEN_SIZE, box_open_tiledata);
+	}
 	//set_bkg_data(1U, TileEnvironmentLength, tile_environment);
 	//set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
 	//set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, tile_whale_poster);
@@ -365,6 +396,18 @@ void init_screen() NONBANKED
 		SWITCH_ROM_MBC1(2);
 		init_text_bg();
 	}
+	else if(screenType == GAME_OVER)
+	{
+		SWITCH_ROM_MBC1(1);
+		set_bkg_tiles(0,0, 20, 18, game_over_tilemap);
+		
+	}
+	else if(screenType == OPEN_BOX)
+	{
+		SWITCH_ROM_MBC1(2);
+		set_bkg_tiles(0,0, 20, 18, box_open_tilemap);
+		
+	}
 	SPRITES_8x8;//TODO: why not 8x16?
 
 	SHOW_BKG;
@@ -373,13 +416,269 @@ void init_screen() NONBANKED
 	enable_interrupts();
 }
 
-void game_over() NONBANKED
+void manage_switch() NONBANKED
 {
-	//gbt_stop();
-	
-	//finish = 1U;
-
+		if(currentTxt == intro1)
+		{
+			currentTxt = choice1;
+			screenType = CLOSE_BOX_CHOICE;
+			choiceIndex = 0;
+		}
+		else if(currentTxt == choice1)
+		{
+			if(choiceIndex == YES)
+			{
+				currentTxt = answer1;
+				screenType = CLOSE_BOX;
+				gameState |= IS_GAME;
+			}
+			else if(choiceIndex == NO)
+			{
+				currentTxt = answer2;
+				screenType = CLOSE_BOX;
+			}
+			else
+			{
+				currentTxt = answer3;
+				screenType = CLOSE_BOX;
+			}
+			gameState |= HAS_CHOSEN_GAME;
+			move_sprite_out();
+		}
+		else if(currentTxt == answer1)
+		{
+			screenType = CLOSE_BOX_CHOICE;
+			currentTxt = choice2;
+			choiceIndex = 0;
+		}
+		else if(currentTxt == choice2)
+		{
+			if(choiceIndex == YES)
+			{
+				currentTxt = wuthrer_test;
+				screenType = GAME_OVER;
+			}
+			else if(choiceIndex == NO)
+			{
+				currentTxt = answer2_2;
+				screenType = CLOSE_BOX;
+			}
+			else
+			{
+				currentTxt = answer2_3;
+				screenType = CLOSE_BOX;
+			}
+			move_sprite_out();
+		}
+		else if(currentTxt == answer2 || currentTxt == answer3 || currentTxt == answer2_2 || currentTxt == answer2_3)
+		{
+			currentTxt = box1;
+			screenType = CLOSE_BOX;
+		}
+		else if(currentTxt == box1)
+		{
+			currentTxt = box2;
+		}
+		else if(currentTxt == box2)
+		{
+			currentTxt = box3;
+		}
+		else if(currentTxt == box3)
+		{
+			currentTxt = box4;
+		}
+		else if(currentTxt == box4)
+		{
+			currentTxt = tony1;
+			screenType = TONI;
+		}
+		else if(currentTxt == tony1)
+		{
+			currentTxt = tony2;
+		}
+		else if(currentTxt == tony2)
+		{
+			screenType = WUTHRER;
+			currentTxt = wuthrer1;
+		}
+		else if(currentTxt == wuthrer1)
+		{
+			currentTxt = wuthrer2;
+		}else if(currentTxt == wuthrer2)
+		{
+			currentTxt = wuthrer3;
+		}
+		else if(currentTxt == wuthrer3)
+		{
+			screenType = CARO;
+			currentTxt = caro1;
+		}
+		else if(currentTxt == caro1)
+		{
+			currentTxt = caro2;
+		}
+		else if(currentTxt == caro2)
+		{
+			screenType = CLOSE_BOX_CHOICE;
+			currentTxt = choice3;
+			choiceIndex = 0;
+		}
+		else if(currentTxt == choice3)
+		{
+			if(choiceIndex == YES)
+			{
+				screenType = WUTHRER;
+				currentTxt = answer3_1_w_1;
+			}
+			else if(choiceIndex == NO)
+			{
+				screenType = WUTHRER;
+				currentTxt = answer3_2_w_1;
+			}
+			else
+			{
+				screenType = CARO;
+				currentTxt = answer3_3_c_1;
+			}
+			move_sprite_out();
+		}else if(currentTxt == answer3_1_w_1)
+		{
+			currentTxt = answer3_1_w_2;
+		}else if(currentTxt == answer3_1_w_2)
+		{
+			screenType = TONI;
+			currentTxt = answer3_1_t_3;
+		}else if(currentTxt == answer3_1_t_3)
+		{
+			screenType = WUTHRER;
+			currentTxt = answer3_1_w_4;
+		}else if(currentTxt == answer3_1_w_4)
+		{
+			screenType = CARO;
+			currentTxt = answer3_1_c_5;
+		}else if(currentTxt == answer3_1_c_5)
+		{
+			currentTxt = answer3_1_c_6;
+		}else if(currentTxt == answer3_1_c_6)
+		{
+			screenType = TONI;
+			currentTxt = answer3_1_t_7;
+		}else if(currentTxt == answer3_1_t_7)
+		{
+			currentTxt = answer3_1_t_8;
+		}else if(currentTxt == answer3_1_t_8)
+		{
+			currentTxt = answer4_1_t_9;
+		}
+		else if(currentTxt == answer3_2_w_1)
+		{
+			currentTxt = answer3_2_t_2;
+			screenType = TONI;
+		}
+		else if(currentTxt == answer3_2_t_2)
+		{
+			screenType = WUTHRER;
+			currentTxt = answer3_2_w_3;
+		}
+		else if(currentTxt == answer3_2_w_3)
+		{
+			currentTxt = answer3_2_t_4;
+			screenType = TONI;
+		}
+		else if(currentTxt == answer3_2_t_4)
+		{
+			currentTxt = answer3_2_t_5;
+		}
+		else if (currentTxt == answer3_2_t_5)
+		{
+			screenType = WUTHRER;
+			currentTxt = answer3_2_w_6;
+		}
+		else if(currentTxt == answer3_2_w_6)
+		{
+			currentTxt = answer3_2_w_7;
+		}
+		else if(currentTxt == answer3_2_w_7)
+		{
+			currentTxt = answer3_2_w_8;
+		}
+		else if(currentTxt == answer3_2_w_8)
+		{
+			currentTxt = answer3_2_w_9;
+		}else if(currentTxt == answer3_2_w_9)
+		{
+			screenType = CARO;
+			currentTxt = answer3_2_c_10;
+		}else if(currentTxt == answer3_2_c_10)
+		{
+			currentTxt = answer3_2_c_11;
+		}
+		else if(currentTxt == answer3_3_c_1)
+		{
+			screenType = WUTHRER;
+			currentTxt = answer3_3_w_2;
+		}else if(currentTxt == answer3_3_w_2)
+		{
+			currentTxt = answer3_3_w_3;
+		}
+		else if(currentTxt == answer3_3_w_3)
+		{
+			currentTxt = answer3_3_t_4;
+			screenType = TONI;
+		}else if(currentTxt == answer3_3_t_4)
+		{
+			currentTxt = answer3_3_t_5;
+		}
+		else if(currentTxt == answer3_3_t_5)
+		{
+			currentTxt = answer3_3_t_6;
+		}else if(currentTxt == answer3_3_t_6)
+		{
+			currentTxt = answer3_3_t_7;
+		}else if(currentTxt == answer3_3_t_7)
+		{
+			currentTxt = answer3_3_t_8;
+		}else if(currentTxt == answer3_3_t_8)
+		{
+			currentTxt = answer3_3_t_9;
+		}
+		else if(currentTxt == answer4_1_t_9 ||currentTxt == answer3_2_c_11 || currentTxt == answer3_3_t_9)
+		{
+			screenType = CLOSE_BOX_CHOICE;
+			choiceIndex = 0;
+			currentTxt = choice4;
+		}
+		else if(currentTxt == choice4)
+		{
+			if(choiceIndex == YES)
+			{
+				screenType = OPEN_BOX;
+				currentTxt = wuthrer_test;
+				move_sprite_out();
+			}
+			else if(choiceIndex == NO || choiceIndex == MAYBE)
+			{
+				finish = 1u;
+				move_sprite_out();
+				screenType = OPEN_BOX;
+				return;
+			}
+		}
+		else 
+		{
+			if(screenType == GAME_OVER)
+			{
+				finish = 1u;
+			}
+			else if(screenType == OPEN_BOX && (gameState & IS_GAME))
+			{
+				finish = 1u;
+			}
+			return;
+		}
+		init_screen();
 }
+
 void manage_input() NONBANKED
 {
 	if(keys & J_UP)
@@ -408,30 +707,7 @@ void manage_input() NONBANKED
 
 	if(keys & J_A)
 	{
-		if(currentTxt == intro1)
-		{
-			currentTxt = wuthrer1;
-			screenType = WUTHRER;
-			init_screen();
-		}
-		else if(currentTxt == wuthrer1)
-		{
-			currentTxt = tony1;
-			screenType = TONI;
-			init_screen();
-		}
-		else if(currentTxt == tony1)
-		{
-			currentTxt = caro1;
-			screenType = CARO;
-			init_screen();
-		}
-		else if(currentTxt == caro1)
-		{
-			currentTxt = choice1;
-			screenType = CLOSE_BOX_CHOICE;
-			init_screen();
-		}
+		manage_switch();
 	}
 }
 void game_screen() NONBANKED
@@ -448,6 +724,7 @@ void game_screen() NONBANKED
 		previousKeys = keys;
 		keys = joypad();
 
+		SWITCH_ROM_MBC1(4);
 		manage_input();
 		manage_sprites();
 		//manage_text_sprites();
