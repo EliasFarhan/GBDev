@@ -5,9 +5,10 @@
 //title screen image
 extern unsigned char title_screen_gb_tiledata[];
 extern unsigned char title_screen_gb_tilemap[];
+extern const unsigned char * MainTheme_Data[];
 
-
-void title_screen() NONBANKED {
+void title_screen() NONBANKED 
+{
 	UBYTE pstart = 1, keys = 0;
 
 	wait_vbl_done();
@@ -23,10 +24,8 @@ void title_screen() NONBANKED {
 
 	SPRITES_8x8;//TODO: why not 8x16?
 
-
-	//gbt_play(title_song_Data, 0x08U, 0x07U);
-	//gbt_play(title_song_Data, 0x08U, 0x07U);
-	//gbt_loop(0x01U);
+	gbt_play(MainTheme_Data, 5, 7);
+	gbt_loop(0x01U);
 
 	DISPLAY_ON;
 	SHOW_BKG;
@@ -41,6 +40,6 @@ void title_screen() NONBANKED {
 		{
 			break;
 		}
-		//gbt_update();
+		gbt_update();
 	}
 }

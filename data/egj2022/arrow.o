@@ -1,6 +1,6 @@
 XL
 H A areas 2 global symbols
-M lcc18630
+M lcc45770
 S __initrleblock Ref0000
 A _CODE size 0 flags 0
 A _DATA size 10 flags 0

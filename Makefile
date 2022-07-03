@@ -2,8 +2,8 @@ CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 
 BINS	= EGJ2022.gb
 BONUS =  data/egj2022/title_screen_gb.o data/egj2022/toni_screen.o data/egj2022/wuthrer_screen.o data/egj2022/box_close_screen.o data/egj2022/caro_screen.o data/egj2022/choice_screen.o data/egj2022/game_over_screen.o data/egj2022/box_open.o
-SOURCE =  src/main.o src/title_screen.o src/game_screen.o
-ASSETS = data/egj2022/alphabet.o data/egj2022/text.o data/egj2022/arrow.o
+SOURCE =  src/main.o src/title_screen.o src/game_screen.o src/gbt_player.o src/gbt_player_bank1.o
+ASSETS = data/egj2022/alphabet.o data/egj2022/text.o data/egj2022/arrow.o data/egj2022/music_output.o 
 LVLS = 
 
 all:	  $(LVLS) $(SOURCE) $(ASSETS) $(BONUS) $(BINS)
@@ -54,6 +54,9 @@ data/egj2022/arrow.o:
 	$(CC) -Wa-l -Wf-bo2 -c -o $@ data/egj2022/arrow.c
 data/egj2022/choice_screen.o:
 	$(CC) -Wa-l -Wf-bo1 -c -o $@ data/egj2022/box_close_gb_wchoice_merge.s
+
+data/egj2022/music_output.o:
+	$(CC) -Wa-l -Wf-bo5 -c -o $@ data/egj2022/music_output.c
 data/title_screen_music.o:
 	$(CC) -Wa-l -Wf-bo8 -c -o data/title_screen_music.o data/title_screen_music.c
 data/egj2022/game_over_screen.o:
@@ -64,7 +67,7 @@ src/gbt_player.o: src/gbt_player.s
 	$(CC) -Wa-l -c -o src/gbt_player.o src/gbt_player.s
 
 src/gbt_player_bank1.o: src/gbt_player_bank1.s
-	$(CC) -Wa-l -Wf-bo3 -c -o src/gbt_player_bank1.o src/gbt_player_bank1.s
+	$(CC) -Wa-l -Wf-bo4 -c -o src/gbt_player_bank1.o src/gbt_player_bank1.s
 
 data/music_output.o:  data/music_output.c
 	$(CC) -Wa-l -Wf-bo2 -c -o data/music_output.o data/music_output.c

@@ -728,7 +728,7 @@ void game_screen() NONBANKED
 		manage_input();
 		manage_sprites();
 		//manage_text_sprites();
-		//gbt_update();
+		gbt_update();
 
 		//tick_sound();
 
