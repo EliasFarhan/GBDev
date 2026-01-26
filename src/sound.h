@@ -85,8 +85,8 @@ typedef struct
 } SoundData;
 
 
-void init_sounds();
-void tick_sound();
+void init_sounds(void);
+void tick_sound(void);
 void play_sound( SoundID sound );
 
 #endif

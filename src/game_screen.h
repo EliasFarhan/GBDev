@@ -96,6 +96,7 @@ typedef struct
 typedef struct
 {
 	Box* box;
+	UBYTE active;
 } WALL;
 typedef struct{
 	Box box;
@@ -160,11 +161,11 @@ typedef struct
 
 
 
-void init_screen();
-void game_screen();
-void game_over();
-void switch_to_level(LEVELID);
-void switch_to_world(WORLDID);
-void reset_game();
+void init_screen(void);
+void game_screen(void);
+void game_over(void);
+void switch_to_level(LEVELID level);
+void switch_to_world(WORLDID world);
+void reset_game(void);
 
 #endif

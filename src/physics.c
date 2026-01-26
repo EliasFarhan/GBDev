@@ -16,17 +16,17 @@ extern Box* box1;
 extern Box* box2;
 Box tmp_box;
 extern UBYTE i;
-UBYTE groundContact;
-UBYTE frontContact;
+UBYTE groundContact = 0;
+UBYTE frontContact = 0;
 
-void manage_physics_lvl1();
-void manage_physics_lvl2();
-void manage_physics_lvl3();
-void manage_physics_lvl4();
-void manage_physics_lvl5();
-void manage_physics_lvl6();
-void manage_physics_lvl10();
-void manage_physics_lvl13();
+void manage_physics_lvl1(void);
+void manage_physics_lvl2(void);
+void manage_physics_lvl3(void);
+void manage_physics_lvl4(void);
+void manage_physics_lvl5(void);
+void manage_physics_lvl6(void);
+void manage_physics_lvl10(void);
+void manage_physics_lvl13(void);
 
 void manage_seagull_collision(SEAGULL* enemy)
 {
@@ -34,7 +34,7 @@ void manage_seagull_collision(SEAGULL* enemy)
 	{
 		return;
 	}
-	if(player.vely >= 0U && player.box.y <= enemy->box.y-enemy->box.h+player.vely
+	if(player.vely >= 0 && player.box.y <= enemy->box.y-enemy->box.h+player.vely
 				&& (player.box.x + player.box.w > enemy->box.x
 				&& player.box.x < enemy->box.x+enemy->box.w) && enemy->box.w < 20U)
 	{
@@ -52,7 +52,7 @@ void manage_seagull_collision(SEAGULL* enemy)
 	}
 }
 
-void manage_key_physics()
+void manage_key_physics(void)
 {
 	if(player.key != NULL)
 	{
@@ -62,7 +62,7 @@ void manage_key_physics()
 	}
 }
 
-void manage_level_physics()
+void manage_level_physics(void)
 {
 
 	switch(currentLvl)
@@ -94,7 +94,7 @@ void manage_level_physics()
 	}
 }
 
-void manage_static_physics2()
+void manage_static_physics2(void)
 {
 
 	frontContact = 0U;
@@ -172,7 +172,7 @@ void manage_static_physics2()
 	}
 }
 
-void manage_static_physics()
+void manage_static_physics(void)
 {
 	UBYTE frontContact;
 
@@ -258,7 +258,7 @@ void manage_static_physics()
 	}
 }
 
-void set_climbing()
+void set_climbing(void)
 {
 	player.state = CLIMB;
 	player.dirY = -1;
@@ -266,7 +266,7 @@ void set_climbing()
 	player.img_index = 0U;
 }
 
-void manage_climbwalk2()
+void manage_climbwalk2(void)
 {
 	tmp_box.w = player.box.w;
 	tmp_box.h = player.box.h;
@@ -326,7 +326,7 @@ void manage_climbwalk2()
 	}
 }
 
-void manage_climbwalk()
+void manage_climbwalk(void)
 {
 	UBYTE contact;
 	tmp_box.x = player.box.x;
@@ -392,7 +392,7 @@ void manage_climbwalk()
 	}
 }
 
-void manage_jumpclimb()
+void manage_jumpclimb(void)
 {
 	tmp_box.x = player.box.x+player.dirX;
 	tmp_box.y = player.box.y;
@@ -425,7 +425,7 @@ void manage_jumpclimb()
 	}
 }
 
-void set_idle()
+void set_idle(void)
 {
 	player.state = IDLE;
 	player.timer = 0U;
@@ -433,7 +433,7 @@ void set_idle()
 	player.vely = 0U;
 }
 
-void manage_jumping()
+void manage_jumping(void)
 {
 	player.timer ++;
 	if(player.timer == 5U)
@@ -454,7 +454,7 @@ void manage_jumping()
 		if(checkCollision())
 		{
 
-			if(player.vely >= 0U &&
+			if(player.vely >= 0 &&
 					player.box.y <= levels[currentLvl]->boxes[i].y - levels[currentLvl]->boxes[i].h + player.vely
 				&& (player.box.x+player.box.w > levels[currentLvl]->boxes[i].x+2U
 						&& player.box.x < levels[currentLvl]->boxes[i].x+levels[currentLvl]->boxes[i].w-2U))
@@ -476,7 +476,7 @@ void manage_jumping()
 				else
 				{
 					player.box.y = levels[currentLvl]->boxes[i].y+PLAYER_SIZE;
-					if(player.vely < 0U)
+					if(player.vely < 0)
 						player.vely = 1;
 				}
 			}
@@ -485,7 +485,7 @@ void manage_jumping()
 	if(player.box.y < 8U+PLAYER_SIZE)
 	{
 		player.box.y = 8U+PLAYER_SIZE;
-		if(player.vely < 0U)
+		if(player.vely < 0)
 			player.vely = 1;
 	}
 
@@ -497,7 +497,7 @@ void manage_jumping()
 	}
 
 }
-void manage_physics()
+void manage_physics(void)
 {
 	if(player.state == JUMP || player.state == JUMPCLIMB)
 	{

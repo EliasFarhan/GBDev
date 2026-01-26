@@ -9,7 +9,7 @@
 #define BOX_COLLISION_H_
 #include "game_screen.h"
 
-UBYTE checkCollision();
+UBYTE checkCollision(void);
 
 
 #endif /* BOX_COLLISION_H_ */

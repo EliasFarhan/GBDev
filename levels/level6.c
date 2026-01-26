@@ -10,6 +10,9 @@
 #include "../src/box_collision.h"
 #include "../src/physics.h"
 
+// Forward declaration
+void victory(void);
+
 //#define BOX1LENGTH 4U
 
 extern size_t boxes_lvl6_length; //= BOX1LENGTH;
@@ -59,7 +62,7 @@ extern PLAYER player;
 extern Box* box1;
 extern Box* box2;
 
-void manage_physics_lvl6()
+void manage_physics_lvl6(void)
 {
 	if(player.box.x == 8U && player.box.y == 136U && (player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == -1 )
 	{
@@ -148,7 +151,7 @@ void manage_physics_lvl6()
 	}*/
 
 }
-void reset_lvl6()
+void reset_lvl6(void)
 {
 	//enemy_lvl6[0].dead = 0U;
 	locks_lvl6[0].locked = 1U;

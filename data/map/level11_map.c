@@ -18,7 +18,7 @@ const unsigned char Lvl11TileMap[] = {6,13,11,13,1,13,11,6,6,6,6,6,6,6,6,6,6,6,6
 5,16,18,14,12,14,12,14,12,14,12,14,12,14,12,16,18,14,12,3,
 5,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};
-size_t boxes_lvl11_length = 4;
+#define BOXES_LVL11_LENGTH 4
 Box box_lvl11[4] = 
 {
 {32U,96U,8U,32U},
@@ -38,7 +38,7 @@ SEAGULL seagull_lvl11 [] = {{{40U,96U, 6U, 9U},1,0U,0U,114U, 40U}};
 KEY key_lvl11 [1] = {{{128U,80U, 18U, 16U}, 128U,80, LEVEL11,0U}};
 Level lvl11 = {
 box_lvl11,
-boxes_lvl11_length,
+BOXES_LVL11_LENGTH,
 Lvl11TileMap,
 locks_lvl11,
 NULL,

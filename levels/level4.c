@@ -56,7 +56,7 @@ extern const unsigned char Lvl4TileMap[];/* =
 13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,3,
  6,6,6,6,6,6,6,6,6,6,6,6,6,12,14,12,14,12,14,6};
 */
-void manage_physics_lvl4()
+void manage_physics_lvl4(void)
 {
 	/*if(player.box.x == 8U && player.box.y == 136U && (player.state == CROUCHWALK || player.state == CROUCH) && player.dirX == -1)
 	{
@@ -122,7 +122,7 @@ void manage_physics_lvl4()
 	}
 }
 
-void reset_lvl4()
+void reset_lvl4(void)
 {
 	//enemy_lvl4[0].dead = 0U;
 

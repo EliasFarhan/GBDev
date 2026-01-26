@@ -18,7 +18,7 @@ extern const Box box_lvl10[];
 
 extern const unsigned char Lvl10TileMap[];
 
-void manage_physics_lvl10()
+void manage_physics_lvl10(void)
 {
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
 	{
@@ -33,7 +33,7 @@ void manage_physics_lvl10()
 	}
 }
 
-void reset_lvl10()
+void reset_lvl10(void)
 {
 }
 /*

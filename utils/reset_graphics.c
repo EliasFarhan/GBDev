@@ -39,7 +39,7 @@ void empty_screen (void)
 
 }
 
-void disable_APA()
+void disable_APA(void)
 {
 	
 	UINT8 i, blank = 0;

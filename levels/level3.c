@@ -52,7 +52,7 @@ extern SEAGULL seagull_lvl3 [];
 //SEAGULL seagull_lvl3 []= {
 //		{{120U, 136U, 16U, 9U}, 1,0U,0U, 160U, 96U}
 //};
-void manage_physics_lvl3()
+void manage_physics_lvl3(void)
 {
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
 	{
@@ -116,7 +116,7 @@ void manage_physics_lvl3()
 		manage_seagull_collision((SEAGULL*) seagull_lvl3);
 	}
 }
-void reset_lvl3()
+void reset_lvl3(void)
 {
 	seagull_lvl3[0].dead = 0U;
 }

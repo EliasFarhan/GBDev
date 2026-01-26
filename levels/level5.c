@@ -57,7 +57,7 @@ extern const unsigned char Lvl5TileMap[];/* =
 
 extern Box* box1;
 extern Box* box2;
-void manage_physics_lvl5()
+void manage_physics_lvl5(void)
 {
 
 	if(player.box.x == 136U && player.box.y == 80U &&
@@ -131,7 +131,7 @@ void manage_physics_lvl5()
 		play_sound(SOUND_UNLOCK);
 	}
 }
-void reset_lvl5()
+void reset_lvl5(void)
 {
 	seagull_lvl5[0].dead = 0U;
 	key_lvl5[0].used = 0U;

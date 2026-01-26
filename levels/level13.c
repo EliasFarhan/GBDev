@@ -25,7 +25,7 @@ extern LOCK locks_lvl13[];
 KEY key_lvl13[1]= {
 		{{120U, 136U, 18U, 16U}, 120U, 136U, LEVEL13, 0U},
 };
-void manage_physics_lvl13()
+void manage_physics_lvl13(void)
 {
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y == PLAYER_SIZE+8U && player.state == CLIMBWALK)
 	{
@@ -36,7 +36,7 @@ void manage_physics_lvl13()
 	}
 }
 
-void reset_lvl13()
+void reset_lvl13(void)
 {
 }
 /*

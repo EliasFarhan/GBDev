@@ -51,7 +51,7 @@ extern const unsigned char Lvl1TileMap[];/* =
 extern Box* box1;
 extern Box* box2;
 
-void manage_physics_lvl1()
+void manage_physics_lvl1(void)
 {
 
 	if(player.box.x >= 8U && player.box.x <= 16U && player.box.y > 144U-9U )
@@ -104,7 +104,7 @@ void manage_physics_lvl1()
 		play_sound(SOUND_UNLOCK);
 	}
 }
-void reset_lvl1()
+void reset_lvl1(void)
 {
 	locks_lvl1[0].locked = 1U;
 	//{72U, 128U, 8U, 32U},

@@ -54,7 +54,7 @@ extern const unsigned char Lvl2TileMap[];/* =
 extern Box* box1;
 extern Box* box2;
 
-void manage_physics_lvl2()
+void manage_physics_lvl2(void)
 {
 	if(player.box.x >= 104U && player.box.x <= 136U && player.box.y > 144U-9U )
 	{
@@ -100,7 +100,7 @@ void manage_physics_lvl2()
 		manage_seagull_collision((SEAGULL*) seagull_lvl2);
 	}
 }
-void reset_lvl2()
+void reset_lvl2(void)
 {
 	seagull_lvl2[0].dead = 0U;
 

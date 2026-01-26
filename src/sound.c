@@ -2,10 +2,10 @@
 #include <gb/gb.h>
 
 SoundData gSounds[SOUND_END];
-UINT8 gC1Playtime, gC2Playtime, gC3Playtime, gC4Playtime;
+UINT8 gC1Playtime = 0, gC2Playtime = 0, gC3Playtime = 0, gC4Playtime = 0;
 
 // In progress
-void init_sounds()
+void init_sounds(void)
 {
 	gC1Playtime = 1, gC2Playtime = 1, gC3Playtime = 1, gC4Playtime = 1;
 
@@ -56,7 +56,7 @@ void init_sounds()
 	gSounds[SOUND_DEAD].data.chan4.nr44 = 0x80; //can't tweak this anymore
 }
 
-void tick_sound()
+void tick_sound(void)
 {
 	if( gC1Playtime > 0 )
 	{

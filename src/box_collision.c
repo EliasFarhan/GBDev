@@ -7,9 +7,9 @@
 #include "box_collision.h"
 
 
-Box* box1;
-Box* box2;
-UBYTE checkCollision() NONBANKED
+Box* box1 = NULL;
+Box* box2 = NULL;
+UBYTE checkCollision(void) NONBANKED
 {
 	if(box2->x >= box1->x+box1->w) return 0;
 	if (box2->x+box2->w <= box1->x) return 0;

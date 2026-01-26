@@ -19,8 +19,8 @@ extern UBYTE tilemap_peanut[];
 extern unsigned char press_start_tiledata[];
 extern unsigned char press_start_tilemap[];
 
-UBYTE keys;
-UBYTE finish;
+UBYTE keys = 0;
+UBYTE finish = 0;
 extern PLAYER player;
 
 extern Level lvl1;
@@ -72,18 +72,18 @@ UBYTE TileWhalePosterLength = 48U;
 extern UBYTE i, j;
 extern WHITEFUR whiteFur;
 
-void manage_physics();
+void manage_physics(void);
 
-void reset_lvl1();
-void reset_lvl2();
-void reset_lvl3();
-void reset_lvl4();
-void reset_lvl5();
-void reset_lvl6();
-void reset_lvl10();
-void reset_lvl13();
+void reset_lvl1(void);
+void reset_lvl2(void);
+void reset_lvl3(void);
+void reset_lvl4(void);
+void reset_lvl5(void);
+void reset_lvl6(void);
+void reset_lvl10(void);
+void reset_lvl13(void);
 
-void manage_input() NONBANKED
+void manage_input(void) NONBANKED
 {
 
 	if(!(player.booleanState & TRANSITIONNING)
@@ -287,7 +287,7 @@ void manage_input() NONBANKED
 	}
 }
 
-UBYTE previous_sprite_index;
+UBYTE previous_sprite_index = 0;
 
 void manage_doggy_sprites(UBYTE sprite_index)
 {
@@ -352,7 +352,7 @@ void manage_doggy_sprites(UBYTE sprite_index)
 	}
 }
 
-void manage_player_sprites()
+void manage_player_sprites(void)
 {
 	//PLAYER POSITION MANAGEMENT
 	if(player.state != CLIMB && player.state != CLIMBWALK)
@@ -430,14 +430,12 @@ void manage_player_sprites()
 		}
 	}
 }
-void set_sprites() NONBANKED
+void set_sprites(void) NONBANKED
 {
 
-	UBYTE origin_index;
-	UBYTE sprite_index;
-	KEY* key;
-	key = NULL;
-	sprite_index = 0U;
+	UBYTE origin_index = 0U;
+	UBYTE sprite_index = 0U;
+	KEY* key = NULL;
 
 	if((player.booleanState & HASVICTORY)||
 			(player.booleanState & WORLD_SWITCH))
@@ -743,7 +741,7 @@ void set_sprites() NONBANKED
 }
 
 
-void manage_animation() NONBANKED
+void manage_animation(void) NONBANKED
 {
 
 	if(currentLvl == LEVEL6 || currentLvl == LEVEL13)
@@ -938,7 +936,7 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	enable_interrupts();
 }
 
-void game_screen() NONBANKED
+void game_screen(void) NONBANKED
 {
 
 	currentLvl = LEVEL6;
@@ -948,7 +946,7 @@ void game_screen() NONBANKED
 	finish = 0U;
 	while(!finish)
 	{
-		wait_vbl_done();
+		vsync();
 		keys = joypad();
 
 		manage_input();
@@ -983,7 +981,7 @@ void game_screen() NONBANKED
 
 }
 
-void init_screen() NONBANKED
+void init_screen(void) NONBANKED
 {
 	disable_interrupts();
 	finish = 0U;
@@ -1049,7 +1047,7 @@ void init_screen() NONBANKED
 
 }
 
-void game_over() NONBANKED
+void game_over(void) NONBANKED
 {
 	//gbt_stop();
 	player.booleanState = player.booleanState | HASGAMEOVER;
@@ -1076,7 +1074,7 @@ void switch_to_world(WORLDID newWorldId) NONBANKED
 
 }
 
-void victory() NONBANKED
+void victory(void) NONBANKED
 {
 	player.booleanState = player.booleanState | HASVICTORY;
 	credits = 1U;
@@ -1085,7 +1083,7 @@ void victory() NONBANKED
 	player.box.y = 136U;
 	SWITCH_ROM_MBC1(6);
 }
-void reset_game() NONBANKED
+void reset_game(void) NONBANKED
 {
 	SWITCH_ROM_MBC1(6);
 	reset_lvl1();

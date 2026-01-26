@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <gb/drawing.h>
-#include <src/gbt_player.h>
+#include "gbt_player.h"
 
 //title screen image
 extern unsigned char titlescreen2_tiledata[];
@@ -52,10 +52,10 @@ void title_graphics(UBYTE pstart) NONBANKED {
 
 }
 
-void title_screen() NONBANKED {
+void title_screen(void) NONBANKED {
 	UBYTE counter = 0, pstart = 1, keys = 0;
-	UBYTE i, j;
-	wait_vbl_done();
+	UBYTE i;
+	vsync();
 	disable_interrupts();
 	HIDE_SPRITES;
 	HIDE_WIN;
@@ -92,7 +92,7 @@ void title_screen() NONBANKED {
 	enable_interrupts();
 	while(1)
 	{
-		wait_vbl_done();
+		vsync();
 		keys = joypad();
 
 		if (keys & (J_A|J_START))

@@ -2,21 +2,26 @@
 #include <gb/drawing.h>
 
 #include "game_screen.h"
-#include "utils/reset_graphics.c"
+#include "../utils/reset_graphics.c"
 #include "gbt_player.h"
 
-UBYTE i;
-UBYTE j;
-UBYTE credits;
+// Forward declarations
+void kwakwa_screen(void);
+void title_screen(void);
+void credits_screen(void);
+
+UBYTE i = 0;
+UBYTE j = 0;
+UBYTE credits = 0;
 PLAYER player;
 WHITEFUR whiteFur;
 
-LEVELID currentLvl;
-WORLDID currentWorld;
+LEVELID currentLvl = LEVEL1;
+WORLDID currentWorld = WORLD1;
 extern UBYTE finish;
 
 
-void main()
+void main(void)
 {
 	ENABLE_RAM_MBC1;
 	SWITCH_ROM_MBC1(7);

@@ -18,7 +18,7 @@ const unsigned char Lvl10TileMap[] = {5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,15,17,6,
 12,16,18,14,3,14,12,14,12,14,12,14,12,14,12,14,12,16,18,3,
 11,13,11,13,3,13,11,13,11,13,11,13,11,13,11,13,11,13,11,3,
 6,6,6,6,1,6,6,6,6,6,6,6,6,14,12,14,12,14,12,3};
-size_t boxes_lvl10_length = 3;
+#define BOXES_LVL10_LENGTH 3
 Box box_lvl10[3] = 
 {
 {32U,136U,8U,96U},
@@ -29,7 +29,7 @@ DOGGY doggy_lvl10 [] = {{{40U,136U, 27U, 32U},1,0U,0U,106U, 40U}};
 KEY key_lvl10 [1] = {{{40U,96U, 18U, 16U}, 40U,96, LEVEL10,0U}};
 Level lvl10 = {
 box_lvl10,
-boxes_lvl10_length,
+BOXES_LVL10_LENGTH,
 Lvl10TileMap,
 NULL,
 NULL,

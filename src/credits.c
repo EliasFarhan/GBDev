@@ -6,10 +6,10 @@ extern unsigned char staffroll_tilemap[];
 
 
 
-void credits_screen() NONBANKED {
+void credits_screen(void) NONBANKED {
 	UBYTE pstart = 0;
 	UBYTE keys = 0;
-	wait_vbl_done();
+	vsync();
 	disable_interrupts();
 	HIDE_SPRITES;
 	HIDE_WIN;
@@ -25,7 +25,7 @@ void credits_screen() NONBANKED {
 	SHOW_BKG;
 	enable_interrupts();
 	while(1) {
-		wait_vbl_done();
+		vsync();
 		keys = joypad();
 		if (keys & (J_A|J_START))
 		{

@@ -9,10 +9,10 @@ extern unsigned char kwakwa_logo_tilemap[];
 	//draw_image(kwakwa_logo_tiledata);
 //}
 
-void kwakwa_screen() NONBANKED {
+void kwakwa_screen(void) NONBANKED {
 	UBYTE pstart = 0;
 	UBYTE keys = 0;
-	wait_vbl_done();
+	vsync();
 	disable_interrupts();
 	HIDE_SPRITES;
 	HIDE_WIN;
@@ -28,7 +28,7 @@ void kwakwa_screen() NONBANKED {
 	SHOW_BKG;
 	enable_interrupts();
 	while(1) {
-		wait_vbl_done();
+		vsync();
 		keys = joypad();
 		if (pstart == 30) {
 			break;

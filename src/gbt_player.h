@@ -5,7 +5,7 @@
 *        ---                       GBT PLAYER  v2.1.1               ---
 *        ---                                                        ---
 *        ---                                                        ---
-*        ---              Copyright (C) 2009-2015 Antonio Niño Díaz ---
+*        ---              Copyright (C) 2009-2015 Antonio Niï¿½o Dï¿½az ---
 *        ---                      All rights reserved.              ---
 *        --------------------------------------------------------------
 *
@@ -17,31 +17,35 @@
 
 #include <gb/gb.h>
 
+// Note: OLDCALL is required because the assembly implementation uses
+// the legacy GBDK calling convention (parameters on stack), not the
+// SDCC __sdcccall(1) convention used by GBDK-2020
+
 //plays the song pointed by data (pointer array to patterns) in given bank at initial given speed
-void gbt_play(void * data, UINT8 bank, UINT8 speed);
+void gbt_play(void * data, UINT8 bank, UINT8 speed) OLDCALL;
 
 //pauses/unpauses music.
-void gbt_pause(UINT8 pause);
+void gbt_pause(UINT8 pause) OLDCALL;
 
 //stops music and turns off sound system. Called automatically when ends last pattern and loop
 //isn't activated.
-void gbt_stop(void);
+void gbt_stop(void) OLDCALL;
 
 //enables/disables looping
-void gbt_loop(UINT8 loop);
+void gbt_loop(UINT8 loop) OLDCALL;
 
 //updates player. should be called every frame.
 //THIS WILL CHANGE TO BANK 1!!!
-void gbt_update(void);
+void gbt_update(void) OLDCALL;
 
 #define GBT_CHAN_1 (1<<0)
 #define GBT_CHAN_2 (1<<1)
 #define GBT_CHAN_3 (1<<2)
 #define GBT_CHAN_4 (1<<3)
-//Set enabled channels to prevent the player from using that channel. If you re-enable a 
+//Set enabled channels to prevent the player from using that channel. If you re-enable a
 //channel, it could need some time to sound OK (until pan and volume are modified in the song).
 //You should only disable unused channels or channels that don't change pan or volume.
-void gbt_enable_channels(UINT8 channel_flags);
+void gbt_enable_channels(UINT8 channel_flags) OLDCALL;
 
 #endif //_GBT_PLAYER_
 

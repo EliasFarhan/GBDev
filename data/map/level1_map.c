@@ -18,7 +18,7 @@ const unsigned char Lvl1TileMap[] = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 5,14,12,14,5,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,
 5,13,11,13,1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 6,14,12,14,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-size_t boxes_lvl1_length = 5;
+#define BOXES_LVL1_LENGTH 5
 Box box_lvl1[5] = 
 {
 {96U,96U,8U,40U},
@@ -37,7 +37,7 @@ const Box box_locks_lvl1_value[1] =
                 };
 Level lvl1 = {
 box_lvl1,
-boxes_lvl1_length,
+BOXES_LVL1_LENGTH,
 Lvl1TileMap,
 locks_lvl1,
 NULL,

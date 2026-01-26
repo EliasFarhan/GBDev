@@ -1,1 +1,1 @@
-void title_screen();
+void title_screen(void);

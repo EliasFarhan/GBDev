@@ -18,7 +18,7 @@ const unsigned char Lvl9TileMap[] = {6,13,11,13,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
 5,16,18,14,1,14,12,14,12,14,12,14,12,14,12,14,16,18,12,14,
 5,13,11,13,1,13,11,2,6,6,4,13,11,13,11,13,11,13,11,13,
 6,14,12,14,1,14,12,6,1,1,1,6,6,6,6,6,6,6,6,6};
-size_t boxes_lvl9_length = 5;
+#define BOXES_LVL9_LENGTH 5
 Box box_lvl9[5] = 
 {
 {8U,64U,32U,8U},
@@ -30,7 +30,7 @@ Box box_lvl9[5] =
 SEAGULL seagull_lvl9 [] = {{{88U,136U, 6U, 9U},1,0U,0U,154U, 88U}};
 Level lvl9 = {
 box_lvl9,
-boxes_lvl9_length,
+BOXES_LVL9_LENGTH,
 Lvl9TileMap,
 NULL,
 NULL,

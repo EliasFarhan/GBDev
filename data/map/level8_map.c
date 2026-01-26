@@ -18,7 +18,7 @@ const unsigned char Lvl8TileMap[] = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,3,
 6,6,11,13,11,13,11,13,11,13,11,13,6,6,6,6,6,13,11,3,
 1,1,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,14,12,6};
-size_t boxes_lvl8_length = 4;
+#define BOXES_LVL8_LENGTH 4
 Box box_lvl8[4] = 
 {
 {0U,96U,152U,8U},
@@ -30,7 +30,7 @@ SEAGULL seagull_lvl8 [] = {{{40U,136U, 6U, 9U},1,0U,0U,88U, 40U}};
 KEY key_lvl8 [1] = {{{120U,80U, 18U, 16U}, 120U,80, LEVEL8,0U}};
 Level lvl8 = {
 box_lvl8,
-boxes_lvl8_length,
+BOXES_LVL8_LENGTH,
 Lvl8TileMap,
 NULL,
 NULL,

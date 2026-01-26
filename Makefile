@@ -1,4 +1,4 @@
-CC	= /opt/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
+CC	= /opt/gbdk-2020/bin/lcc -Wa-l -Wl-m -Wl-j
 
 BINS	= SRJailbreak.gb
 BONUS =  data/kwakwa_logo.o src/kwakwa_screen.o data/press_start.o src/title_screen.o src/titlescreen2.o src/credits.o data/staffroll.o data/title_screen_music.o

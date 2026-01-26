@@ -1,1 +1,1 @@
-void kwakwa_screen() NONBANKED;
+void kwakwa_screen(void) NONBANKED;

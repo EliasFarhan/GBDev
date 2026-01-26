@@ -18,7 +18,7 @@ const unsigned char Lvl13TileMap[] = {6,13,11,13,1,13,11,13,11,13,11,13,11,13,11
 12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,12,14,
 11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,11,13,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2};
-size_t boxes_lvl13_length = 5;
+#define BOXES_LVL13_LENGTH 5
 Box box_lvl13[5] = 
 {
 {32U,96U,8U,96U},
@@ -45,7 +45,7 @@ const Box box_walls_lvl13_value[1] =
                             };
 Level lvl13 = {
 box_lvl13,
-boxes_lvl13_length,
+BOXES_LVL13_LENGTH,
 Lvl13TileMap,
 locks_lvl13,
 walls_lvl13,
