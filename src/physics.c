@@ -14,7 +14,7 @@ extern Level* levels[];
 extern PLAYER player;
 extern Box* box1;
 extern Box* box2;
-Box tmp_box;
+Box tmp_box = {0, 0, 0, 0};
 extern UBYTE i;
 UBYTE groundContact = 0;
 UBYTE frontContact = 0;

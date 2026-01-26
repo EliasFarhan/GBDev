@@ -1034,13 +1034,15 @@ void init_screen(void) NONBANKED
 	player.box.w = PLAYER_SIZE;
 	player.box.h = PLAYER_SIZE;
 	player.dirX = 1;
+	player.dirY = 0;
 	player.img_index = 0;
 	player.state = IDLE;
 	player.timer = 0;//for animation purpose and physics
 	player.vely = 0;
-
+	player.key = NULL;
 
 	whiteFur.timer = 0U;
+	whiteFur.img_index = 0U;
 	previous_sprite_index = 0U;
 
 	set_sprites();

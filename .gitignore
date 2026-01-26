@@ -1,0 +1,10 @@
+*.lst
+*.o
+*.sym
+*.exe
+*.gb
+*.map
+*.noi
+*.sav
+*.ini
+*.asm

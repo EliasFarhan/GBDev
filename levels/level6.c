@@ -158,7 +158,7 @@ void reset_lvl6(void)
 
 	locks_lvl6[0].box->x = box_locks_lvl6_value[0].x;
 	locks_lvl6[0].box->y = box_locks_lvl6_value[0].y;
-	locks_lvl6[0].box->w = box_locks_lvl6_value[0].x;
+	locks_lvl6[0].box->w = box_locks_lvl6_value[0].w;
 	locks_lvl6[0].box->h = box_locks_lvl6_value[0].h;
 }
 
