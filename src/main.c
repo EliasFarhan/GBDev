@@ -23,8 +23,7 @@ extern UBYTE finish;
 
 void main(void)
 {
-	ENABLE_RAM_MBC1;
-	SWITCH_ROM_MBC1(7);
+	SWITCH_ROM_MBC5(2);
   kwakwa_screen();
 	//disable_APA();
 	credits = 0U;

@@ -5,7 +5,7 @@ extern unsigned char kwakwa_logo_tiledata[];
 
 extern unsigned char kwakwa_logo_tilemap[];
 //void kwakwa_graphics() NONBANKED {
-	//SWITCH_ROM_MBC1(3);
+	//SWITCH_ROM_MBC5(3);
 	//draw_image(kwakwa_logo_tiledata);
 //}
 
@@ -18,9 +18,8 @@ void kwakwa_screen(void) NONBANKED {
 	HIDE_WIN;
 	HIDE_BKG;
 	DISPLAY_OFF;
-	ENABLE_RAM_MBC1;
 
-	SWITCH_ROM_MBC1(3);
+	SWITCH_ROM_MBC5(3);
 	set_bkg_data(0,30,kwakwa_logo_tiledata);
 
 	set_bkg_tiles(0,0,20,18,kwakwa_logo_tilemap);

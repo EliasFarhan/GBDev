@@ -10,7 +10,6 @@ void empty_screen (void)
 	HIDE_SPRITES;
 	
 	VBK_REG = 0;
-	ENABLE_RAM_MBC1;
 
 	for (temp1=0; temp1<40; temp1++)
 	{
@@ -18,7 +17,7 @@ void empty_screen (void)
 		set_sprite_prop (temp1,0);
 	}
 
-	SWITCH_ROM_MBC1(0);
+	SWITCH_ROM_MBC5(0);
 	for (temp1=0; temp1<20; temp1++)
 	{
 		set_bkg_tiles (0,temp1,20,1,(unsigned char *) tile_white[0]);
@@ -29,7 +28,7 @@ void empty_screen (void)
 		set_win_tiles (0,temp1,20,1,(unsigned char *) tile_white[0]);
 		VBK_REG = 0;
 	}
-	SWITCH_ROM_MBC1(0);
+	SWITCH_ROM_MBC5(0);
 	DISABLE_RAM_MBC1;
 	move_bkg (0,0);
 	

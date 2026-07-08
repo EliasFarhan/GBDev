@@ -16,8 +16,7 @@ void credits_screen(void) NONBANKED {
 	HIDE_BKG;
 	DISPLAY_OFF;
 
-	ENABLE_RAM_MBC1;
-	SWITCH_ROM_MBC1(8);
+	SWITCH_ROM_MBC5(3);
 	set_bkg_data(0U,124U,staffroll_tiledata);
 	set_bkg_tiles(0,0,20,18, staffroll_tilemap);
 	SPRITES_8x8;//TODO: why not 8x16?

@@ -1,4 +1,4 @@
-.area _CODE_5
+.area _CODE_1
 
 .globl _press_start_tiledata
 .dw _press_start_tiledata

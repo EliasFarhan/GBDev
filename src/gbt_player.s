@@ -334,7 +334,7 @@ gbt_update:
 	jr	z,.dontexit
 	
 	; Tick != Speed, update effects and exit
-	ld	a,#0x04
+	ld	a,#0x03
 	ld	(#0x2000),a ; MBC1, MBC3, MBC5 - Set bank 1
 	call	gbt_update_effects_bank1 ; Call update function in bank 1 (in gbt_player_bank1.s)
 	
@@ -361,7 +361,7 @@ gbt_update:
 	; Update effects
 	; --------------
 	
-	ld	a,#0x04
+	ld	a,#0x03
 	ld	(#0x2000),a ; MBC1, MBC3, MBC5 - Set bank 1
 	call	gbt_update_effects_bank1 ; Call update function in bank 1 (in gbt_player_bank1.s)
 	
@@ -488,7 +488,7 @@ gbt_update:
 
 .end_handling_steps_pattern:
 	
-	ld	a,#0x04
+	ld	a,#0x03
 	ld	(#0x2000),a ; MBC1, MBC3, MBC5 - Set bank 1
 	call	gbt_update_bank1 ; Call update function in bank 1 (in gbt_player_bank1.s)
 	

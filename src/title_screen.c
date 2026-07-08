@@ -15,12 +15,12 @@ extern unsigned char * title_song_Data[];
 void title_graphics(UBYTE pstart) NONBANKED {
 	UBYTE i;
 
-	//SWITCH_ROM_MBC1(3);
+	//SWITCH_ROM_MBC5(3);
 
 	//draw_image(titlescreen2_tiledata);
 
 	//Show PRESS START
-	SWITCH_ROM_MBC1(5);
+	SWITCH_ROM_MBC5(1);
 
 
 	if (!pstart) {
@@ -62,8 +62,7 @@ void title_screen(void) NONBANKED {
 	HIDE_BKG;
 	DISPLAY_OFF;
 
-	ENABLE_RAM_MBC1;
-	SWITCH_ROM_MBC1(5);
+	SWITCH_ROM_MBC5(1);
 	for(i = 0; i != 0x6U; i++)
 	{
 		set_sprite_prop(i,0x00U);
@@ -74,7 +73,7 @@ void title_screen(void) NONBANKED {
 		set_sprite_prop (i,0);
 	}
 	set_sprite_data( 0U, 0x6U, press_start_tiledata);
-	SWITCH_ROM_MBC1(3);
+	SWITCH_ROM_MBC5(3);
 	set_bkg_data(0U,191U,titlescreen2_tiledata);
 	set_bkg_tiles(0,0,20,18, titlescreen2_tilemap);
 
@@ -82,8 +81,8 @@ void title_screen(void) NONBANKED {
 	SPRITES_8x8;//TODO: why not 8x16?
 
 
-	//gbt_play(title_song_Data, 0x08U, 0x07U);
-	gbt_play(title_song_Data, 0x08U, 0x07U);
+	//gbt_play(title_song_Data, 0x03U, 0x07U);
+	gbt_play(title_song_Data, 0x03U, 0x07U);
 	gbt_loop(0x01U);
 
 	DISPLAY_ON;

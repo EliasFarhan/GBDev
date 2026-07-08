@@ -1,4 +1,4 @@
-.area _CODE_8
+.area _CODE_3
 .globl _staffroll_tiledata
 .dw _staffroll_tiledata
 _staffroll_tiledata:

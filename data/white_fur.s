@@ -1,4 +1,4 @@
-.area _CODE_5
+.area _CODE_1
 
 .globl _tile_whitefur
 .dw _tile_whitefur

@@ -96,6 +96,7 @@ void manage_level_physics(void)
 
 void manage_static_physics2(void)
 {
+	UBYTE n;
 
 	frontContact = 0U;
 	groundContact = 0U;
@@ -106,7 +107,8 @@ void manage_static_physics2(void)
 	{
 		groundContact = 1U;
 	}
-	for(i = 0U; i != levels[currentLvl]->boxes_length;i++)
+	n = (UBYTE)levels[currentLvl]->boxes_length;
+	for(i = 0U; i != n; i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		//Check under player if there are ground
@@ -133,6 +135,11 @@ void manage_static_physics2(void)
 			}
 
 		}
+		//nothing left to find once ground is known and the front check is
+		//satisfied or inapplicable (front only fires while walking)
+		if(groundContact && (frontContact ||
+				(player.state != WALK && player.state != CROUCHWALK)))
+			break;
 	}
 	if(groundContact == 0)
 	{
@@ -177,6 +184,7 @@ void manage_static_physics(void)
 	UBYTE frontContact;
 
 	UBYTE contact;
+	UBYTE n;
 	frontContact = 0U;
 	//Check under player if there are ground
 	tmp_box.x = player.box.x;
@@ -185,13 +193,14 @@ void manage_static_physics(void)
 	tmp_box.h = player.box.h;
 	box1 = &(tmp_box);
 	contact = 0U;
+	n = (UBYTE)levels[currentLvl]->boxes_length;
 	if(player.box.y >= 144U-GROUND_HEIGHT)
 	{
 		contact++;
 	}
 	else
 	{
-		for(i = 0U; i != levels[currentLvl]->boxes_length;i++)
+		for(i = 0U; i != n; i++)
 		{
 			box2 = &(levels[currentLvl]->boxes[i]);
 			if(checkCollision())
@@ -222,7 +231,7 @@ void manage_static_physics(void)
 	tmp_box.w = player.box.w;
 	tmp_box.h = player.box.h;
 	contact = 0U;
-	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
+	for(i = 0U; i!=n; i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(checkCollision())
@@ -268,6 +277,8 @@ void set_climbing(void)
 
 void manage_climbwalk2(void)
 {
+	UBYTE n;
+
 	tmp_box.w = player.box.w;
 	tmp_box.h = player.box.h;
 	box1 = &tmp_box;
@@ -284,7 +295,8 @@ void manage_climbwalk2(void)
 	{
 		frontContact = 1U;
 	}
-	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
+	n = (UBYTE)levels[currentLvl]->boxes_length;
+	for(i = 0U; i!=n; i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(groundContact == 0U)
@@ -307,6 +319,9 @@ void manage_climbwalk2(void)
 				frontContact++;
 			}
 		}
+		//both contacts resolved: remaining boxes cannot change the result
+		if(groundContact && frontContact)
+			break;
 	}
 	if(groundContact == 0U)
 	{
@@ -329,12 +344,14 @@ void manage_climbwalk2(void)
 void manage_climbwalk(void)
 {
 	UBYTE contact;
+	UBYTE n;
 	tmp_box.x = player.box.x;
 	tmp_box.y = player.box.y+player.dirY;
 	tmp_box.w = player.box.w;
 	tmp_box.h = player.box.h;
 	box1 = &tmp_box;
 	contact = 0;
+	n = (UBYTE)levels[currentLvl]->boxes_length;
 	if((player.dirY == 1 && player.box.y >= 144U-GROUND_HEIGHT) ||
 				(player.dirY == -1 && player.box.y <= GROUND_HEIGHT+PLAYER_SIZE))
 	{
@@ -342,7 +359,7 @@ void manage_climbwalk(void)
 	}
 	else
 	{
-		for(i = 0; i!=levels[currentLvl]->boxes_length;i++)
+		for(i = 0; i!=n; i++)
 		{
 			box2 = &(levels[currentLvl]->boxes[i]);
 			if(checkCollision())
@@ -373,7 +390,7 @@ void manage_climbwalk(void)
 	}
 	else
 	{
-		for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
+		for(i = 0U; i!=n; i++)
 		{
 			box2 = &(levels[currentLvl]->boxes[i]);
 			if(checkCollision())
@@ -394,12 +411,14 @@ void manage_climbwalk(void)
 
 void manage_jumpclimb(void)
 {
+	UBYTE n;
 	tmp_box.x = player.box.x+player.dirX;
 	tmp_box.y = player.box.y;
 	tmp_box.w = player.box.w;
 	tmp_box.h = player.box.h;
 	box1 = &tmp_box;
-	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
+	n = (UBYTE)levels[currentLvl]->boxes_length;
+	for(i = 0U; i!=n; i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(checkCollision())
@@ -435,6 +454,7 @@ void set_idle(void)
 
 void manage_jumping(void)
 {
+	UBYTE n;
 	player.timer ++;
 	if(player.timer == 5U)
 	{
@@ -448,7 +468,8 @@ void manage_jumping(void)
 
 	box1 = &(player.box);
 
-	for(i = 0U; i!=levels[currentLvl]->boxes_length;i++)
+	n = (UBYTE)levels[currentLvl]->boxes_length;
+	for(i = 0U; i!=n; i++)
 	{
 		box2 = &(levels[currentLvl]->boxes[i]);
 		if(checkCollision())

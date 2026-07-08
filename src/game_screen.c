@@ -292,7 +292,7 @@ UBYTE previous_sprite_index = 0;
 void manage_doggy_sprites(UBYTE sprite_index)
 {
 	UBYTE origin_index;
-	//SWITCH_ROM_MBC1(6);
+	//SWITCH_ROM_MBC5(2);
 	origin_index = levels[currentLvl]->doggy->img_index << 4U;
 	for(i = 0U; i != 16U; i++)
 	{
@@ -499,7 +499,7 @@ void set_sprites(void) NONBANKED
 		origin_index = 76U;
 	}
 
-	SWITCH_ROM_MBC1(5);
+	SWITCH_ROM_MBC5(1);
 	for (i = origin_index; i != origin_index+4; i++)
 	{
 		set_sprite_tile( i-origin_index, tilemap_peanut[i] );
@@ -555,7 +555,7 @@ void set_sprites(void) NONBANKED
 	//MOVE TEXT SPRITES
 	if(player.booleanState & HASGAMEOVER)
 	{
-		SWITCH_ROM_MBC1(5);
+		SWITCH_ROM_MBC5(1);
 		for(i = 0; i != 8; i++)
 		{
 			set_sprite_prop(sprite_index+i,0x00U);
@@ -576,7 +576,7 @@ void set_sprites(void) NONBANKED
 	else if(player.booleanState & HASVICTORY)
 	{
 
-		SWITCH_ROM_MBC1(5);
+		SWITCH_ROM_MBC5(1);
 		for(i = 0; i != 7; i++)
 		{
 			set_sprite_prop(sprite_index+i,0x00U);
@@ -590,7 +590,7 @@ void set_sprites(void) NONBANKED
 	}
 	//SHOW SEAGULL ENEMIES
 
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 	if(levels[currentLvl]->enemy != NULL && !(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
 		if(levels[currentLvl]->enemy->dead)
@@ -635,7 +635,7 @@ void set_sprites(void) NONBANKED
 	if(levels[currentLvl]->doggy != NULL)
 	{
 
-		SWITCH_ROM_MBC1(7);
+		SWITCH_ROM_MBC5(2);
 		manage_doggy_sprites(sprite_index);
 		sprite_index += 16U;
 
@@ -704,7 +704,7 @@ void set_sprites(void) NONBANKED
 
 	if(key != NULL)
 	{
-		SWITCH_ROM_MBC1(6);
+		SWITCH_ROM_MBC5(2);
 		for(i = 0; i != 4; i++)
 		{
 			set_sprite_prop(i+sprite_index,0x00U);
@@ -828,7 +828,7 @@ void manage_animation(void) NONBANKED
 		}
 	}
 	//SEAGULL ANIMATION
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 	if(levels[currentLvl]->enemy != NULL &&
 			!(levels[currentLvl]->enemy->dead && levels[currentLvl]->enemy->timer == DEAD_SEAGULL_TIME))
 	{
@@ -906,8 +906,6 @@ void manage_animation(void) NONBANKED
 
 void switch_to_level(LEVELID levelID) NONBANKED
 {
-	UBYTE j;
-
 	if(levelID == NOLEVEL)
 		return;
 	//play_sound( SOUND_EXPLOSION );
@@ -917,19 +915,9 @@ void switch_to_level(LEVELID levelID) NONBANKED
 	HIDE_SPRITES;
 	HIDE_WIN;
 	DISPLAY_OFF;
-	ENABLE_RAM_MBC1;
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 
-	for(i = 0; i != 18; i++)
-	{
-		for(j = 0; j!= 20; j++)
-		{
-			const int i_4 = i << 2;
-
-			const int result = ((i_4+i)<<2);
-			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
-		}
-	}
+	set_bkg_tiles(0, 0, 20, 18, levels[currentLvl]->LvlTileMap);
 	SHOW_BKG;
 	SHOW_SPRITES;
 	DISPLAY_ON;
@@ -955,7 +943,7 @@ void game_screen(void) NONBANKED
 				&& !(player.booleanState & HASVICTORY))
 		{
 			manage_animation();
-			SWITCH_ROM_MBC1(6);
+			SWITCH_ROM_MBC5(2);
 			manage_physics();
 		}
 
@@ -971,7 +959,7 @@ void game_screen(void) NONBANKED
 			}
 		}
 		set_sprites();
-		SWITCH_ROM_MBC1(7);
+		SWITCH_ROM_MBC5(2);
 		manage_player_sprites();
 		gbt_update();
 
@@ -991,12 +979,11 @@ void init_screen(void) NONBANKED
 	DISPLAY_OFF;
 
 	init_sounds();
-	gbt_play(song_Data, 0x02U, 0x07U);
+	gbt_play(song_Data, 0x03U, 0x07U);
 	gbt_loop(0x01U);
 
-	ENABLE_RAM_MBC1;
 
-	SWITCH_ROM_MBC1(5);
+	SWITCH_ROM_MBC5(1);
 	set_sprite_data(BW_INDEX, BW_SPR_LEN, tile_peanut);
 	set_sprite_data(WF_INDEX, WF_SPR_LEN, tile_whitefur);
 	set_sprite_data(SEA_INDEX, SEA_SPR_LEN, tile_seagull);
@@ -1009,17 +996,9 @@ void init_screen(void) NONBANKED
 	set_bkg_data(TileEnvironmentLength+1U, TileBackgroundLength, tile_background);
 	set_bkg_data(TileBackgroundLength+TileEnvironmentLength+1U, TileWhalePosterLength, tile_whale_poster);
 
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 	//Background
-	for(i = 0; i != 18; i++)
-	{
-		for(j = 0; j!= 20; j++)
-		{
-			const int i_4 = i << 2;
-			const int result = (i_4+i)<<2;
-			set_bkg_tiles(j,i,1,1, &(levels[currentLvl]->LvlTileMap)[result+j]);
-		}
-	}
+	set_bkg_tiles(0, 0, 20, 18, levels[currentLvl]->LvlTileMap);
 	SPRITES_8x8;//TODO: why not 8x16?
 
 	SHOW_BKG;
@@ -1080,14 +1059,14 @@ void victory(void) NONBANKED
 {
 	player.booleanState = player.booleanState | HASVICTORY;
 	credits = 1U;
-	gbt_play(victory_song_Data, 0x02U, 0x07U);
+	gbt_play(victory_song_Data, 0x03U, 0x07U);
 	gbt_loop(0x00U);
 	player.box.y = 136U;
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 }
 void reset_game(void) NONBANKED
 {
-	SWITCH_ROM_MBC1(6);
+	SWITCH_ROM_MBC5(2);
 	reset_lvl1();
 	reset_lvl2();
 	reset_lvl3();

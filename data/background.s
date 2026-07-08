@@ -1,4 +1,4 @@
-.area _CODE_5
+.area _CODE_1
 
 .globl _tile_background
 .dw _tile_background

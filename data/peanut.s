@@ -1,4 +1,4 @@
-.area _CODE_5
+.area _CODE_1
 
 .globl _tile_peanut
 .dw _tile_peanut
