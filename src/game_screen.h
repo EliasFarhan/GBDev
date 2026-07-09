@@ -16,7 +16,7 @@
 
 
 //SPRITES INDEX
-#define BW_SPR_LEN 108U //Black Whiskers animation length
+#define BW_SPR_LEN 88U //Black Whiskers animation length (108 frames, deduplicated tiles)
 #define WF_SPR_LEN 32U //White Fur animation length
 #define SEA_SPR_LEN 16U //Seagulls animation length
 #define ENV_SPR_LEN 9U //Environment spritesheet length

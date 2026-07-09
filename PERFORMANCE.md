@@ -2,7 +2,7 @@
 title: Performance Guide — SRJailbreak (GBDK-2020)
 tags: [gbdev, srjailbreak, plan, performance, rom-size, banking]
 status: active
-updated: 2026-07-08
+updated: 2026-07-09
 related:
   - "[[MIGRATION_PLAN]]"
   - "[[WARNINGS_FIX_PLAN]]"
@@ -15,8 +15,11 @@ This document covers performance considerations, optimizations, and best practic
 > [!success] Primary goal ACHIEVED — 2026-07-08
 > The ROM has been shrunk from **256 KB MBC1+RAM+BATT** to **64 KB MBC5, 4 banks, no RAM** (header bytes `19 01 00`, ROM is exactly 65,536 bytes). Four optimizations landed in this pass: `--opt-code-size`, collision-iteration micro-opts, batched tilemap loading, and the full 8→4 bank consolidation. All verified by clean `make` + `.map`/header inspection. **Still needs runtime testing on an emulator** (a banking regression builds cleanly but only shows at runtime) — see the per-section notes below.
 
+> [!success] Second optimization pass — 2026-07-09
+> Every remaining open item was **feasibility-checked against the actual code**, with candidate changes built and measured in a scratch copy before landing. Four more optimizations shipped: dead-function removal (−790 B), pointer caching in per-frame sprite/animation code (−847 B, also a CPU win), peanut sprite-tile dedup 108→88 tiles (−320 B ROM + 20 VRAM slots freed), and the `manage_level_physics` switch→function-table conversion (−17 B). **Total −1,974 B**; bank 2 is now 11,425 B, bank 0 down to 8,308 B. Several checklist items turned out to be **already done or based on wrong premises** — see the per-item verdicts below. Like the first pass, all changes verified by clean `make` + `.map` inspection only; **runtime emulator testing still needed** (especially the sprite dedup — every player animation should be eyeballed — and the pointer-caching rewrite of `set_sprites`).
+
 > [!success] Historical note
-> Everything below was written as forward-looking. The four items marked ✅ IMPLEMENTED have now shipped; the rest (sprite flipping, level-handler consolidation, tile dedup, music-driver swap, RAM packing) remain open.
+> Everything below was written as forward-looking. The four items marked ✅ IMPLEMENTED shipped 2026-07-08; the 2026-07-09 pass then measured and resolved most of the rest. Remaining genuinely-open items: level-handler consolidation, tilemap compression, 1bpp text tiles (all sized below).
 
 ## Table of Contents
 
@@ -334,28 +337,24 @@ Current data (~37 KB) leaves ~28 KB headroom in a 64 KB ROM.
 
 ### Graphics Optimization Strategies
 
-> [!todo] 1. Reduce player animation frames
-> Current: 108 frames (1,730 bytes). Many left/right pairs may be redundant if mirrored via the OAM flip flag instead of stored twice:
-> ```c
-> set_sprite_prop(sprite_id, S_FLIPX);  // Mirror sprite horizontally
-> ```
-> **Potential savings:** 40–50% of player sprites (~700–850 bytes)
+> [!success] 1. Sprite flipping (`S_FLIPX`) — ❌ CLOSED: already implemented (verified 2026-07-09)
+> The premise was wrong: `manage_player_sprites()`, the seagull code, and `manage_doggy_sprites()` **already** set `S_FLIPX` and swap sprite positions for left-facing rendering — the 108 stored tiles are single-facing. A byte-level scan of `peanut.s` found exactly **1** horizontally-mirrored tile pair (16 B), not 40–50% of the sheet. Nothing worth doing here.
 
-> [!todo] 2. Merge duplicate tiles in sprites
-> `merge_gbs.py` is already used for full-screen graphics (`titlescreen2`, `kwakwa_logo`, `staffroll`). Apply it to sprite sheets too:
-> ```bash
-> python tools/merge_gbs.py data/peanut.s > data/peanut_merge.s
-> ```
+> [!success] 2. Merge duplicate tiles in sprites — ✅ IMPLEMENTED for peanut (2026-07-09)
+> A tile-level scan (`/tmp` analysis script; exact 16-byte-tile comparison) found: **peanut 20 exact dups**, seagull 3, white_fur 5, guard/environment/background/whale_poster **0**.
+> - **peanut.s: done.** 108→88 stored tiles, `tilemap_peanut` remapped, `BW_SPR_LEN` 108U→88U in `game_screen.h`. **−320 B** (bank 1: 4,877→4,557 B) plus 20 freed VRAM tile slots. Works because all player tile lookups go through `tilemap_peanut[]`; downstream indices (`WF_INDEX` etc.) are macro-derived from `BW_SPR_LEN` so they shifted automatically. ⚠️ Needs a visual pass over all animations in an emulator.
+>   Note: `merge_gbs.py` could NOT be used directly — it resets the tilemap to identity, and peanut already had a non-identity 120-entry tilemap; a remapping dedup was written instead.
+> - **seagull (48 B) / white_fur (80 B): open, low priority.** Both are indexed *directly* (`SEA_INDEX+i+origin_index`), not via a tilemap, so dedup requires adding indirection code that would eat most of the 128 B combined saving.
 
-> [!todo] 3. Remove unused full-screen graphics
-> Audit for redundant screens (e.g. overlapping title/credits backgrounds) and consolidate.
+> [!success] 3. Remove unused full-screen graphics — ❌ CLOSED: none found (verified 2026-07-09)
+> The linked `_merge.s` screens are fully deduplicated already (kwakwa 30 tiles, staffroll 124, titlescreen2 191 — zero exact dups left). The un-merged `data/title.s` / non-merge `.s` sources exist on disk but are **not linked** (Makefile builds the `_merge` variants). Only mirrored tiles remain (3 per screen) — unrecoverable, because **DMG background tiles have no flip attribute** (BG X/Y-flip is GBC-only).
 
-> [!todo] 4. Use 1bpp tiles where possible
-> For simple graphics (text, UI), 1bpp halves storage vs. 2bpp (8 vs 16 bytes per 8×8 tile).
+> [!todo] 4. Use 1bpp tiles where possible — feasible, ~104 B, low priority
+> Verified: all 13 `press_start` letter tiles are 2-color, and GBDK-2020 provides `set_sprite_1bpp_data()` / `set_1bpp_colors()`. Storing them 1bpp saves 104 B. `tile_background` is 4/8 tiles 1bpp-able (can't split one `set_bkg_data` call cheaply); `tile_environment` 0/19. Only worth doing if bank 1 ever gets tight.
 
-> [!todo] 5. Tile deduplication across levels
-> Levels likely share common tiles (floors, walls). Replace 15 separate 360-byte tilemaps with one shared tileset + 15 smaller index maps.
-> **Potential savings:** 20–30% (~1,000–1,500 bytes)
+> [!success] 5. Tile deduplication across levels — ❌ CLOSED: wrong premise; superseded by tilemap compression (2026-07-09)
+> This is **already the architecture**: all levels share one background tileset (`tile_environment` + `tile_background` + `tile_whale_poster`, loaded once in `init_screen`), and each 360-byte level "map" is already just an index map into it. There is no duplicated tile data to remove.
+> **The real opportunity is compressing the index maps.** Measured with GBDK-2020's own `gbcompress` on the 8 in-use maps: **2,880 → 1,046 B (−1,834 B)**. Decompression via `gb_decompress_bkg_data()` fits the existing flow (levels load with the LCD off, straight to VRAM). Net saving after the decompressor lands in ROM: **~1.6 KB**, more once levels 7–15 come online (all 15 maps: 5,400 B → ~2 KB). Best-value remaining ROM item.
 
 ### Code Size Optimization
 
@@ -366,42 +365,34 @@ Current data (~37 KB) leaves ~28 KB headroom in a 64 KB ROM.
 > **Gotcha:** a bare `--opt-code-size` on the lcc line is *silently swallowed* — lcc does not forward it to sdcc. It must be passed as **`-Wf--opt-code-size`** (verify with `lcc ... -v` that the sdcc invocation actually includes `--opt-code-size`).
 > **Measured effect on this codebase: essentially neutral** (`_HOME` +11 B, banked code −7 B). SDCC's default already optimizes this code well; kept for the size-first posture. Side effect: the optimizer now emits `warning 110` at the two pre-existing `player.timer & 1U == 0U` precedence bugs in `physics.c` (harmless, condition was always-true before too).
 
-> [!todo] 2. Eliminate redundant level handler functions
-> Current: separate `manage_physics_lvl1()`…`manage_physics_lvl15()` and `reset_lvl1()`…`reset_lvl15()`. Consolidate into a data-driven approach:
-> ```c
-> // Instead of 15 separate functions, one parameterized function
-> // indexing into per-level data tables:
-> void manage_physics_level(UBYTE level_id) { ... }
-> ```
-> **Potential savings:** 2,000–4,000 bytes
+> [!todo] 2. Eliminate redundant level handler functions — re-sized 2026-07-09: real ceiling is ~2.2 KB, realistic net ~0.8–1.3 KB
+> Reality check: handlers exist only for levels **1–6, 10, 13** (8 of 15; the rest were never written). Measured sizes from the `.lst` files:
+>
+> | Handler | `manage_physics_lvlN` | `reset_lvlN` |
+> |---|---|---|
+> | 1 / 2 / 3 / 4 | 283 / 222 / 299 / 239 B | 53 / 23 / 7 / 18 B |
+> | 5 / 6 / 10 / 13 | 429 / 425 / 58 / 30 B | 74 / 3 / 3 B |
+> | **Total** | | **2,219 B** |
+>
+> The doc's old 2,000–4,000 B estimate was the *gross* size; a data-driven replacement still needs an interpreter (~400–700 B) plus per-level tables (~30–50 B × 8). The handlers are dominated by two repeated patterns that table-ize cleanly: **exit rectangles** (`x/y range + state/dir condition → switch_to_level / transition`) and **key-unlocks-lock** blocks (level 1 and level 6 are near-identical). **Net saving ~0.8–1.3 KB.** The stronger argument is not size but that finishing levels 7–15 becomes data entry instead of code. Do this refactor *when* resuming level work.
 
-> [!todo] 3. Lookup tables instead of switch statements
-> ```c
-> // SMALLER: function-pointer table instead of a switch
-> typedef void (*StateHandler)(void);
-> const StateHandler handlers[] = { handle_idle, handle_walk, ... };
-> handlers[state]();
-> ```
+> [!success] 3. Lookup tables instead of switch statements — ✅ IMPLEMENTED for `manage_level_physics` (2026-07-09), verdict: near-neutral
+> The `switch(currentLvl)` in `physics.c` became a `const` function-pointer table with a NULL check. Measured: function 71→54 B, but the 15-entry table adds 30 B of ROM — **net −17 B**. SDCC already compiles small dense switches well, so don't expect wins from this pattern elsewhere; the table was kept because adding levels 7–15 is now a one-line table edit.
 
-> [!todo] 4. Remove debug code
-> Confirm no `printf`/logging/debug-only code remains in release builds.
+> [!success] 4. Remove debug code — ✅ AUDITED, none found (2026-07-09)
+> No `printf`/logging anywhere in `src/` or `levels/`. Two commented-out `play_sound`/`gbt_stop` calls and the `J_START → finish` block are already dead comments, not linked code. Closed.
 
-> [!todo] 5. Inline trivial functions
-> ```c
-> // Instead of a call/return for a one-liner:
-> #define SET_FLAG(f) (player.booleanState |= (f))
-> ```
+> [!todo] 5. Inline trivial functions — low value
+> The only trivial hot callees are `set_idle`/`set_climbing` (21 B each, called from few sites) — inlining would *grow* ROM. `checkCollision()` is the real hot call; see [[#Collision Detection]]. Keep closed unless profiling says otherwise.
 
 ### Music & Sound Optimization {#music-sound-optimization}
 
-> [!todo] Options
-> - Replace GBT Player (~1,900 bytes across banks 0/4) with **hUGEDriver** for a smaller footprint. (Also flagged from the migration side — see [[MIGRATION_PLAN#Still Open]].)
-> - Reduce song count / reuse patterns if songs are musically similar.
-> - GBT's pattern format is already compact, but further pattern reuse can shrink it more.
+> [!warning] hUGEDriver swap — assessed 2026-07-09: NOT recommended
+> Feasibility is poor for the payoff. The songs exist as `.mod` sources converted via `mod2gbt`; there is **no mod→hUGETracker conversion path**, so all 6 songs would have to be re-authored by hand in hUGETracker, and the three `SWITCH_ROM`-related hardcodes in `gbt_player.s` show how fragile driver/bank integration is here. Expected saving is only a few hundred bytes (hUGEDriver ~1–1.5 KB vs GBT's ~1.9 KB engine; song data sizes roughly comparable) and the ROM has ~29 KB of headroom. **Skip unless the 64 KB budget actually runs out.** Still-valid cheap options: reduce song count / reuse patterns if songs are musically similar.
 
 ### Banking Consolidation Strategy — ✅ IMPLEMENTED (2026-07-08)
 
-**Was: 8 banks (256 KB)** → **Now: 4 banks (64 KB MBC5)**. Live `.map` sizes after consolidation:
+**Was: 8 banks (256 KB)** → **Now: 4 banks (64 KB MBC5)**. `.map` sizes as of the 2026-07-08 consolidation (see [[#Current bank layout (4 banks, 64 KB) — after the 2026-07-09 pass|Banking Best Practices]] for current numbers):
 
 | New bank | Size Used | Contents | Merged from (old banks) |
 |----------|-----------|----------|--------------------------|
@@ -425,15 +416,15 @@ All four banks are under the 16,384-byte limit; total ROM = 65,536 bytes.
 >   2. **⚠️ Hidden hardcode:** `src/gbt_player.s` hardcodes the *engine-code* bank as `ld a,#0x04` in **three** places (lines ~337/364/491, each right before `ld (#0x2000),a` and a `call gbt_update[_effects]_bank1`). That `0x04` is the bank where `gbt_player_bank1.o` was linked. Moving that code to bank 3 (`.area _CODE_3`) requires changing all three to `ld a,#0x03`, otherwise the engine switches to an empty bank 4 and calls garbage → **all music silently dies** while the game keeps running. This is exactly the kind of runtime-only regression that a clean build + `.map` will not catch.
 > - **Makefile fix:** `levels/level10.c` / `level13.c` were listed as `.c` (bypassing the bank rule) — changed to `.o`.
 
-> [!todo] Remaining banking follow-ups (not required for 64 KB)
-> - [ ] Dead map data for levels 7-9, 11, 12, 14, 15 (unused `data/map/*_map.o`) still occupies bank 2 — removing it would free ~2.5 KB.
-> - [ ] Consolidate the per-level handler functions (`manage_physics_lvlN`/`reset_lvlN`) — separate ROM-size task.
+> [!info] Remaining banking follow-ups (not required for 64 KB)
+> - **Map data for levels 7-9, 11, 12, 14, 15 — measured 2026-07-09, deliberately KEPT.** Unlinking the 7 unused `*_map.o` was built and measured in a scratch copy: **−2,536 B bank 2, −266 B `_INITIALIZER` ROM, −266 B WRAM** (the `Level`/`Box`/`LOCK` structs in those files are non-`const`, so they cost RAM too). Decision (2026-07-09): these are **planned future content**, so they stay linked. If ROM ever gets tight, this is a 3-line Makefile edit worth ~2.8 KB.
+> - [ ] Consolidate the per-level handler functions (`manage_physics_lvlN`/`reset_lvlN`) — see the re-sized estimate under [[#Code Size Optimization]] (~0.8–1.3 KB net).
 
 ### RAM Optimization
 
-Current RAM usage is healthy (16.1%), but can be reduced:
+Current RAM usage is healthy (16.1%) — **assessed 2026-07-09: not a constraint, no action needed.** The cheapest real RAM saving found is the 266 B held by the unused level 7-9/11/12/14/15 structs (kept deliberately — see banking follow-ups). The options below stay as reference only:
 
-> [!todo] Options
+> [!info]- Options (reference only)
 > 1. **Reuse buffers** — level-specific data (collision boxes, enemies) can share memory via a union:
 >    ```c
 >    union LevelEntities {
@@ -453,29 +444,35 @@ Current RAM usage is healthy (16.1%), but can be reduced:
 ## ROM Size Reduction Checklist
 
 - [x] Apply `--opt-code-size` compiler flag *(as `-Wf--opt-code-size`; effect ~neutral)*
-- [ ] Consolidate level handler functions into a data-driven approach
-- [ ] Use sprite flipping (`S_FLIPX`) instead of storing mirrored frames
-- [ ] Run `merge_gbs.py` on all sprite sheets
-- [ ] Remove unused graphics and code
+- [ ] Consolidate level handler functions into a data-driven approach *(re-sized: ~0.8–1.3 KB net; do it when resuming level work)*
+- [x] ~~Use sprite flipping (`S_FLIPX`) instead of storing mirrored frames~~ *(closed 2026-07-09: already implemented; premise was wrong)*
+- [x] Dedup sprite-sheet tiles *(peanut done, −320 B; seagull/white_fur not worth it — 2026-07-09)*
+- [x] Remove unused code *(dead `manage_static_physics` + `manage_climbwalk` deleted, −790 B — 2026-07-09)*
 - [x] Consolidate from 8 banks to 4 banks *(now MBC5, 64 KB)*
-- [ ] Replace large switch statements with lookup tables
-- [ ] Remove all debug/development code
-- [ ] Consider a smaller music driver (hUGEDriver)
-- [ ] Use shared tilesets across levels
-- [ ] Ensure no redundant full-screen graphics
+- [x] Replace large switch statements with lookup tables *(done for `manage_level_physics`, −17 B; verdict: near-neutral, don't repeat elsewhere — 2026-07-09)*
+- [x] Remove all debug/development code *(audited 2026-07-09: none existed)*
+- [x] ~~Consider a smaller music driver (hUGEDriver)~~ *(assessed 2026-07-09: not recommended — re-authoring cost, tiny saving)*
+- [x] ~~Use shared tilesets across levels~~ *(closed 2026-07-09: already the architecture)*
+- [ ] **NEW:** Compress level tilemaps with `gbcompress` + `gb_decompress_bkg_data()` *(measured: −1,834 B raw, ~−1.6 KB net — best remaining item)*
+- [x] Ensure no redundant full-screen graphics *(audited 2026-07-09: merged screens are fully deduped)*
+- [ ] **NEW:** 1bpp `press_start` letters *(−104 B, low priority)*
 
-### Expected Results
+### Results — estimated vs measured
 
-| Optimization | Estimated Savings |
-|--------------|-------------------|
-| Sprite flipping | 700-850 bytes |
-| Level handler consolidation | 2,000-4,000 bytes |
-| `--opt-code-size` | 500-1,000 bytes |
-| Tile deduplication | 1,000-1,500 bytes |
-| Music driver swap | 500-800 bytes |
-| **Total potential** | **4,700-8,150 bytes** |
+| Optimization | Old estimate | **Measured (2026-07-09)** |
+|--------------|-------------|---------------------------|
+| Sprite flipping | 700-850 B | **0 B — already implemented** |
+| Level handler consolidation | 2,000-4,000 B | handlers total 2,219 B; **net ~0.8–1.3 KB** (open) |
+| `--opt-code-size` | 500-1,000 B | ~0 B (neutral, kept) |
+| Tile deduplication (levels) | 1,000-1,500 B | **0 B — premise wrong**; tilemap compression instead: **~1.6 KB net** (open) |
+| Music driver swap | 500-800 B | few hundred B at best — **rejected** |
+| Sprite-sheet dedup (new) | — | **−320 B shipped** (+128 B possible, not worth it) |
+| Dead code removal (new) | — | **−790 B shipped** |
+| Pointer caching (new) | — | **−847 B shipped** (+ CPU win) |
+| Switch→table (new) | — | **−17 B shipped** |
+| **Shipped this pass** | | **−1,974 B** |
 
-After optimization, the ROM should fit comfortably in **64 KB** with room to spare.
+Bank totals after the 2026-07-09 pass: bank 0 = 8,308 B, bank 1 = 4,557 B, bank 2 = 11,425 B, bank 3 = 10,103 B — ~31 KB used of 64 KB.
 
 ---
 
@@ -523,42 +520,21 @@ After optimization, the ROM should fit comfortably in **64 KB** with room to spa
 
 ## Potential Improvements
 
-### 1. Compiler optimization flags
+### 1. Compiler optimization flags — `--max-allocs-per-node` measured 2026-07-09
 
-**Current Makefile lacks optimization flags.** Add these to the `CC` line:
+Tested in a scratch build: `CC = ... -Wf--opt-code-size -Wf--max-allocs-per-node -Wf50000` (note: like `--opt-code-size`, it must be passed via `-Wf` or lcc silently swallows it; the value needs its own `-Wf`).
 
-```makefile
-# Recommended
-CC = /opt/gbdk-2020/bin/lcc -Wa-l -Wl-m -Wl-j --max-allocs-per-node 50000
+**Measured:** bank 2 −188 B, `_HOME` **+89 B** → net **−99 B ROM**, generated code generally faster (better register allocation) — but full-rebuild time went from ~15 s to **71 s**. Verdict: not worth it for day-to-day dev builds; worth enabling for release builds since the user cares about CPU too. Left OFF in the Makefile for now.
 
-# Or for aggressive optimization:
-CC = /opt/gbdk-2020/bin/lcc -Wa-l -Wl-m -Wl-j --max-allocs-per-node 100000 --opt-code-speed
-```
+| Flag | Effect | Status |
+|------|--------|--------|
+| `--opt-code-size` | Optimize for size | ✅ on (`-Wf--opt-code-size`) |
+| `--max-allocs-per-node 50000` | More register-allocation attempts | measured −99 B / 5× build time — release-build option |
+| `--opt-code-speed` | Speed over size | untested; conflicts with size-first posture |
 
-| Flag | Effect |
-|------|--------|
-| `--max-allocs-per-node N` | Increase register allocation attempts (default ~3000, try 50000+) |
-| `--opt-code-speed` | Optimize for speed over size |
-| `--opt-code-size` | Optimize for size (useful if ROM is tight) |
-| `--peep-return` | Enable return peephole optimization |
-| `--allow-unsafe-read` | Allow potentially unsafe optimizations |
+### 2. Replace division/modulo with bitwise operations — ✅ AUDITED 2026-07-09: none exist
 
-### 2. Replace division/modulo with bitwise operations
-
-Division and modulo are extremely expensive on Game Boy (~200+ cycles):
-
-```c
-// SLOW
-UBYTE result = value / 8;
-UBYTE remainder = value % 8;
-
-// FAST (for powers of 2)
-UBYTE result = value >> 3;
-UBYTE remainder = value & 0x07;
-```
-
-> [!todo] Action item
-> Check `physics.c` and `game_screen.c` for any remaining `/` or `%` operators. *(Not yet audited as part of this pass — [[WARNINGS_FIX_PLAN]] did not touch this.)*
+Grepped all of `src/*.c` and `levels/*.c`: **zero `/` or `%` operators** on runtime values. All divisions are already `>>` shifts. Closed.
 
 ### 3. Reduce collision box iterations — ✅ PARTIALLY IMPLEMENTED (2026-07-08, micro-opts only)
 
@@ -568,6 +544,8 @@ for(i = 0U; i != levels[currentLvl]->boxes_length; i++)
 ```
 
 **Done (behavior-preserving micro-opts):** in all 8 loops in `physics.c`, `boxes_length` (a 16-bit `const size_t`) is now cached into a `UBYTE n` local so the bound check is an 8-bit compare against the `UBYTE i` counter. Safe early `break`s were added in `manage_static_physics2` and `manage_climbwalk2` (exit once ground+front contacts are resolved or inapplicable). `manage_jumping`/`manage_jumpclimb` left as cache-only (an early break there could change collision resolution).
+
+**Reality check (2026-07-09):** every level has only **3–5 collision boxes** (`BOXES_LVLn_LENGTH` in `data/map/*.c`). The worst frame does ≤3 loop passes × 5 boxes ≈ 15 `checkCollision()` calls, nowhere near the "100+" this section assumed. The deferred items below are correct techniques but currently unnecessary — revisit only if a future level ships with 15+ boxes or profiling (see [[#Profiling & Debugging]]) shows physics as a hotspot.
 
 **Not done (deferred — would change behavior/structure):**
 - **Coarse Y-band filtering** — cheap reject before full AABB:
@@ -605,21 +583,13 @@ BYTE vely; if(vely > 3) ...
 UBYTE vely; if(vely > 3U) ...
 ```
 
-### 6. Animation timer optimization
+### 6. Animation timer optimization — assessed 2026-07-09: skip
 
-Current pattern uses multiple discrete `if` checks:
-```c
-if(player.timer == 5U)  player.img_index++;
-if(player.timer == 10U) player.img_index++;
-if(player.timer == 15U) player.img_index++;
-if(player.timer == 20U) { player.timer = 0U; player.img_index = 0U; }
-```
-Consider a modulo-free counter (power-of-2 frame count):
-```c
-player.timer++;
-player.timer &= 0x1F;          // wrap at 32 instead of 20
-player.img_index = player.timer >> 3;  // divide by 8 for 4 frames
-```
+Current pattern uses multiple discrete `if` checks (`timer == 5U/10U/15U/20U`). The power-of-2 alternative (`timer &= 0x1F; img_index = timer >> 3`) saves a handful of bytes/cycles per animation **but changes animation timing** (wrap at 16 or 32 frames instead of 20 — visibly faster/slower animation). Not worth a gameplay-feel change for ~30 B; the equality chains are already cheap 8-bit compares. Closed unless animations get reworked anyway.
+
+### 6b. Precedence bug `timer & 1U == 0U` — ✅ RESOLVED 2026-07-09 (behavior kept)
+
+`physics.c` had `if(!(player.state == CROUCHWALK && (player.timer & 1U == 0U)))` — `==` binds tighter than `&`, so this parsed as `timer & (1U==0U)` = always false → the intended half-speed crouchwalk **never engaged**; crouchwalk has always moved at full speed. Decision: **keep the shipped behavior** — the dead throttle was removed and replaced with an explanatory comment, which also silences the optimizer's `warning 110`. The `& 1U == 1U` variants in `manage_animation` (player transition, seagull, doggy) happened to evaluate to `timer & 1U` — correct by luck; they were rewritten as explicit `(timer & 1U)` with no behavior change.
 
 ### 7. Level tilemap loading — ✅ IMPLEMENTED (2026-07-08)
 
@@ -634,6 +604,15 @@ Removed 720 calls/level-load and the redundant index math; **bank 0 code shrank 
 - Use `move_metasprite()` for multi-tile sprites
 - Batch sprite updates where possible
 - Use sprite-hiding techniques that don't iterate all 40 sprites
+
+### 9. Dead code removal — ✅ IMPLEMENTED (2026-07-09)
+
+`manage_static_physics()` (442 B) and `manage_climbwalk()` (348 B) in `physics.c` were superseded by their `*2` variants and **never called** — but sdld does no dead-code elimination, so they shipped in bank 2 anyway. Deleted: **−790 B**. (One of the two `warning 110` precedence-bug sites lived in the dead code, which is why only one fix was needed — see 6b.)
+
+### 10. Pointer caching in per-frame code — ✅ IMPLEMENTED (2026-07-09)
+
+`set_sprites()`, `manage_animation()`, and `manage_doggy_sprites()` re-evaluated `levels[currentLvl]->enemy/doggy/lock/...` on *every access* — each one a 16-bit array index plus two pointer derefs, dozens of times per frame (e.g. `manage_doggy_sprites` had 33 occurrences and measured 1,811 B... for positioning 16 sprites). Cached into locals (`Level* lvl`, `SEAGULL* en`, `DOGGY* dg`, `LOCK* lk`) at function/block entry. Safe because `currentLvl` and the level pointers never change inside these functions, and all of these structs live in WRAM (no banking interaction).
+**Measured: −847 B ROM** (`_HOME` −326 B, bank 2 −521 B) **and a substantial per-frame CPU saving** — this was the single most lopsided win of the pass. ⚠️ Behavior-preserving by construction but touched the hottest rendering path; needs one emulator play-through (seagull, doggy, lock, key, wall levels).
 
 ---
 
@@ -667,6 +646,8 @@ void update(void) {
     player.y = py;
 }
 ```
+
+> [!success] This pattern shipped 2026-07-09 for the `levels[currentLvl]->…` chains — see [[#9. Dead code removal — ✅ IMPLEMENTED (2026-07-09)|items 9–10 above]]: −847 B ROM plus per-frame CPU. Remaining candidates: `manage_jumping()` still recomputes `levels[currentLvl]->boxes[i]` ~10× per colliding box (a `Box*` local would shrink/speed it further), and `manage_player_sprites()` (1,811 B) could cache `player.box.x/y`.
 
 ### Const correctness
 
@@ -779,7 +760,7 @@ move_metasprite(player_metasprite, base_tile, base_sprite, x, y);
 
 ### Current implementation
 
-`checkCollision()` is called potentially 100+ times per frame across `manage_static_physics2()`, `manage_static_physics()`, `manage_climbwalk2()`, `manage_climbwalk()`, `manage_jumpclimb()`, `manage_jumping()`.
+`checkCollision()` is called from `manage_static_physics2()`, `manage_climbwalk2()`, `manage_jumpclimb()`, `manage_jumping()`, and the level handlers. *(The old `manage_static_physics()`/`manage_climbwalk()` were dead code, removed 2026-07-09.)* With 3–5 boxes per level the real call count is ~5–15 per frame, not 100+ — the strategies below are reference material for if levels ever get much denser.
 
 ### Optimization strategies
 
@@ -855,14 +836,16 @@ void play_sound_priority(SoundID sound, SoundPriority priority) {
 
 ## Banking Best Practices
 
-### Current bank layout (4 banks, 64 KB) — post-consolidation
+### Current bank layout (4 banks, 64 KB) — after the 2026-07-09 pass
 
-| Bank | Size Used | Contents |
-|------|-----------|----------|
-| 0 | 8,634 bytes | Fixed (`NONBANKED` functions, main, box_collision, sound, gbt_player) |
-| 1 | 4,877 bytes | All sprite/UI data |
-| 2 | 12,753 bytes | physics, levels, tilemaps, game_screen |
-| 3 | 10,103 bytes | Screens (titlescreen2, kwakwa, staffroll), music, gbt bank1 |
+| Bank | Size Used | Headroom | Contents |
+|------|-----------|----------|----------|
+| 0 | 8,308 bytes | 8,076 B | Fixed (`NONBANKED` functions, main, box_collision, sound, gbt_player) |
+| 1 | 4,557 bytes | 11,827 B | All sprite/UI data (peanut now 88 tiles) |
+| 2 | 11,425 bytes | 4,959 B | physics, levels, tilemaps (incl. 7 unused-but-planned maps), game_screen |
+| 3 | 10,103 bytes | 6,281 B | Screens (titlescreen2, kwakwa, staffroll), music, gbt bank1 |
+
+Bank 2 remains the fullest; the tilemap-compression item (~−1.6 KB) and the 7 reserve maps (~2.8 KB if ever unlinked) both target it.
 
 See [[#Banking Consolidation Strategy]] above for how the old 8-bank layout was merged and the per-file Makefile/`.area` changes.
 
@@ -953,26 +936,25 @@ The build generates `SRJailbreak.sym`. Load it in BGB/Emulicious for function na
 See [[#Target Configuration — MBC5, 64 KB|Target Configuration]] for the Makefile flags.
 
 ### CPU performance
-- [ ] Using `UBYTE`/`BYTE` instead of `int`/`short`
-- [ ] No division/modulo (use bit shifts for powers of 2)
+- [x] Using `UBYTE`/`BYTE` instead of `int`/`short` *(verified: only 16-bit values are the `const size_t boxes_length` fields, now cast to `UBYTE` locals in loops)*
+- [x] No division/modulo *(audited 2026-07-09: none exist)*
 - [x] Hot functions marked `NONBANKED`
-- [x] Compiler optimizations enabled (`-Wf--opt-code-size`; `--max-allocs-per-node` still open)
-- [x] Collision detection has early-exit conditions *(plus UBYTE loop bound + safe breaks, 2026-07-08)*
-- [ ] Sprite count tracked, unused sprites hidden efficiently
+- [x] Compiler optimizations enabled *(`-Wf--opt-code-size` on; `--max-allocs-per-node 50000` measured −99 B / 5× build time — enable for release builds)*
+- [x] Collision detection has early-exit conditions *(plus UBYTE loop bound + safe breaks, 2026-07-08; call counts re-measured 2026-07-09: only ~5–15/frame)*
+- [x] Hot struct-pointer chains cached in locals *(2026-07-09: set_sprites, manage_animation, manage_doggy_sprites; manage_jumping/manage_player_sprites still open)*
+- [ ] Sprite count tracked, unused sprites hidden efficiently *(current code only rewrites on sprite_index change — acceptable)*
 - [x] Bank switches minimized in main loop *(6↔7 churn collapsed into bank 2)*
 - [x] Using `const` for ROM data
-- [ ] No VRAM writes outside VBlank
+- [x] No VRAM writes outside VBlank *(GBDK-2020 shadow-OAM DMA handles sprites; bkg writes happen with LCD off)*
 - [x] Global variables for frequently-accessed data
+- [ ] Profile a real session in BGB/Emulicious to confirm frame budget *(no evidence of overruns, but never measured — see recipe below)*
 
 ### ROM size optimization (target: 64 KB)
 See [[#ROM Size Reduction Checklist]] above — duplicated here previously, consolidated to one list.
 
-### RAM optimization
-- [ ] Reuse buffers for mutually exclusive data (union)
-- [ ] Pack boolean flags into single bytes (bitfields)
-- [ ] No `int` where `UBYTE` suffices
-- [ ] Avoid large local arrays (use globals)
-- [ ] Level entity data shares memory where possible
+### RAM optimization — assessed 2026-07-09: not a constraint (16% used), all items closed as unnecessary
+- Largest recoverable chunk: 266 B held by unused level 7-9/11/12/14/15 structs (kept — planned content)
+- Union/bitfield/global-buffer items retained in [[#RAM Optimization]] as reference only
 
 ---
 

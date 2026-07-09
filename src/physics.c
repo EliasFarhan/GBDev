@@ -62,36 +62,19 @@ void manage_key_physics(void)
 	}
 }
 
+typedef void (*LvlHandler)(void);
+static const LvlHandler lvl_handlers[15] = {
+	manage_physics_lvl1, manage_physics_lvl2, manage_physics_lvl3,
+	manage_physics_lvl4, manage_physics_lvl5, manage_physics_lvl6,
+	0, 0, 0,
+	manage_physics_lvl10, 0, 0,
+	manage_physics_lvl13, 0, 0
+};
+
 void manage_level_physics(void)
 {
-
-	switch(currentLvl)
-	{
-	case LEVEL1:
-		manage_physics_lvl1();
-		break;
-	case  LEVEL2:
-		manage_physics_lvl2();
-		break;
-	case  LEVEL3:
-		manage_physics_lvl3();
-		break;
-	case LEVEL4:
-		manage_physics_lvl4();
-		break;
-	case  LEVEL5:
-		manage_physics_lvl5();
-		break;
-	case LEVEL6:
-		manage_physics_lvl6();
-		break;
-	case LEVEL10:
-		manage_physics_lvl10();
-		break;
-	case LEVEL13:
-		manage_physics_lvl13();
-		break;
-	}
+	LvlHandler h = lvl_handlers[currentLvl];
+	if(h) h();
 }
 
 void manage_static_physics2(void)
@@ -170,102 +153,15 @@ void manage_static_physics2(void)
 		{
 			if((player.box.x > 8U && player.dirX == -1) || (player.box.x< 160U-8U-PLAYER_SIZE && player.dirX == 1))
 			{
-				if(!(player.state == CROUCHWALK && (player.timer & 1U == 0U)))
-				{
-					player.box.x += player.dirX;
-				}
+				//a precedence bug (`timer & 1U == 0U`) always made this move
+				//unconditional; full-speed crouchwalk is kept as the shipped behavior
+				player.box.x += player.dirX;
 			}
 		}
 	}
 }
 
-void manage_static_physics(void)
-{
-	UBYTE frontContact;
 
-	UBYTE contact;
-	UBYTE n;
-	frontContact = 0U;
-	//Check under player if there are ground
-	tmp_box.x = player.box.x;
-	tmp_box.y = player.box.y+1U;
-	tmp_box.w = player.box.w;
-	tmp_box.h = player.box.h;
-	box1 = &(tmp_box);
-	contact = 0U;
-	n = (UBYTE)levels[currentLvl]->boxes_length;
-	if(player.box.y >= 144U-GROUND_HEIGHT)
-	{
-		contact++;
-	}
-	else
-	{
-		for(i = 0U; i != n; i++)
-		{
-			box2 = &(levels[currentLvl]->boxes[i]);
-			if(checkCollision())
-			{
-				contact++;
-			}
-
-		}
-	}
-	if(contact == 0U)
-	{
-		player.state = JUMP;
-		player.vely = 1;
-		player.timer = 0;
-		player.img_index = 0;
-
-		player.booleanState = player.booleanState | HASJUMP;
-
-		return;
-	}
-	if(player.state == IDLE || player.state == CROUCH)
-	{
-		return;
-	}
-	//Check if there is a box in front of us
-	tmp_box.x = player.box.x+player.dirX;
-	tmp_box.y = player.box.y;
-	tmp_box.w = player.box.w;
-	tmp_box.h = player.box.h;
-	contact = 0U;
-	for(i = 0U; i!=n; i++)
-	{
-		box2 = &(levels[currentLvl]->boxes[i]);
-		if(checkCollision())
-		{
-			contact++;
-		}
-
-	}
-	if(contact != 0U)
-	{
-		//Force player to stop
-		if(player.state == WALK)
-		{
-			player.state = IDLE;
-		}
-		else if(player.state == CROUCHWALK)
-		{
-			player.state = CROUCH;
-		}
-	}
-	else
-	{
-		if(player.state == WALK || player.state == CROUCHWALK)
-		{
-			if((player.box.x > 8U && player.dirX == -1) || (player.box.x< 160U-8U-PLAYER_SIZE && player.dirX == 1))
-			{
-				if(!(player.state == CROUCHWALK && (player.timer & 1U == 0U)))
-				{
-					player.box.x += player.dirX;
-				}
-			}
-		}
-	}
-}
 
 void set_climbing(void)
 {
@@ -341,73 +237,7 @@ void manage_climbwalk2(void)
 	}
 }
 
-void manage_climbwalk(void)
-{
-	UBYTE contact;
-	UBYTE n;
-	tmp_box.x = player.box.x;
-	tmp_box.y = player.box.y+player.dirY;
-	tmp_box.w = player.box.w;
-	tmp_box.h = player.box.h;
-	box1 = &tmp_box;
-	contact = 0;
-	n = (UBYTE)levels[currentLvl]->boxes_length;
-	if((player.dirY == 1 && player.box.y >= 144U-GROUND_HEIGHT) ||
-				(player.dirY == -1 && player.box.y <= GROUND_HEIGHT+PLAYER_SIZE))
-	{
-		contact++;
-	}
-	else
-	{
-		for(i = 0; i!=n; i++)
-		{
-			box2 = &(levels[currentLvl]->boxes[i]);
-			if(checkCollision())
-			{
-				contact++;
-			}
-		}
-	}
-	if(contact == 0U)
-	{
-		player.box.y += player.dirY;
-	}
-	else
-	{
-		player.state = CLIMB;
-	}
-	//Check if there is a box in front of us
 
-	tmp_box.x = player.box.x+player.dirX;
-	tmp_box.y = player.box.y;
-	tmp_box.w = player.box.w;
-	tmp_box.h = player.box.h;
-	contact = 0;
-	if((player.box.x == 160U-GROUND_HEIGHT-PLAYER_SIZE && player.dirX == 1)
-			|| (player.box.x == GROUND_HEIGHT && player.dirX == -1))
-	{
-		contact++;
-	}
-	else
-	{
-		for(i = 0U; i!=n; i++)
-		{
-			box2 = &(levels[currentLvl]->boxes[i]);
-			if(checkCollision())
-			{
-				contact++;
-			}
-		}
-	}
-	if(contact == 0U)
-	{
-
-		player.box.x += player.dirX<<2;
-		player.vely = 1U;
-		player.state = JUMP;
-
-	}
-}
 
 void manage_jumpclimb(void)
 {
